@@ -1,0 +1,28 @@
+import bcrypt from "bcryptjs"
+import jwt from "jsonwebtoken"
+import configKeys from "../../config"
+import { AuthServiceInterface } from "../../app/services/authServiceInterface"
+
+export class AuthService implements AuthServiceInterface {
+    async encryptPassword(password: string): Promise<string> {
+        const salt = await bcrypt.genSalt(10)
+        return bcrypt.hash(password, salt)
+    }
+
+    async comparePassword(
+        password: string,
+        hashedPassword: string
+    ): Promise<boolean> {
+        return bcrypt.compare(password, hashedPassword)
+    }
+
+    generateToken(payload: object): string {
+        return jwt.sign(payload, configKeys.JWT_SECRET, { expiresIn: "5d" })
+    }
+
+    verifyToken(token: string): any {
+        return jwt.verify(token, configKeys.JWT_SECRET)
+    }
+}
+
+export default AuthService
