@@ -14,9 +14,9 @@ export class UserRepositoryMongo implements UserRepository {
             return false
         }
     }
-async authenticateUser(email: string, password: string): Promise<User | null> {
+async authenticateUser(email: string): Promise<User | null> {
     const user = await UserModel.findOne({ email });
-    if (user && user.password === password) {
+    if (user && user.password) {
         return user;
     } else {
         return null;

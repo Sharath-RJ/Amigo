@@ -13,6 +13,10 @@ export class AuthUseCase {
     }
 
     async login(email: string, password: string): Promise<User | null> {
-        return await this._userRepository.authenticateUser(email, password)
+        const user = await this._userRepository.authenticateUser(email)
+        if(user && (await this._authService.comparePassword(password,user.password))){
+            return user
+        }
+        return null
     }
 }
