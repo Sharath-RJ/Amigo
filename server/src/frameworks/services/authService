@@ -1,0 +1,23 @@
+// frameworks/services/authService.ts
+
+import bcrypt from "bcryptjs"
+import jwt from "jsonwebtoken"
+import configKeys from "../../config"
+import {AuthServiceInterface} from "../../app/services/authServiceInterface"
+
+const authService: AuthServiceInterface = {
+    encryptPassword: async (password: string) => {
+        const salt = await bcrypt.genSalt(10)
+        return bcrypt.hash(password, salt)
+    },
+    comparePassword: (password: string, hashedPassword: string) => {
+        return bcrypt.compare(password, hashedPassword)
+    },
+    generateToken: (payload: { payload: string; role: string }) => {
+        return jwt.sign(payload, configKeys.JWT_KEY, { expiresIn: "5d" })
+    },
+    verifyToken: (token: string) => {
+        return jwt.verify(token, configKeys.JWT_KEY)
+    },
+}
+export default authService

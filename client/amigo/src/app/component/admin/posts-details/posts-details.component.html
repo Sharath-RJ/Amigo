@@ -1,0 +1,29 @@
+<div class="p-6 flex flex-col lg:flex-row lg:items-center lg:justify-center">
+    <!-- Post Image -->
+    <div class="mb-4 lg:mr-6">
+    <img [src]="'http://localhost:5000/uploads/'+post.image" alt="Post Image" class="w-90 h-80 rounded-lg shadow-lg">
+
+
+    </div>
+
+    <!-- Post Details -->
+    <div class="mb-4 lg:ml-6 lg:w-1/2">
+        <h2 class="text-lg font-semibold mb-2">Post Details</h2>
+        <p class="text-gray-700 mb-2"><span class="font-semibold">Post ID:</span> {{ post._id }}</p>
+        <p class="text-gray-700 mb-2"><span class="font-semibold">User:</span> {{ post.user.username }}</p>
+        <p class="text-gray-700 mb-2"><span class="font-semibold">Content Type:</span> {{ post.contentType }}</p>
+        <p class="text-gray-700 mb-2"><span class="font-semibold">Caption/Description:</span> {{ post.caption }}</p>
+        <p class="text-gray-700 mb-2"><span class="font-semibold">Likes:</span> {{ post.likes.length }}</p>
+        <p class="text-gray-700 mb-2"><span class="font-semibold">Comments:</span> {{ post.comments.length }}</p>
+        <p class="text-gray-700 mb-2"><span class="font-semibold">Shares:</span> {{ post.shares }}</p>
+        <p class="text-gray-700 mb-2"><span class="font-semibold">Date Posted:</span> {{ post.createdAt }}</p>
+        <p class="text-gray-700 mb-2"><span class="font-semibold">Status:</span> {{ post.status }}</p>
+    </div>
+
+    <!-- Action buttons -->
+    <div class="flex justify-center">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2" (click)="publishPost(post._id)">Publish</button>
+        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" (click)="deletePost(post._id)">Delete</button>
+        <!-- Add more action buttons as needed -->
+    </div>
+</div>

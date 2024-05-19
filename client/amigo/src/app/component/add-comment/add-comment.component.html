@@ -1,0 +1,14 @@
+<div class="max-w-md  bg-gray-700 p-8 rounded-lg shadow-md flex items-center">
+    <form action="" (submit)="addingComment()">
+        <input [(ngModel)]="comment" type="text" id="commandName" name="commandName"
+            class="flex-1 mr-2 px-3 py-2 w-90 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:border-indigo-500 bg-gray-700 text-white"
+            placeholder="Enter command ...">
+        <button type="submit" (click)="addCommand()"
+            class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md shadow-md">
+            Add Command
+        </button>
+    </form>
+</div>
+
+
+
