@@ -9,11 +9,7 @@ export class AuthController {
         try {
             const { username, email, password } = req.body
     
-            const success = await this.authUseCase.register(
-                username,
-                email,
-                password
-            )
+            const success = await this.authUseCase.register( username,email,password )
             if (success) {
                 res.status(201).json({
                     message: "User registered successfully",
