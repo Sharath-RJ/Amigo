@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs"
-// import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken"
 import configKeys from "../../config"
 import { AuthServiceInterface } from "../../app/services/authServiceInterface"
 export  class AuthService implements AuthServiceInterface {
@@ -10,6 +10,10 @@ export  class AuthService implements AuthServiceInterface {
 
     comparePassword(password: string, hashedPassword: string): boolean {
         return bcrypt.compareSync(password, hashedPassword)
+    }
+    generateToken(id:string): string {
+           const token = jwt.sign({ id }, configKeys.JWT_KEY, { expiresIn: "5d" });
+           return token;
     }
 }
 

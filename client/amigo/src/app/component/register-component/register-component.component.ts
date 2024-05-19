@@ -11,9 +11,11 @@ import { environment } from '../../../../environment';
 export class RegisterComponentComponent {
   constructor(private _http: HttpClient, private _snackBar: MatSnackBar) {}
 
-  username: string = ''; 
+  username: string = '';
   email: string = '';
   password: string = '';
+  confirmPassword: string = '';
+  phoneNumber:string=''
 
   register() {
     this._http
@@ -25,17 +27,15 @@ export class RegisterComponentComponent {
       .subscribe(
         (data) => {
           console.log(data);
-            this._snackBar.open('Registration Successful!', '', {
-              duration: 3000, 
-              horizontalPosition: 'center',
-              verticalPosition: 'top',
-            });
-           
-            this.username = '';
-            this.email = '';
-            this.password = ''; 
-       
-        
+          this._snackBar.open('Registration Successful!', '', {
+            duration: 3000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+          });
+
+          this.username = '';
+          this.email = '';
+          this.password = '';
         },
         (error) => {
           //console.error(error);

@@ -12,10 +12,11 @@ export class AuthUseCase {
        return await this._userRepository.createUser(username, email, bcryptedPassword)
     }
 
-    async login(email: string, password: string): Promise<User | null> {
+    async login(email: string, password: string): Promise<{token:string, user:User} | null> {
         const user = await this._userRepository.authenticateUser(email)
         if(user && (await this._authService.comparePassword(password,user.password))){
-            return user
+           const token= this._authService.generateToken(user._id)
+           return {token, user}
         }
         return null
     }
