@@ -8,6 +8,7 @@ const routes = (app: Application) => {
 
     app.use("/api/user-auth", AuthRouter())
     app.use("/api/post",postRoute())
+    app.use("/api/chat",)
     
 }
 

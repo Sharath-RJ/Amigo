@@ -9,6 +9,7 @@ import { AdminloginComponent } from './component/admin/adminlogin/adminlogin.com
 import { PostsDetailsComponent } from './component/admin/posts-details/posts-details.component';
 import { ChatComponent } from './component/chat/chat.component';
 import { OtpComponent } from './component/auth/otp/otp.component';
+import { UserListComponent } from './component/user-list/user-list.component';
 
 
 const routes: Routes = [
@@ -22,6 +23,7 @@ const routes: Routes = [
   { path: 'viewPost/:id', component: PostsDetailsComponent },
   { path: 'chat', component: ChatComponent },
   { path: 'otpVerify',component:OtpComponent},
+  {path:'network',component:UserListComponent}
 ];
 
 @NgModule({

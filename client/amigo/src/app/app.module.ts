@@ -32,6 +32,8 @@ import { ShowallLikesComponent } from './component/showall-likes/showall-likes.c
 import { ChatComponent } from './component/chat/chat.component';
 import { OtpComponent } from './component/auth/otp/otp.component';
 import { OtpInputDirective } from './directive/otp-input.directive';
+import { UserCardComponent } from './component/user-card/user-card.component';
+import { UserListComponent } from './component/user-list/user-list.component';
 
 
 
@@ -63,6 +65,8 @@ import { OtpInputDirective } from './directive/otp-input.directive';
     ChatComponent,
     OtpComponent,
     OtpInputDirective,
+    UserCardComponent,
+    UserListComponent,
 
  
   ],
