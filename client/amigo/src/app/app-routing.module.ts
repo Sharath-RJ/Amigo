@@ -8,6 +8,8 @@ import { AdmindashboardComponent } from './component/admin/admindashboard/admind
 import { AdminloginComponent } from './component/admin/adminlogin/adminlogin.component';
 import { PostsDetailsComponent } from './component/admin/posts-details/posts-details.component';
 import { ChatComponent } from './component/chat/chat.component';
+import { OtpComponent } from './component/auth/otp/otp.component';
+
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -18,7 +20,8 @@ const routes: Routes = [
   { path: 'adminDashboard', component: AdmindashboardComponent },
   { path: 'admin', component: AdminloginComponent },
   { path: 'viewPost/:id', component: PostsDetailsComponent },
-  {path:'chat',component:ChatComponent}
+  { path: 'chat', component: ChatComponent },
+  { path: 'otpVerify',component:OtpComponent},
 ];
 
 @NgModule({

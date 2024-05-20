@@ -2,8 +2,10 @@
 import { UserRepository } from "../../../../app/repositories/userReppository"
 import { User } from "../../../../entities/user"
 import { UserModel} from "../../../../frameworks/database/mongodb/models/userModel"
+import { AuthService } from "../../../services/authService"
 
 export class UserRepositoryMongo implements UserRepository {
+
     async createUser( username: string, email: string, password: string ): Promise<boolean> {
         try {  
                  await UserModel.create({ username, email, password })

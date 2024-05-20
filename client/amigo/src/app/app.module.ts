@@ -30,6 +30,10 @@ import { AddCommentComponent } from './component/add-comment/add-comment.compone
 import { ShowallCommentsComponent } from './component/showall-comments/showall-comments.component';
 import { ShowallLikesComponent } from './component/showall-likes/showall-likes.component';
 import { ChatComponent } from './component/chat/chat.component';
+import { OtpComponent } from './component/auth/otp/otp.component';
+import { OtpInputDirective } from './directive/otp-input.directive';
+
+
 
 
 
@@ -57,6 +61,10 @@ import { ChatComponent } from './component/chat/chat.component';
     ShowallCommentsComponent,
     ShowallLikesComponent,
     ChatComponent,
+    OtpComponent,
+    OtpInputDirective,
+
+ 
   ],
   imports: [
     BrowserModule,

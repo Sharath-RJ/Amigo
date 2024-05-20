@@ -14,6 +14,7 @@ export default function AuthRouter(): Router {
 
     router.post("/register", authController.register.bind(authController))
     router.post("/login", authController.login.bind(authController))
+    router.get("/generateOtp", authController.generateOtp.bind(authController))
 
     return router
 }

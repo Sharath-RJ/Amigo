@@ -6,7 +6,7 @@ import { User } from "../../../entities/user"
 export class AuthUseCase {
     constructor(private _userRepository: UserRepository, private _authService: AuthServiceInterface) {}
 
-    async register(  username: string,  email: string,  password: string   ): Promise<boolean> {
+    async register(  username: string,  email: string,  password: string ): Promise<boolean> {
         
        const bcryptedPassword= await this._authService.encryptPassword(password)
        return await this._userRepository.createUser(username, email, bcryptedPassword)
@@ -19,5 +19,10 @@ export class AuthUseCase {
            return {token, user}
         }
         return null
+    }
+
+    async generateOtp(phoneNumber: string): Promise<any> {
+        console.log("generate otp use case",phoneNumber)
+        return await this._authService.generateOTP(phoneNumber)
     }
 }
