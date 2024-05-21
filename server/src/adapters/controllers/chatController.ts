@@ -18,4 +18,14 @@ export class chatController {
             console.log(error)
         }
     }
+
+    async getChatHistory(req: Request, res: Response): Promise<void> {
+        const { senderId, receiverId } = req.params
+        try {
+            const messages = await this._chatUseCase.getChatHistory(senderId, receiverId)
+            res.json(messages)
+        } catch (error) {
+            console.log(error)
+        }
+    }
 }

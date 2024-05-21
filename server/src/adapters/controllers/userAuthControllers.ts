@@ -13,7 +13,11 @@ export class AuthController {
             const sendOtp = await this.authUseCase.generateOtp(PhoneNumber)
             console.log(sendOtp)
 
-            const success = await this.authUseCase.register( username, email,  password  )
+            const success = await this.authUseCase.register(
+                username,
+                email,
+                password
+            )
             if (success) {
                 res.status(201).json({
                     message: "User registered successfully",
@@ -30,6 +34,7 @@ export class AuthController {
     async login(req: Request, res: Response): Promise<void> {
         try {
             const { email, password } = req.body
+            console.log("Received login request for email:", email)
             const result: AuthResponse | null = await this.authUseCase.login(
                 email,
                 password
@@ -37,12 +42,14 @@ export class AuthController {
 
             if (result) {
                 const { token, user } = result
+                console.log("Login successful for user:", user)
                 res.status(200).json({
                     message: "Login successful",
                     token,
                     user,
                 })
             } else {
+                console.log("Invalid email or password for email:", email)
                 res.status(401).json({ message: "Invalid email or password" })
             }
         } catch (error) {
@@ -52,7 +59,7 @@ export class AuthController {
     }
 
     async generateOtp(req: Request, res: Response): Promise<void> {
-       const {phonenumber}=req.body
+        const { phonenumber } = req.body
         this.authUseCase.generateOtp(phonenumber)
         res.status(200).json({ message: "OTP generated successfully" })
     }

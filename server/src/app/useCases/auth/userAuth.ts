@@ -12,14 +12,25 @@ export class AuthUseCase {
        return await this._userRepository.createUser(username, email, bcryptedPassword)
     }
 
-    async login(email: string, password: string): Promise<{token:string, user:User} | null> {
-        const user = await this._userRepository.authenticateUser(email)
-        if(user && (await this._authService.comparePassword(password,user.password))){
-           const token= this._authService.generateToken(user._id)
-           return {token, user}
+   async login(email: string, password: string): Promise<{ token: string, user: User } | null> {
+    console.log("Attempting to authenticate user with email:", email);
+    const user = await this._userRepository.authenticateUser(email);
+    if (user) {
+        console.log("User found:", user);
+        const passwordMatch = await this._authService.comparePassword(password, user.password);
+        if (passwordMatch) {
+            const token = this._authService.generateToken(user._id);
+            console.log("Password match, generating token");
+            return { token, user };
+        } else {
+            console.log("Password mismatch for user:", user);
         }
-        return null
+    } else {
+        console.log("User not found for email:", email);
     }
+    return null;
+}
+
 
     async generateOtp(phoneNumber: string): Promise<any> {
         console.log("generate otp use case",phoneNumber)

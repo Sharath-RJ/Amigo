@@ -6,5 +6,7 @@ import { Component, Input } from '@angular/core';
   styleUrl: './user-card.component.css',
 })
 export class UserCardComponent {
-  @Input() user!: { profilePicture: string; username: string };
+  @Input() user!: {
+_id: any|string; profilePicture: string; username: string 
+};
 }

@@ -23,7 +23,9 @@ const routes: Routes = [
   { path: 'viewPost/:id', component: PostsDetailsComponent },
   { path: 'chat', component: ChatComponent },
   { path: 'otpVerify',component:OtpComponent},
-  {path:'network',component:UserListComponent}
+  {path:'network',component:UserListComponent},
+  {path: 'chat/:receiverId', component: ChatComponent }
+
 ];
 
 @NgModule({

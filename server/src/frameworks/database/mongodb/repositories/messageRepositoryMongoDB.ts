@@ -12,4 +12,14 @@ export class messageRepositoryMongoDB implements messageRepository {
         })
         return message.save()
     }
+     async getMessagesBetweenUsers(user1: string, user2: string): Promise<IMessage[]> {
+    const messages = await MessageModel.find({
+        $or: [
+            { sender: user1, receiver: user2 },
+            { sender: user2, receiver: user1 },
+        ],
+    }).sort({ timestamp: 1 }).exec();
+
+    return messages as IMessage[];
+}
 }
