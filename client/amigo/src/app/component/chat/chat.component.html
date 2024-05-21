@@ -78,13 +78,10 @@
                'bg-blue-600 text-white rounded-lg rounded-tr-none ml-auto': message.sender === senderId,
                'bg-gray-700 text-white rounded-lg rounded-tl-none self-start': message.sender !== senderId
              }">
-                <p>{{ message.content }}</p>
+                <p>{{ message.content }}</p> 
             </div>
         </ng-container>
     </div>
-
-
-
             <!-- Message Input -->
             <div class="flex items-center p-4 border-t border-gray-700 mt-4">
                 <form action="" (submit)="sendMessage()">
