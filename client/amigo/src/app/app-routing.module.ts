@@ -10,6 +10,7 @@ import { PostsDetailsComponent } from './component/admin/posts-details/posts-det
 import { ChatComponent } from './component/chat/chat.component';
 import { OtpComponent } from './component/auth/otp/otp.component';
 import { UserListComponent } from './component/user-list/user-list.component';
+import { VideocallComponent } from './component/videocall/videocall.component';
 
 
 const routes: Routes = [
@@ -22,10 +23,10 @@ const routes: Routes = [
   { path: 'admin', component: AdminloginComponent },
   { path: 'viewPost/:id', component: PostsDetailsComponent },
   { path: 'chat', component: ChatComponent },
-  { path: 'otpVerify',component:OtpComponent},
-  {path:'network',component:UserListComponent},
-  {path: 'chat/:receiverId', component: ChatComponent }
-
+  { path: 'otpVerify', component: OtpComponent },
+  { path: 'network', component: UserListComponent },
+  { path: 'chat/:receiverId', component: ChatComponent },
+  { path: 'videocall/:roomId', component: VideocallComponent },
 ];
 
 @NgModule({

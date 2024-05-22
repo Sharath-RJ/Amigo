@@ -34,6 +34,7 @@ import { OtpComponent } from './component/auth/otp/otp.component';
 import { OtpInputDirective } from './directive/otp-input.directive';
 import { UserCardComponent } from './component/user-card/user-card.component';
 import { UserListComponent } from './component/user-list/user-list.component';
+import { VideocallComponent } from './component/videocall/videocall.component';
 
 
 
@@ -67,6 +68,7 @@ import { UserListComponent } from './component/user-list/user-list.component';
     OtpInputDirective,
     UserCardComponent,
     UserListComponent,
+    VideocallComponent,
 
  
   ],
