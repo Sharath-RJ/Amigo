@@ -7,15 +7,12 @@ import { Component, EventEmitter, OnInit, Output, output } from '@angular/core';
   styleUrl: './post.component.css',
 })
 export class PostComponent implements OnInit {
-  showCommentBox: boolean = false;
+  activeCommentPostId: string | null = null;
   showcomments: boolean = false;
   showLikes: boolean = false;
   postLiked: boolean = false;
   @Output() showAllCommentsEvent = new EventEmitter<string>();
   @Output() showAllLikesEvent = new EventEmitter<string>();
-  showAddComment(id: string) {
-    this.showCommentBox = true;
-  }
 
   constructor(private _http: HttpClient) {}
   posts: any = [];
@@ -33,11 +30,15 @@ export class PostComponent implements OnInit {
       }
     );
   }
+
+  showAddComment(postId: string) {
+    this.activeCommentPostId = postId;
+  }
+
   likePost(postId: string) {
-    const loggedInUserId = sessionStorage.getItem('loginedInUser');
+    const loggedInUserId = sessionStorage.getItem('loggedInUser');
     console.log(loggedInUserId);
 
-    // Check if the post has already been liked by the user
     if (!this.postLiked) {
       this._http
         .patch(`http://localhost:5000/api/post/likePost/${postId}`, {
@@ -47,9 +48,6 @@ export class PostComponent implements OnInit {
           (data) => {
             console.log(data);
             this.postLiked = true;
-
-            // Disable further likes for this post
-            // You might want to persist this information to prevent re-likes on page refresh
           },
           (error) => {
             console.log(error);
@@ -73,3 +71,4 @@ export class PostComponent implements OnInit {
     this.showAllLikesEvent.emit(id);
   }
 }
+

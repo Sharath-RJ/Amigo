@@ -1,41 +1,38 @@
+<div *ngFor="let post of posts" class="bg-gray-800 border border-gray-700 rounded-lg shadow-md p-4 mb-4 text-white">
+  <div class="flex items-center mb-4">
+    <img [src]="post.avatar" alt="User Avatar" class="h-10 w-10 rounded-full mr-2">
+    <span class="font-semibold text-gray-200">{{ post.user.username }}</span>
+  </div>
 
+  <img [src]="'http://localhost:5000/uploads/' + post.image" alt="Post Image" class="w-full mb-2 rounded-[6px] p-2 border border-gray-600">
 
-<div *ngFor="let post of posts"  class="bg-gray-800 border border-gray-700 rounded-lg shadow-md p-4 mb-4 text-white">
-    <div class="flex items-center mb-4">
-        <img [src]="post.avatar" alt="User Avatar" class="h-10 w-10 rounded-full mr-2">
-        <span class="font-semibold text-gray-200">{{ post.user.username }}</span>
+  <div class="flex items-center justify-between mb-2">
+    <div class="flex items-center space-x-4">
+      <button (click)="likePost(post._id)" class="focus:outline-none">
+        <i class="fas fa-heart text-xl" [class.text-red-600]="postLiked" [class.text-gray-400]="!postLiked"></i>
+      </button>
+      <button (click)="showAddComment(post._id)" class="focus:outline-none">
+        <i class="fas fa-comment text-xl text-gray-400"></i>
+      </button>
     </div>
 
-    <img [src]="'http://localhost:5000/uploads/'+post.image" alt="Post Image" class="w-full mb-2 rounded-[6px] p-2 border border-gray-600">
-
-    <div class="flex items-center justify-between mb-2">
-        <div class="flex items-center space-x-4">
-            <button (click)="likePost(post._id)" class="focus:outline-none">
-                <i class="fas fa-heart text-xl" [class.text-red-600]="postLiked" [class.text-gray-400]="!postLiked"></i>
-            </button>
-            <button (click)="showAddComment(post._id)" class="focus:outline-none">
-                <i class="fas fa-comment text-xl text-gray-400"></i>
-            </button>
-        </div>
-
-        <div>
-            <span (click)="showAllLikes(post._id)" class="text-gray-400 cursor-pointer">{{ post.likes.length }}
-                likes</span>
-            <span (click)="showAllComments(post._id)" class="text-gray-400 cursor-pointer ml-2">{{ post.comments.length
-                }} comments</span>
-        </div>
+    <div>
+      <span (click)="showAllLikes(post._id)" class="text-gray-400 cursor-pointer">{{ post.likes.length }} likes</span>
+      <span (click)="showAllComments(post._id)" class="text-gray-400 cursor-pointer ml-2">{{ post.comments.length }} comments</span>
     </div>
+  </div>
 
-    <div *ngIf="showCommentBox">
-        <app-add-comment [postId]="post._id" (commentsAdded)="handleCommentsAdded($event)"></app-add-comment>
-    </div>
+  <div *ngIf="activeCommentPostId === post._id">
+    <app-add-comment [postId]="post._id" (commentsAdded)="handleCommentsAdded($event)"></app-add-comment>
+  </div>
 
-    <div *ngIf="showcomments">
-        <app-showall-comments [postId]="post._id"></app-showall-comments>
-    </div>
+  <div *ngIf="showcomments">
+    <app-showall-comments [postId]="post._id"></app-showall-comments>
+  </div>
 
-    <div *ngIf="showLikes">
-        <app-showall-likes [postId]="post._id"></app-showall-likes>
-    </div>
+  <div *ngIf="showLikes">
+    <app-showall-likes [postId]="post._id"></app-showall-likes>
+  </div>
 </div>
+
 

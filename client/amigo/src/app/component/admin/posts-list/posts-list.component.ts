@@ -15,6 +15,7 @@ export class PostsListComponent implements OnInit {
     this._http.get(`${environment.apiUrl}/post/getPosts`).subscribe(
       (data) => {
         this.posts = data as any[];
+        console.log(this.posts)
       },
       (error) => {
         console.log(error);

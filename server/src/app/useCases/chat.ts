@@ -20,4 +20,8 @@ export class chatUseCase {
     async getChatHistory(user1: string, user2: string): Promise<IMessage[]> {
         return this._messageRepository.getMessagesBetweenUsers(user1, user2)
     }
+
+    async getChatUsers(currentUser: string): Promise<string[]> {
+        return this._messageRepository.getChatUsers(currentUser)
+    }
 }

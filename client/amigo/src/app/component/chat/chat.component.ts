@@ -1,27 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewChecked, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { SocketService } from '../../services/socketio.service';
 import { environment } from '../../../../environment';
+
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css'],
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
   content: string = '';
   receiverId: string | null = null;
   senderId: string | null = null;
   messages: any = [];
   roomId!: string;
+  chattedUsers: any = [];
+
+  @ViewChild('chatContainer') private chatContainer!: ElementRef;
 
   constructor(
     private _router: Router,
     private route: ActivatedRoute,
-    private _http: HttpClient
+    private _http: HttpClient,
+    private socketService: SocketService
   ) {}
 
   ngOnInit(): void {
-    // Get receiverId from query parameters
     this.route.paramMap.subscribe((params) => {
       this.receiverId = params.get('receiverId');
       if (!this.receiverId) {
@@ -29,7 +34,6 @@ export class ChatComponent implements OnInit {
       }
     });
 
-    // Get senderId from session storage
     const loggedInUser = sessionStorage.getItem('loginedInUser');
     if (loggedInUser) {
       try {
@@ -40,14 +44,9 @@ export class ChatComponent implements OnInit {
     }
     console.log(this.senderId, ' ', this.receiverId, ' ', this.content);
 
-    //getting alll messages between users
     this._http
       .get(
-        environment.apiUrl +
-          '/chat/getAllMessages/' +
-          this.senderId +
-          '/' +
-          this.receiverId
+        `${environment.apiUrl}/chat/getAllMessages/${this.senderId}/${this.receiverId}`
       )
       .subscribe(
         (data) => {
@@ -57,6 +56,41 @@ export class ChatComponent implements OnInit {
           console.error(error);
         }
       );
+
+    this._http
+      .get(`${environment.apiUrl}/chat/getChatUsers/${this.senderId}`)
+      .subscribe(
+        (data) => {
+          this.chattedUsers = data;
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
+
+    if (this.senderId && this.receiverId) {
+      this.socketService.joinRoom(this.receiverId);
+      this.socketService.onNewMessage((message: any) => {
+        this.messages.push(message);
+        this.scrollToBottom();
+      });
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.socketService.disconnect();
+  }
+
+  ngAfterViewChecked(): void {
+    this.scrollToBottom();
+  }
+
+  scrollToBottom(): void {
+    try {
+      this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
+    } catch (err) {
+      console.error('Scroll to bottom error', err);
+    }
   }
 
   sendMessage(): void {
@@ -70,39 +104,37 @@ export class ChatComponent implements OnInit {
       return;
     }
 
-    console.log(this.senderId, ' ', this.receiverId, ' ', this.content);
+    const message = {
+      sender: this.senderId,
+      receiver: this.receiverId,
+      content: this.content,
+    };
 
-    this._http
-      .post(environment.apiUrl + '/chat/send', {
-        sender: this.senderId,
-        receiver: this.receiverId,
-        content: this.content,
-      })
-      .subscribe(
-        (data) => {
-          console.log('Message sent successfully', data);
-        },
-        (error) => {
-          console.error('Error sending message', error);
-        }
-      );
+    this.socketService.sendMessage(message);
+
+    this._http.post(`${environment.apiUrl}/chat/send`, message).subscribe(
+      (data) => {
+        console.log('Message sent successfully', data);
+      },
+      (error) => {
+        console.error('Error sending message', error);
+      }
+    );
   }
-  randomID(len: number) {
+
+  randomID(len: number): string {
     let result = '';
-    if (result) return result;
-    var chars =
-        '12345qwertyuiopasdfgh67890jklmnbvcxzMNBVCZXASDQWERTYHGFUIOLKJP',
-      maxPos = chars.length, i;
-    len = len || 5;
-    for (i = 0; i < len; i++) {
+    const chars =
+      '12345qwertyuiopasdfgh67890jklmnbvcxzMNBVCZXASDQWERTYHGFUIOLKJP';
+    const maxPos = chars.length;
+    for (let i = 0; i < len; i++) {
       result += chars.charAt(Math.floor(Math.random() * maxPos));
     }
     return result;
   }
 
-
-  connectToVideoCall() {
-    this.roomId=this.randomID(8)
+  connectToVideoCall(): void {
+    this.roomId = this.randomID(8);
     this._router.navigate(['/videocall', this.roomId]);
   }
 }
