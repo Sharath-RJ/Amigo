@@ -11,6 +11,7 @@ import { ChatComponent } from './component/chat/chat.component';
 import { OtpComponent } from './component/auth/otp/otp.component';
 import { UserListComponent } from './component/user-list/user-list.component';
 import { VideocallComponent } from './component/videocall/videocall.component';
+import { NotificationComponent } from './component/notification/notification.component';
 
 
 const routes: Routes = [
@@ -27,6 +28,7 @@ const routes: Routes = [
   { path: 'network', component: UserListComponent },
   { path: 'chat/:receiverId', component: ChatComponent },
   { path: 'videocall/:roomId', component: VideocallComponent },
+  { path: 'notifications',component:NotificationComponent },
 ];
 
 @NgModule({

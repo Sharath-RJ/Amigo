@@ -2,7 +2,7 @@ import { Schema, model, Document, Types } from "mongoose"
 
 interface PostDoc extends Document {
     user: Types.ObjectId
-    image: string
+    image: string[]
     caption?: string
     liked: boolean
     likes: {
@@ -24,7 +24,7 @@ const postSchema = new Schema<PostDoc>({
         required: true,
     },
     image: {
-        type: String,
+        type: [String],
         required: true,
     },
     caption: {

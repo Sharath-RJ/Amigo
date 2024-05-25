@@ -4,7 +4,7 @@ import { User } from "../../../../entities/user";
 
 export class PostRepositoryMongoDB implements PostRepository {
     async createPost(
-        image: String,
+        image: String[],
         caption: string,
         user: User
     ): Promise<boolean> {
@@ -56,9 +56,13 @@ export class PostRepositoryMongoDB implements PostRepository {
     async deletePost(id: string): Promise<any> {
         try {
             const post = await PostModel.findByIdAndDelete(id)
+            if (!post) {
+                throw new Error("Post not found")
+            }
             return post
         } catch (error) {
-            console.log(error)
+            console.error("Error deleting post:", error)
+            throw new Error("Error deleting post")
         }
     }
 
@@ -75,13 +79,12 @@ export class PostRepositoryMongoDB implements PostRepository {
     }
     async likePost(postId: string, userId: string): Promise<any> {
         try {
-          const updatedPost = await PostModel.findByIdAndUpdate(
-              postId,
-              { $push: { likes: { userid: userId } } },
-              { new: true }
-          )
-          return updatedPost
-
+            const updatedPost = await PostModel.findByIdAndUpdate(
+                postId,
+                { $push: { likes: { userid: userId } } },
+                { new: true }
+            )
+            return updatedPost
         } catch (error) {
             console.error("Error liking post:", error)
             throw error
@@ -105,17 +108,23 @@ export class PostRepositoryMongoDB implements PostRepository {
     }
 
     async showComments(id: string): Promise<any> {
-      try {
-        const comments = await PostModel.findOne({ _id: id }, { comments: 1 }).populate("comments.userid", "username")
-        return comments
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    async showLikes(id:string): Promise<any> {
         try {
-        const likes = await PostModel.findOne({ _id: id }, { likes: 1 }).populate("likes.userid", "username")
-        return likes
+            const comments = await PostModel.findOne(
+                { _id: id },
+                { comments: 1 }
+            ).populate("comments.userid", "username")
+            return comments
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    async showLikes(id: string): Promise<any> {
+        try {
+            const likes = await PostModel.findOne(
+                { _id: id },
+                { likes: 1 }
+            ).populate("likes.userid", "username")
+            return likes
         } catch (error) {
             console.log(error)
         }

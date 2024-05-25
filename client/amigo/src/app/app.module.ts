@@ -35,6 +35,9 @@ import { OtpInputDirective } from './directive/otp-input.directive';
 import { UserCardComponent } from './component/user-card/user-card.component';
 import { UserListComponent } from './component/user-list/user-list.component';
 import { VideocallComponent } from './component/videocall/videocall.component';
+import { NotificationComponent } from './component/notification/notification.component';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
+
 
 
 
@@ -69,8 +72,7 @@ import { VideocallComponent } from './component/videocall/videocall.component';
     UserCardComponent,
     UserListComponent,
     VideocallComponent,
-
- 
+    NotificationComponent,
   ],
   imports: [
     BrowserModule,
@@ -79,6 +81,7 @@ import { VideocallComponent } from './component/videocall/videocall.component';
     HttpClientModule,
     MatSnackBarModule,
     MatTableModule,
+    
   ],
   providers: [provideAnimationsAsync()],
   bootstrap: [AppComponent],

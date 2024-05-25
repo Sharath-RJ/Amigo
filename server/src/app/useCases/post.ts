@@ -3,8 +3,8 @@ import { User } from "../../entities/user"
 
 export class PostUseCase {
     constructor(private postRepository: PostRepository) {}
-    async addPost(image:String, caption: string,user:User): Promise<boolean> {
-        return await this.postRepository.createPost(image, caption, user)
+    async addPost(images: string[], caption: string, user: User): Promise<boolean> {
+        return await this.postRepository.createPost(images, caption, user);
     }
     async getPosts(){
         console.log("get post use case")

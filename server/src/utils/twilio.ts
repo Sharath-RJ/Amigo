@@ -22,6 +22,7 @@ export class TwilioService {
                 to: "+91"+phoneNumber,
             })
             console.log(`OTP sent to ${phoneNumber}`)
+            return otp;
         } catch (error) {
             throw new Error(`Failed to send OTP: ${error}`)
         }

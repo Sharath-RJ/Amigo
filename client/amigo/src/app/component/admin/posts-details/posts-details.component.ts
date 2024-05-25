@@ -35,7 +35,7 @@ export class PostsDetailsComponent implements OnInit {
   }
   deletePost(id:string){
     this._http
-      .patch(`${environment.apiUrl}/post/delete/` + id, {})
+      .delete(`${environment.apiUrl}/post/delete/` + id, {})
       .subscribe(
         (data) => {
           this.post = data;

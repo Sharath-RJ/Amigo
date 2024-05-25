@@ -10,7 +10,7 @@ const postRepository = new PostRepositoryMongoDB()
 const postUseCase = new PostUseCase(postRepository)
 const postController = new postConteoller(postUseCase)
 
-router.post("/addPost",upload.single("image"), postController.addPost.bind(postController))
+router.post("/addPost", upload.array("images"), postController.addPost.bind(postController));
 router.get("/getPosts", postController.getPosts.bind(postController))
 router.get("/viewPost/:id", postController.getPostDetails.bind(postController))
 router.patch("/publish/:id", postController.publishPost.bind(postController))

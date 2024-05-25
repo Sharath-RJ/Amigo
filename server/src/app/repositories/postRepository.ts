@@ -3,7 +3,7 @@ import PostModel from "../../frameworks/database/mongodb/models/postModel";
 
 
 export interface PostRepository {
-    createPost(image: String, caption: string, user: User): Promise<boolean>
+    createPost(images: string[], caption: string, user: User): Promise<boolean>
 
     getPosts(): Promise<any>
 

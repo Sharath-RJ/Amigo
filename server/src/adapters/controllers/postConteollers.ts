@@ -7,10 +7,13 @@ export class postConteoller {
     async addPost(req: Request, res: Response): Promise<void> {
         try {
             const { caption, user } = req.body
-            const imagePath = req.file ? req.file.filename : ""
+           const files = req.files as Express.Multer.File[]
+
+           
+           const imagePaths = files.map((file) => file.filename)
 
             const success = await this.postUseCase.addPost(
-                imagePath,
+                imagePaths,
                 caption,
                 user
             )

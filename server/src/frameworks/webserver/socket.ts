@@ -1,31 +1,49 @@
-// socketConfig.ts
 import { Server as HttpServer } from "http"
-import { Server as SocketIOServer } from "socket.io"
+import { Server as SocketIOServer, Socket } from "socket.io"
 
 export default function configureSocket(server: HttpServer): SocketIOServer {
     const io = new SocketIOServer(server, {
         cors: {
-            origin: "*", // Adjust this according to your client origin
+            origin: "*", 
             methods: ["GET", "POST"],
         },
     })
 
+    // Map to store  IDs and their corresponding sockets
+    const userSockets: Map<string, Socket> = new Map()
+
     io.on("connection", (socket) => {
         console.log("A user connected:", socket.id)
 
-        socket.on("joinRoom", (room) => {
-            socket.join(room)
-            console.log(`User ${socket.id} joined room ${room}`)
+        socket.on("joinRoom", (userId) => {
+            // Store the user's socket in the map
+            userSockets.set(userId, socket)
+            console.log(`User ${socket.id} with ID ${userId} joined the room`)
         })
 
         socket.on("sendMessage", (message) => {
-            const { sender, receiver, content } = message
-            // Emit message to the receiver's room
-            io.to(receiver).emit("newMessage", { sender, content })
+            const { receiver } = message
+            // Emit message to the receiver's socket
+            const receiverSocket = userSockets.get(receiver)
+            if (receiverSocket) {
+                receiverSocket.emit("newMessage", message)
+              console.log(`Message sent to user with ID: ${receiverSocket.id}.`)
+
+            } else {
+                console.log(`Receiver with ID ${receiver} not found.`)
+            }
         })
 
         socket.on("disconnect", () => {
-            console.log("User disconnected:", socket.id)
+            // Remove the socket from the map when the user disconnects
+            userSockets.forEach((value, key) => {
+                if (value === socket) {
+                    userSockets.delete(key)
+                    console.log(
+                        `User ${socket.id} with ID ${key} disconnected.`
+                    )
+                }
+            })
         })
     })
 

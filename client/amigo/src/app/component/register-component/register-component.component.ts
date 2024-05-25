@@ -45,12 +45,65 @@ export class RegisterComponentComponent implements OnInit {
     return JSON.parse(atob(token.split('.')[1]));
   }
   register() {
+    // Validate username
+    if (!this.username || this.username.length < 3) {
+      this._snackBar.open('Username must be at least 3 characters long.', '', {
+        duration: 3000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
+      return;
+    }
+
+    // Validate email
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!this.email || !emailPattern.test(this.email)) {
+      this._snackBar.open('Please enter a valid email address.', '', {
+        duration: 3000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
+      return;
+    }
+
+    // Validate password
+    if (!this.password || this.password.length < 6) {
+      this._snackBar.open('Password must be at least 6 characters long.', '', {
+        duration: 3000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
+      return;
+    }
+
+    // Validate confirm password
+    if (this.password !== this.confirmPassword) {
+      this._snackBar.open('Passwords do not match.', '', {
+        duration: 3000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
+      return;
+    }
+
+    // Validate phone number
+    const phoneNumberPattern = /^\d{10}$/;
+    if (!this.PhoneNumber || !phoneNumberPattern.test(this.PhoneNumber)) {
+      this._snackBar.open('Please enter a valid phone number.', '', {
+        duration: 3000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      });
+      return;
+    }
+
+    // If all validations pass, proceed with registration
     this._http
       .post(`${environment.apiUrl}/user-auth/register`, {
         username: this.username,
         email: this.email,
         password: this.password,
-        PhoneNumber:this.PhoneNumber
+        PhoneNumber: this.PhoneNumber,
       })
       .subscribe(
         (data) => {
@@ -64,8 +117,10 @@ export class RegisterComponentComponent implements OnInit {
           this.username = '';
           this.email = '';
           this.password = '';
+          this.confirmPassword = '';
+          this.PhoneNumber = '';
 
-          // this._router.navigate(['/otpVerify']);
+        this._router.navigate(['/otpVerify']);
         },
         (error) => {
           //console.error(error);

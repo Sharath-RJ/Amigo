@@ -11,8 +11,7 @@ export class AuthController {
             const { username, email, password, PhoneNumber } = req.body
             console.log("meflemlfml", PhoneNumber)
             const sendOtp = await this.authUseCase.generateOtp(PhoneNumber)
-            console.log(sendOtp)
-
+            console.log("ooootttpp",sendOtp)
             const success = await this.authUseCase.register(
                 username,
                 email,
@@ -21,6 +20,7 @@ export class AuthController {
             if (success) {
                 res.status(201).json({
                     message: "User registered successfully",
+                    otp: sendOtp,
                 })
             } else {
                 res.status(400).json({ error: "Registration failed" })

@@ -75,6 +75,8 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.scrollToBottom();
       });
     }
+
+    
   }
 
   ngOnDestroy(): void {
@@ -87,7 +89,8 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   scrollToBottom(): void {
     try {
-      this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
+      this.chatContainer.nativeElement.scrollTop =
+        this.chatContainer.nativeElement.scrollHeight;
     } catch (err) {
       console.error('Scroll to bottom error', err);
     }
@@ -135,6 +138,14 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   connectToVideoCall(): void {
     this.roomId = this.randomID(8);
+
+    if (!this.senderId || !this.receiverId) {
+      console.error('Sender ID or Receiver ID is undefined');
+      return;
+    }
+
+   
+
     this._router.navigate(['/videocall', this.roomId]);
   }
 }
