@@ -6,9 +6,14 @@ import { AuthService } from "../../../services/authService"
 
 export class UserRepositoryMongo implements UserRepository {
 
-    async createUser( username: string, email: string, password: string ): Promise<boolean> {
+    async createUser( username: string, email: string, password: string, phoneNumber:string ): Promise<boolean> {
         try {  
-                 await UserModel.create({ username, email, password })
+                 await UserModel.create({
+                     username,
+                     email,
+                     password,
+                     phoneNumber,
+                 })
                  return true
             
         } catch (error) {

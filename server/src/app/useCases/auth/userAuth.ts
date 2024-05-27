@@ -6,10 +6,10 @@ import { User } from "../../../entities/user"
 export class AuthUseCase {
     constructor(private _userRepository: UserRepository, private _authService: AuthServiceInterface) {}
 
-    async register(  username: string,  email: string,  password: string ): Promise<boolean> {
+    async register(  username: string,  email: string,  password: string, phoneNumber:string ): Promise<boolean> {
         
        const bcryptedPassword= await this._authService.encryptPassword(password)
-       return await this._userRepository.createUser(username, email, bcryptedPassword)
+       return await this._userRepository.createUser(username, email, bcryptedPassword, phoneNumber)
     }
 
    async login(email: string, password: string): Promise<{ token: string, user: User } | null> {

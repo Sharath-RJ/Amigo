@@ -15,7 +15,8 @@ export class AuthController {
             const success = await this.authUseCase.register(
                 username,
                 email,
-                password
+                password,
+                PhoneNumber
             )
             if (success) {
                 res.status(201).json({
@@ -59,8 +60,26 @@ export class AuthController {
     }
 
     async generateOtp(req: Request, res: Response): Promise<void> {
-        const { phonenumber } = req.body
-        this.authUseCase.generateOtp(phonenumber)
-        res.status(200).json({ message: "OTP generated successfully" })
+        try {
+            let temporaryStore: {
+                [key: string]: {
+                    otp: string
+                    username: string
+                    email: string
+                    password: string
+                    phoneNumber: string
+                }
+            } = {}
+             const { username, email, password, phoneNumber } = req.body
+             console.log("inside conteoller", req.body)
+            const otp= this.authUseCase.generateOtp(phoneNumber)
+             temporaryStore[phoneNumber] = { otp, ...req.body }
+             console.log(temporaryStore)
+             res.status(200).json({ message: "OTP generated successfully" })
+             
+        } catch (error) {
+            console.log(error) 
+        }
+       
     }
 }

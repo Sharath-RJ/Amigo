@@ -7,27 +7,24 @@
                     <th class="px-4 py-2">Profile Picture</th>
                     <th class="px-4 py-2">Username</th>
                     <th class="px-4 py-2">Email</th>
-                    <th class="px-4 py-2">Status</th>
-                    <th class="px-4 py-2">Followers Count</th>
-                    <th class="px-4 py-2">Posts Count</th>
-                    <th class="px-4 py-2">Likes Count</th>
-                    <th class="px-4 py-2">Comment Count</th>
+                  
                 </tr>
             </thead>
             <tbody>
-                <tr class="bg-white border-b">
-                    <td class="px-4 py-2">User 1</td>
-                    <td class="px-4 py-2">uservfdb</td>
-                    <!-- Add more cells for other credentials as needed -->
+                <tr *ngFor="let user of userList" class="bg-white border-b">
+                    <td class="px-4 py-2">
+                        <img [src]="user.profilePicture" alt="{{ user.username }}'s profile picture"
+                            class="w-10 h-10 rounded-full">
+                    </td>
+                    <td class="px-4 py-2">{{ user.username }}</td>
+                    <td class="px-4 py-2">{{ user.email }}</td>
+                    <!-- <td class="px-4 py-2">{{ user.status }}</td>
+                    <td class="px-4 py-2">{{ user.followersCount }}</td>
+                    <td class="px-4 py-2">{{ user.postsCount }}</td>
+                    <td class="px-4 py-2">{{ user.likesCount }}</td>
+                    <td class="px-4 py-2">{{ user.commentCount }}</td> -->
                 </tr>
-                <tr class="bg-white border-b">
-                    <td class="px-4 py-2">User 2</td>
-                    <td class="px-4 py-2">uflgmf</td>
-                    <!-- Add more cells for other credentials as needed -->
-                </tr>
-                <!-- Add more rows with data as needed -->
             </tbody>
         </table>
     </div>
 </div>
-
