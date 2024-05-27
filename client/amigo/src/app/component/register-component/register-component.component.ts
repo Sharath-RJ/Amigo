@@ -44,15 +44,10 @@ export class RegisterComponentComponent implements OnInit {
   private decodetoken(token: String) {
     return JSON.parse(atob(token.split('.')[1]));
   }
-  user: any = {
-    username: this.username,
-    email: this.email,
-    password: this.password,
-    phoneNumber: this.phoneNumber,
-  };
+ 
   
   register() {
-    console.log(this.user)
+    
    
     this._http
       .post(`${environment.apiUrl}/user-auth/send-otp`, {
@@ -63,9 +58,9 @@ export class RegisterComponentComponent implements OnInit {
       })
       .subscribe(
         (data) => {
-          // this._router.navigate(['/verify-otp'], {
-          //   state: { phoneNumber: this.user.phoneNumber },
-          // });
+         this._router.navigate(['/otpVerify'], {
+           state: { phoneNumber: this.phoneNumber },
+         });
           console.log(data);
         },
 
