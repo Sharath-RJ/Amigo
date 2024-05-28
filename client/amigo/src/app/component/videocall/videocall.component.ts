@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
+import { ZIM } from 'zego-zim-web';
 
 @Component({
   selector: 'app-videocall',
@@ -15,6 +16,7 @@ import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
 })
 export class VideocallComponent implements OnInit, AfterViewInit {
   roomId!: string;
+  zp!: any;
 
   constructor(private _route: ActivatedRoute) {}
 
@@ -28,34 +30,38 @@ export class VideocallComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    const appID = 796494173; // Replace with your actual appID
-    const serverSecret = '12bf1885a7a04712777878d75dc4fe86'; // Replace with your actual serverSecret
-    const userID = 'UGD'; // Replace with a unique user ID
-    const userName = `User_${Date.now()}`; // Replace with a unique user name or another identifier
-
-    const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
+    const userID = '796494173'; // Make sure this is a string
+    const userName = 'userName' + userID;
+    const appID = 0;
+    const serverSecret = '12bf1885a7a04712777878d75dc4fe86';
+    const TOKEN = ZegoUIKitPrebuilt.generateKitTokenForTest(
       appID,
       serverSecret,
-      this.roomId,
       userID,
       userName
     );
 
-    // Create instance object from Kit Token.
-    const zp = ZegoUIKitPrebuilt.create(kitToken);
+    this.zp = ZegoUIKitPrebuilt.create(TOKEN);
+    this.zp.addPlugins({ ZIM });
+  }
 
-    // Start a one-on-one call.
-    zp.joinRoom({
-      container: this.root.nativeElement,
-      sharedLinks: [
-        {
-          name: 'Personal link',
-          url: `${window.location.protocol}//${window.location.host}${window.location.pathname}?roomID=${this.roomId}`,
-        },
-      ],
-      scenario: {
-        mode: ZegoUIKitPrebuilt.OneONoneCall, // Set to one-on-one call
-      },
-    });
+  invite() {
+    const targetUser = {
+      userID: '',
+      userName: '',
+    };
+
+    this.zp
+      .sendCallInvitation({
+        callees: [targetUser],
+        callType: ZegoUIKitPrebuilt.InvitationTypeVideoCall,
+        timeout: 60, // Timeout duration (second). 60s by default, range from [1-600s].
+      })
+      .then((res: any) => {
+        console.warn(res);
+      })
+      .catch((err: any) => {
+        console.warn(err);
+      });
   }
 }

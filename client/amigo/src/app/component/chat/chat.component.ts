@@ -1,21 +1,34 @@
-import { Component, OnInit, OnDestroy, AfterViewChecked, ElementRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  AfterViewChecked,
+  ElementRef,
+  ViewChild,
+  AfterViewInit,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { SocketService } from '../../services/socketio.service';
 import { environment } from '../../../../environment';
+import { ZIM } from 'zego-zim-web';
+import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css'],
 })
-export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
+export class ChatComponent
+  implements OnInit, OnDestroy, AfterViewChecked, AfterViewInit
+{
   content: string = '';
   receiverId: string | null = null;
   senderId: string | null = null;
   messages: any = [];
   roomId!: string;
   chattedUsers: any = [];
+  zp: any;
 
   @ViewChild('chatContainer') private chatContainer!: ElementRef;
 
@@ -28,7 +41,9 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
-      this.receiverId = params.get('receiverId');
+      const receiverIdParam = params.get('receiverId');
+      this.receiverId = receiverIdParam !== null ? receiverIdParam : null;
+
       if (!this.receiverId) {
         console.warn('Receiver ID not found in route parameters');
       }
@@ -74,9 +89,24 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.messages.push(message);
         this.scrollToBottom();
       });
-    }
+      console.log("sender Id", this.senderId);
+      console.log("receiver id", this.receiverId)
+      const userID = this.senderId || '';
+      console.log("userID",userID)
+      const userName = 'Sender' + userID;
+      const appID = 796494173;
+      const serverSecret = '12bf1885a7a04712777878d75dc4fe86';
+      const TOKEN = ZegoUIKitPrebuilt.generateKitTokenForTest(
+        appID,
+        serverSecret,
+        this.randomID(8),
+        userID,
+        userName
+      );
 
-    
+      this.zp = ZegoUIKitPrebuilt.create(TOKEN);
+      this.zp.addPlugins({ ZIM });
+    }
   }
 
   ngOnDestroy(): void {
@@ -136,16 +166,32 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     return result;
   }
 
-  connectToVideoCall(): void {
-    this.roomId = this.randomID(8);
+  ngAfterViewInit(): void {
+    // You can remove this method if not needed
+  }
 
-    if (!this.senderId || !this.receiverId) {
-      console.error('Sender ID or Receiver ID is undefined');
+  connectToVideoCall(): void {
+    if (!this.zp) {
+      console.error('ZegoUIKitPrebuilt is not initialized');
       return;
     }
+    console.log("vc-> receriver id", this.receiverId)
+    const targetUser = {
+      userID: this.receiverId,
+      userName: 'Receiver',
+    };
 
-   
-
-    this._router.navigate(['/videocall', this.roomId]);
+    this.zp
+      .sendCallInvitation({
+        callees: [targetUser],
+        callType: ZegoUIKitPrebuilt.InvitationTypeVideoCall,
+        timeout: 60, // Timeout duration (second). 60s by default, range from [1-600s].
+      })
+      .then((res: any) => {
+        console.warn(res);
+      })
+      .catch((err: any) => {
+        console.warn(err);
+      });
   }
 }
