@@ -5,14 +5,18 @@ export interface UserDocument extends Document {
     username: string
     email: string
     password: string
-    phoneNumber:String
+    phoneNumber: String
+    followers: mongoose.Types.ObjectId[]
+    following: mongoose.Types.ObjectId[]
 }
 
 const UserSchema = new Schema({
     username: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
-    phoneNumber:{type:String, required:true},
+    phoneNumber: { type: String, required: true },
+    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 })
 
 export const UserModel = mongoose.model<UserDocument>("User", UserSchema)

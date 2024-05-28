@@ -15,5 +15,8 @@ export default function userRoute(): Router {
         userControllerInstance.getAllUsers.bind(userControllerInstance)
     )
 
+           
+    router.put("/follow/:followId/:userId",userControllerInstance.followUser.bind(userControllerInstance))
+
     return router
 }

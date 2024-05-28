@@ -19,5 +19,19 @@ export class userConteoller {
            console.log(error)
        }
     }
+
+    async followUser(req:Request,res:Response):Promise<void>{
+        try {
+            const {followId, userId} = req.params
+            const user = await this._userUseCase.followUser(followId, userId)
+            console.log(user)
+            if(user){   
+                res.status(200).json(user)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+        
  
 }
