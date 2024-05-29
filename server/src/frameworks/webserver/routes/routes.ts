@@ -3,6 +3,7 @@ import postRoute from "./posts"
 import { Application } from "express"
 import ChatRouter from "./chat"
 import userRoute from "./user"
+import adminRouter from "./admin"
 
 
 const routes = (app: Application) => {
@@ -11,6 +12,7 @@ const routes = (app: Application) => {
     app.use("/api/post",postRoute())
     app.use("/api/chat",ChatRouter())
     app.use("/api/user", userRoute())
+    app.use("/api/admin", adminRouter())
     
 }
 

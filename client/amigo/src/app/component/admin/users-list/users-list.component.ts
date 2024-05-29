@@ -16,7 +16,7 @@ export class UsersListComponent implements OnInit {
   ngOnInit(): void {
     console.log('hello');
     this._http
-      .get<User[]>('http://localhost:5000/api/user/getAllUsers')
+      .get<User[]>('http://localhost:5000/api/admin/getAllUsers')
       .subscribe(
         (data: User[]) => {
           console.log(data);

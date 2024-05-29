@@ -10,14 +10,16 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let user of userList" class="bg-gray-600 border-b border-gray-700">
-                    <td class="px-4 py-2">
-                        <img [src]="user.profilePicture" alt="{{ user.username }}'s profile picture"
-                            class="w-10 h-10 rounded-full">
-                    </td>
-                    <td class="px-4 py-2">{{ user.username }}</td>
-                    <td class="px-4 py-2">{{ user.email }}</td>
-                </tr>
+                <ng-container *ngFor="let user of userList">
+                    <tr class="bg-gray-600 border-b-4 border-gray-700 hover:bg-gray-700 transition-colors">
+                        <td class="px-4 py-2">
+                            <img [src]="user.profilePicture" alt="{{ user.username }}'s profile picture"
+                                class="w-10 h-10 rounded-full">
+                        </td>
+                        <td class="px-4 py-2">{{ user.username }}</td>
+                        <td class="px-4 py-2">{{ user.email }}</td>
+                    </tr>
+                </ng-container>
             </tbody>
         </table>
     </div>
