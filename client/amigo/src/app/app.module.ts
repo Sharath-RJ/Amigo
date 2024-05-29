@@ -36,11 +36,12 @@ import { UserCardComponent } from './component/user-card/user-card.component';
 import { UserListComponent } from './component/user-list/user-list.component';
 import { VideocallComponent } from './component/videocall/videocall.component';
 import { NotificationComponent } from './component/notification/notification.component';
-import { CarouselModule } from 'ngx-bootstrap/carousel';
+
 import { IconSidebarMenuComponent } from './component/icon-sidebar-menu/icon-sidebar-menu.component';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 import { SearchComponent } from './component/search/search.component';
-
+import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { CarouselModule } from 'ngx-owl-carousel-o';
 
 
 
@@ -86,8 +87,9 @@ import { SearchComponent } from './component/search/search.component';
     HttpClientModule,
     MatSnackBarModule,
     MatTableModule,
-    FilterPipeModule
-    
+    FilterPipeModule,
+    SlickCarouselModule,
+    CarouselModule,
   ],
   providers: [provideAnimationsAsync()],
   bootstrap: [AppComponent],

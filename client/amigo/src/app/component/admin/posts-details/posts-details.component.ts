@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '../../../../../environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { OwlOptions } from 'ngx-owl-carousel-o';
 
 @Component({
   selector: 'app-posts-details',
@@ -15,6 +16,35 @@ export class PostsDetailsComponent implements OnInit {
     private _route: ActivatedRoute,
     private _snackBar: MatSnackBar
   ) {}
+
+  customOptions: OwlOptions = {
+    loop: true,
+    mouseDrag: true,
+    touchDrag: true,
+    pullDrag: true,
+    dots: true,
+    navSpeed: 700,
+    navText: [
+      '<i class="fa fa-arrow-left"></i>',
+      '<i class="fa fa-arrow-right"></i>',
+    ],
+    responsive: {
+      0: {
+        items: 1,
+      },
+      400: {
+        items: 1,
+      },
+      740: {
+        items: 1,
+      },
+      940: {
+        items: 1,
+      },
+    },
+    nav: true,
+  };
+
   post: any;
   ngOnInit(): void {
     this._route.params.subscribe((params) => {
@@ -32,11 +62,11 @@ export class PostsDetailsComponent implements OnInit {
   publishPost(id: string) {
     this._http.patch(`${environment.apiUrl}/post/publish/` + id, {}).subscribe(
       (data) => {
-       this._snackBar.open('Deleted Successfully', '', {
-        duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-      });
+        this._snackBar.open('Deleted Successfully', '', {
+          duration: 3000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+        });
       },
       (error) => {
         console.log(error);

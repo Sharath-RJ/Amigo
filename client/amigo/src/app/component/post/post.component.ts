@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, OnInit, Output, output } from '@angular/core';
+import { OwlOptions } from 'ngx-owl-carousel-o';
 
 @Component({
   selector: 'app-post',
@@ -17,6 +18,35 @@ export class PostComponent implements OnInit {
   constructor(private _http: HttpClient) {}
   posts: any = [];
   loggedInUser: string | null = sessionStorage.getItem('loggedInUser');
+
+  customOptions: OwlOptions = {
+    loop: true,
+    mouseDrag: true,
+    touchDrag: true,
+    pullDrag: true,
+    dots: false,
+    navSpeed: 700,
+    navText: [
+      '',
+      '',
+    ],
+    responsive: {
+      0: {
+        items: 1,
+      },
+      400: {
+        items: 1,
+      },
+      740: {
+        items: 1,
+      },
+      940: {
+        items: 1,
+      },
+    },
+    nav: true,
+  };
+
 
   ngOnInit(): void {
     console.log('Hello post');
