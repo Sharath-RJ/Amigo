@@ -1,28 +1,22 @@
-<div class="p-6">
+<div class="p-6 bg-gray-800 text-white">
     <h2 class="text-lg font-semibold mb-4">User Management</h2>
     <div class="overflow-x-auto">
         <table class="table-auto w-full border-collapse">
             <thead>
-                <tr class="bg-gray-200">
+                <tr class="bg-gray-700">
                     <th class="px-4 py-2">Profile Picture</th>
                     <th class="px-4 py-2">Username</th>
                     <th class="px-4 py-2">Email</th>
-                  
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let user of userList" class="bg-white border-b">
+                <tr *ngFor="let user of userList" class="bg-gray-600 border-b border-gray-700">
                     <td class="px-4 py-2">
                         <img [src]="user.profilePicture" alt="{{ user.username }}'s profile picture"
                             class="w-10 h-10 rounded-full">
                     </td>
                     <td class="px-4 py-2">{{ user.username }}</td>
                     <td class="px-4 py-2">{{ user.email }}</td>
-                    <!-- <td class="px-4 py-2">{{ user.status }}</td>
-                    <td class="px-4 py-2">{{ user.followersCount }}</td>
-                    <td class="px-4 py-2">{{ user.postsCount }}</td>
-                    <td class="px-4 py-2">{{ user.likesCount }}</td>
-                    <td class="px-4 py-2">{{ user.commentCount }}</td> -->
                 </tr>
             </tbody>
         </table>

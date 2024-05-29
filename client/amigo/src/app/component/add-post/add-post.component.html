@@ -1,23 +1,24 @@
-<div class="flex justify-center items-center h-screen bg-gray-100">
-    <div class="max-w-md w-full bg-white shadow-md rounded-md p-8">
+<div class="flex justify-center items-center h-screen bg-gray-900">
+    <div class="max-w-md w-full bg-gray-800 shadow-md rounded-md p-8">
         <form (ngSubmit)="onSubmit()" enctype="multipart/form-data">
-            <h2 class="text-lg font-semibold mb-4">Add New Post</h2>
+            <h2 class="text-lg font-semibold mb-4 text-white">Add New Post</h2>
 
             <div class="mb-6">
-                <label for="image" class="block text-sm font-medium text-gray-700 mb-2">Upload Images:</label>
-                <input type="file" (change)="onFilesSelected($event)" id="images" name="images" multiple accept="image/*"
-                    class="border border-gray-300 px-4 py-2 w-full rounded-md focus:outline-none focus:border-blue-500">
+                <label for="image" class="block text-sm font-medium text-gray-300 mb-2">Upload Images:</label>
+                <input type="file" (change)="onFilesSelected($event)" id="images" name="images" multiple
+                    accept="image/*"
+                    class="border border-gray-600 px-4 py-2 w-full rounded-md bg-gray-700 text-gray-300 focus:outline-none focus:border-blue-500">
             </div>
 
             <div class="mb-6">
-                <label for="caption" class="block text-sm font-medium text-gray-700 mb-2">Caption:</label>
+                <label for="caption" class="block text-sm font-medium text-gray-300 mb-2">Caption:</label>
                 <textarea id="caption" [(ngModel)]="caption" name="caption" rows="3"
-                    class="border border-gray-300 px-4 py-2 w-full rounded-md focus:outline-none focus:border-blue-500"></textarea>
+                    class="border border-gray-600 px-4 py-2 w-full rounded-md bg-gray-700 text-gray-300 focus:outline-none focus:border-blue-500"></textarea>
             </div>
 
             <!-- Submit Button -->
             <button type="submit"
-                class="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-200">Post</button>
+                class="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300">Post</button>
         </form>
     </div>
 </div>
