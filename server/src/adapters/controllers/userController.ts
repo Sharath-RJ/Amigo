@@ -9,7 +9,7 @@ export class userConteoller {
     constructor(private _userUseCase: userUseCase) {}
     async getAllUsers(req:Request,res:Response):Promise<void>{
        try {
-           const users = await this._userUseCase.getUsers()
+           const users = await this._userUseCase.getUsers(req.params.userId)
              console.log(users)
            if (users) {
             console.log(users)
@@ -32,6 +32,20 @@ export class userConteoller {
             console.log(error)
         }
     }
+    async unfollowUser(req:Request,res:Response):Promise<void>{
+          try {
+            
+            const {followId, userId} = req.params   
+            const user= await this._userUseCase.unfollowUser(followId, userId)
+            if(user){
+                res.status(200).json(user)
+            }
+          } catch (error) {
+            console.log(error)
+          }
+      
         
  
-}
+     
+        }
+    }

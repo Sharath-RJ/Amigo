@@ -2,8 +2,13 @@
     <img class="w-24 h-24 rounded-full mx-auto" [src]="user.profilePicture" alt="Profile Picture">
     <h2 class="text-center text-xl mt-4">{{ user.username }}</h2>
     <div class="mt-4 flex justify-around">
-        <button (click)="followUser(user._id)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        <button *ngIf="!user.isFollowing" (click)="followUser(user._id)"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
             Follow
+        </button>
+        <button *ngIf="user.isFollowing" (click)="unFollowUser(user._id)"
+            class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+            Unfollow
         </button>
   
     <button [routerLink]="['/chat', user._id]" routerLinkActive="router-link-active"

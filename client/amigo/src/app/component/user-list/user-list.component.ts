@@ -9,6 +9,7 @@ export interface User {
   email: string;
   profilePicture: string;
   username: string;
+  isFollowing:any
 }
 
 @Component({
@@ -18,15 +19,21 @@ export interface User {
 })
 export class UserListComponent implements OnInit {
   users: User[] = [];
+   userid!:string
 
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.fetchUsers();
+    const loggedInUser = sessionStorage.getItem('loginedInUser');
+    if(loggedInUser){
+      this.userid= JSON.parse(loggedInUser)._id
+    }
+    console.log(this.userid)
+    this.fetchUsers(this.userid);
   }
 
-  fetchUsers(): void {
-    this.http.get<User[]>(`${environment.apiUrl}/user/getAllUsers`).subscribe(
+  fetchUsers(userid:string): void {
+    this.http.get<User[]>(`${environment.apiUrl}/user/getAllUsers/${userid}`).subscribe(
       (data: User[]) => {
         this.users = data;
         console.log(data);

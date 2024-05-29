@@ -10,6 +10,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class UserCardComponent implements OnInit {
   @Input() user!: {
+    isFollowing: any;
     _id: any | string;
     profilePicture: string;
     username: string;
@@ -29,12 +30,31 @@ export class UserCardComponent implements OnInit {
     console.log('follow id', followId);
     this._http
       .put(
-        `${environment.apiUrl}/user/follow/` + followId + '/' + this.userId,
+        `${environment.apiUrl}/user/follow/${followId}/${this.userId}` ,
         {}
       )
       .subscribe((data) => {
+          this.user.isFollowing = true;
         console.log(data);
         this._snackBar.open('Your are following now', '', {
+          duration: 3000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          panelClass: ['green-snackbar'],
+        });
+      });
+  }
+  unFollowUser(unfollowId: string): any {
+    console.log('unfollow id', unfollowId);
+    this._http
+      .put(
+        `${environment.apiUrl}/user/unfollow/${unfollowId}/${this.userId}` ,
+        {}
+      )
+      .subscribe((data) => {
+        this.user.isFollowing=false
+        console.log(data);
+        this._snackBar.open('You have unfollowed', '', {
           duration: 3000,
           horizontalPosition: 'right',
           verticalPosition: 'top',

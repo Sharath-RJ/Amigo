@@ -11,12 +11,13 @@ export default function userRoute(): Router {
     const userControllerInstance = new userConteoller(userUseCaseInstance)
 
     router.get(
-        "/getAllUsers",
+        "/getAllUsers/:userId",
         userControllerInstance.getAllUsers.bind(userControllerInstance)
     )
 
            
     router.put("/follow/:followId/:userId",userControllerInstance.followUser.bind(userControllerInstance))
+    router.put("/unfollow/:followId/:userId", userControllerInstance.unfollowUser.bind(userControllerInstance))
 
     return router
 }
