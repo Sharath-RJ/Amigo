@@ -37,6 +37,9 @@ import { UserListComponent } from './component/user-list/user-list.component';
 import { VideocallComponent } from './component/videocall/videocall.component';
 import { NotificationComponent } from './component/notification/notification.component';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
+import { IconSidebarMenuComponent } from './component/icon-sidebar-menu/icon-sidebar-menu.component';
+import { FilterPipeModule } from 'ngx-filter-pipe';
+import { SearchComponent } from './component/search/search.component';
 
 
 
@@ -73,6 +76,8 @@ import { CarouselModule } from 'ngx-bootstrap/carousel';
     UserListComponent,
     VideocallComponent,
     NotificationComponent,
+    IconSidebarMenuComponent,
+    SearchComponent,
   ],
   imports: [
     BrowserModule,
@@ -81,6 +86,7 @@ import { CarouselModule } from 'ngx-bootstrap/carousel';
     HttpClientModule,
     MatSnackBarModule,
     MatTableModule,
+    FilterPipeModule
     
   ],
   providers: [provideAnimationsAsync()],

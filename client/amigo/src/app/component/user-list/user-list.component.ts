@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environment';
 
@@ -19,28 +19,32 @@ export interface User {
 })
 export class UserListComponent implements OnInit {
   users: User[] = [];
-   userid!:string
+  userid!: string;
+  searchText!: string;
+  userFilter: any = { username: '' };
 
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
     const loggedInUser = sessionStorage.getItem('loginedInUser');
-    if(loggedInUser){
-      this.userid= JSON.parse(loggedInUser)._id
+    if (loggedInUser) {
+      this.userid = JSON.parse(loggedInUser)._id;
     }
-    console.log(this.userid)
+    console.log(this.userid);
     this.fetchUsers(this.userid);
   }
 
-  fetchUsers(userid:string): void {
-    this.http.get<User[]>(`${environment.apiUrl}/user/getAllUsers/${userid}`).subscribe(
-      (data: User[]) => {
-        this.users = data;
-        console.log(data);
-      },
-      (error) => {
-        console.error('Error fetching users:', error);
-      }
-    );
+  fetchUsers(userid: string): void {
+    this.http
+      .get<User[]>(`${environment.apiUrl}/user/getAllUsers/${userid}`)
+      .subscribe(
+        (data: User[]) => {
+          this.users = data;
+          console.log(data);
+        },
+        (error) => {
+          console.error('Error fetching users:', error);
+        }
+      );
   }
 }

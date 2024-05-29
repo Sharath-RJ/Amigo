@@ -8,7 +8,7 @@ export class userRepoMongoDB implements UserRepoInterface {
     async getAllUsers(id:string): Promise<any> {
         try {
               const loggedInUserId = id 
-              const users = await UserModel.find().lean() 
+              const users = await UserModel.find({ _id: { $ne: loggedInUserId } }).lean();
               const usersWithFollowStatus = await Promise.all(
                   users.map(async (user) => {
                       // Check if the logged-in user is following this user
