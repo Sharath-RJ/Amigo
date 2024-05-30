@@ -27,4 +27,20 @@ export class UsersListComponent implements OnInit {
         }
       );
   }
+  
+  blockUser(id:any){
+     this._http.put<User[]>(`http://localhost:5000/api/admin/blockUser/${id}`,{}).subscribe((data)=>{
+       this.userList = data
+     },(error)=>{
+       console.log(error)
+     })
+  }
+
+  unblockUser(id:any){
+    this._http.put<User[]>(`http://localhost:5000/api/admin/unblockUser/${id}`,{}).subscribe((data)=>{
+      this.userList=data
+    },(error)=>{
+      console.log(error)
+    })
+ }
 }

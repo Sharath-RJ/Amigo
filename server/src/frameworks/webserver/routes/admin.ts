@@ -10,6 +10,8 @@ export default function adminRouter(){
    const adminControllerInstance = new adminController(adminUseCaseInstance)
 
    router.get("/getAllUsers",adminControllerInstance.getAllUsers.bind(adminControllerInstance))
+   router.put("/blockUser/:id",adminControllerInstance.blockUser.bind(adminControllerInstance))
+   router.put("/unblockUser/:id",adminControllerInstance.unblockUser.bind(adminControllerInstance))
 
    
    return router

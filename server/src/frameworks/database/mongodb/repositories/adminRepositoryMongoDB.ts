@@ -10,4 +10,22 @@ export class adminRepositoryMongoDB implements adminRepository{
             
         }
     }
+
+    async blockUser(id:any): Promise<any> {
+        try {
+            const user = await UserModel.findOneAndUpdate({_id:id},{isBlocked:true})
+            return user
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async unblockUser(id:any): Promise<any> {
+        try {
+            const user = await UserModel.findOneAndUpdate({_id:id},{isBlocked:false})
+            return user
+        } catch (error) {
+            console.log(error)
+        }
+    }
 }

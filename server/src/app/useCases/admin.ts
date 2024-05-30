@@ -6,4 +6,11 @@ export  class adminUseCase {
    async getAllUsers():Promise<any>{
      return await this.adminRepository.getAllUsers()
     }
+
+    async blockUser(id:any):Promise<any>{
+      return await this.adminRepository.blockUser(id)
+    }
+    async unblockUser(id:any):Promise<any>{
+      return await this.adminRepository.unblockUser(id)
+    }
 }

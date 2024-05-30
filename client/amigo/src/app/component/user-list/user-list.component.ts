@@ -9,7 +9,8 @@ export interface User {
   email: string;
   profilePicture: string;
   username: string;
-  isFollowing:any
+  isFollowing:any;
+  isBlocked:boolean
 }
 
 @Component({

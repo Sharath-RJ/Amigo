@@ -11,7 +11,29 @@ export class adminController {
              if (users) res.json(users)
         } catch (error) {
             console.log(error)
+       
+       
         }
     
     }
+
+    async  blockUser(req:Request, res:Response):Promise<any>{
+       try {
+          const { id } = req.params;
+          const user = await this._adminusecase.blockUser(id);
+          if (user) res.json(user);
+       } catch (error) {
+        console.log(error)
+       }
+    }
+
+    async unblockUser(req:Request, res:Response):Promise<any>{
+        try {
+           const { id } = req.params;
+           const user = await this._adminusecase.unblockUser(id);
+           if (user) res.json(user);
+        } catch (error) {
+         console.log(error)
+        }
+     }
 }

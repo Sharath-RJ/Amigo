@@ -17,6 +17,7 @@ const UserSchema = new Schema({
     phoneNumber: { type: String, required: true },
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    isBlocked: { type: Boolean, default: false },
 })
 
 export const UserModel = mongoose.model<UserDocument>("User", UserSchema)
