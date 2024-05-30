@@ -1,23 +1,22 @@
-<body class="bg-gray-900 text-white min-h-screen flex flex-col items-center">
-    <div class="container mx-auto p-6">
+<body class="bg-gray-900 text-white min-h-screen flex flex-col">
+    <div class="container mx-auto p-6 flex-grow">
         <!-- User Profile Section -->
         <div class="bg-gray-800 rounded-lg shadow-lg p-6 flex flex-col md:flex-row items-center">
             <img class="w-32 h-32 rounded-full border-4 border-gray-600 mb-4 md:mb-0"
-                src="https://via.placeholder.com/150" alt="User Profile Picture">
+                src="https://via.placeholder.com/150" alt="User Profile Picture" />
             <div class="md:ml-6 text-center md:text-left">
-                <h2 class="text-2xl font-bold">{{username}}</h2>
-                <!-- <p class="text-gray-400">Bio: This is a short bio about the user.</p> -->
+                <h2 class="text-2xl font-bold">{{ username }}</h2>
                 <div class="flex justify-center md:justify-start mt-4">
                     <div class="mr-6">
-                        <p class="text-xl font-semibold">{{posts.length}}</p>
+                        <p class="text-xl font-semibold">{{ posts.length }}</p>
                         <p class="text-gray-400">Posts</p>
                     </div>
                     <div class="mr-6">
-                        <p class="text-xl font-semibold">{{followers.length}}</p>
+                        <p class="text-xl font-semibold">{{ followers.length }}</p>
                         <p class="text-gray-400">Followers</p>
                     </div>
                     <div>
-                        <p class="text-xl font-semibold">{{following.length}}</p>
+                        <p class="text-xl font-semibold">{{ following.length }}</p>
                         <p class="text-gray-400">Following</p>
                     </div>
                 </div>
@@ -25,22 +24,35 @@
         </div>
 
         <!-- User Posts Section -->
-        <div class="mt-10">
+        <div class="mt-10 w-full">
             <h3 class="text-xl font-semibold mb-4">Posts</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Post 1 -->
-                <div *ngFor="let item of posts" class="bg-gray-800 rounded-lg shadow-lg p-4">
-                    
-                    <p class="text-gray-400 mt-2">{{item.caption}}</p>
-                <img [src]="'http://localhost:5000/uploads/' + item.image" alt="" srcset="">
-
+                <div *ngFor="let item of posts" class="bg-gray-800 rounded-lg shadow-lg p-4 flex flex-col relative">
+                    <p class="text-gray-400 mt-2">{{ item.caption }}</p>
+                    <div class="absolute top-4 right-4 flex space-x-2">
+                        <button class="text-gray-400 hover:text-gray-200">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="text-gray-400 hover:text-gray-200">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                    <div class="flex justify-center items-center p-4 relative">
+                        <div class="w-full h-72 rounded-lg overflow-hidden border-4 border-gray-700">
+                            <owl-carousel-o [options]="customOptions">
+                                <ng-template carouselSlide *ngFor="let image of item.image">
+                                    <img [src]="'http://localhost:5000/uploads/' + image" alt="Post Image"
+                                        class="w-full h-full object-cover">
+                                </ng-template>
+                            </owl-carousel-o>
+                        </div>
+                    </div>
                 </div>
 
-                <div *ngIf="posts.length==0">
-                   <h1>No Posts</h1>
+                <!-- No Posts Message -->
+                <div *ngIf="posts.length === 0" class="col-span-full text-center">
+                    <h1>No Posts</h1>
                 </div>
-            
-               
             </div>
         </div>
     </div>
