@@ -9,9 +9,13 @@ import { User } from '../../user-list/user-list.component';
   styleUrls: ['./users-list.component.css'], // Fixed typo from 'styleUrl' to 'styleUrls'
 })
 export class UsersListComponent implements OnInit {
+
+  
   constructor(private _http: HttpClient) {}
+  p:number=1
 
   userList: User[] = [];
+  totalUsers:any
 
   ngOnInit(): void {
     console.log('hello');
@@ -21,6 +25,7 @@ export class UsersListComponent implements OnInit {
         (data: User[]) => {
           console.log(data);
           this.userList = data;
+          this.totalUsers=data.length
         },
         (error) => {
           console.log(error);

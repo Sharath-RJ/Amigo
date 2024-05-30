@@ -42,6 +42,7 @@ import { FilterPipeModule } from 'ngx-filter-pipe';
 import { SearchComponent } from './component/search/search.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { CarouselModule } from 'ngx-owl-carousel-o';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 
@@ -90,6 +91,7 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
     FilterPipeModule,
     SlickCarouselModule,
     CarouselModule,
+    NgxPaginationModule
   ],
   providers: [provideAnimationsAsync()],
   bootstrap: [AppComponent],
