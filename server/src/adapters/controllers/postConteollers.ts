@@ -2,15 +2,15 @@ import { Request, Response } from "express"
 import { PostUseCase } from "../../app/useCases/post"
 
 export class postConteoller {
+    static getAllPostsofUser: any
     constructor(private postUseCase: PostUseCase) {}
 
     async addPost(req: Request, res: Response): Promise<void> {
         try {
             const { caption, user } = req.body
-           const files = req.files as Express.Multer.File[]
+            const files = req.files as Express.Multer.File[]
 
-           
-           const imagePaths = files.map((file) => file.filename)
+            const imagePaths = files.map((file) => file.filename)
 
             const success = await this.postUseCase.addPost(
                 imagePaths,
@@ -33,7 +33,6 @@ export class postConteoller {
 
     async getPosts(req: Request, res: Response): Promise<void> {
         try {
-          
             console.log("getposts controller")
             const posts = await this.postUseCase.getPosts()
             if (posts) {
@@ -78,7 +77,7 @@ export class postConteoller {
     }
     async getAllPosts(req: Request, res: Response): Promise<void> {
         try {
-            const {id}=req.params
+            const { id } = req.params
             const posts = await this.postUseCase.getAllPosts(id)
             if (posts) {
                 res.status(200).json(posts)
@@ -91,9 +90,9 @@ export class postConteoller {
     async likePost(req: Request, res: Response): Promise<void> {
         try {
             const { id, userid } = req.params
-        
+
             console.log(id)
-            console.log("uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu",userid)
+            console.log("uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu", userid)
             const post = await this.postUseCase.likePost(id, userid)
 
             if (post) {
@@ -134,6 +133,19 @@ export class postConteoller {
             const likes = await this.postUseCase.showLikes(id)
             if (likes) {
                 res.status(200).json(likes)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async getAllPostsofUser(req: Request, res: Response): Promise<any> {
+        try {
+            const { id } = req.params
+            const posts = await this.postUseCase.getAllPostsofUser(id)
+            console.log("post of the logged user", posts)
+            if (posts) {
+                res.status(200).json(posts)
             }
         } catch (error) {
             console.log(error)

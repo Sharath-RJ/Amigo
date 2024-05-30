@@ -20,6 +20,10 @@ router.put("/likePost/:id/:userid", postController.likePost.bind(postController)
 router.patch("/commentPost/:id", postController.commentPost.bind(postController))
 router.get("/showComments/:id", postController.showComments.bind(postController))
 router.get("/showLikes/:id", postController.showLikes.bind(postController))
+router.get(
+    "/getAllPostsofUser/:id",
+    postController.getAllPostsofUser.bind(postController)
+)
 
 return router
 }

@@ -163,4 +163,13 @@ export class PostRepositoryMongoDB implements PostRepository {
             console.log(error)
         }
     }
+
+    async getAllPostsofUser(id:string):Promise<any>{
+        try {
+           const posts = await PostModel.find({user:id}) 
+           return posts
+        } catch (error) {
+            console.log(error)
+        }
+    }
 }

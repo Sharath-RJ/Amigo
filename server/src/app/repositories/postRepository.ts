@@ -13,11 +13,13 @@ export interface PostRepository {
 
     deletePost(id: string): Promise<any>
 
-    getAllPosts(id:string): Promise<any>
+    getAllPosts(id: string): Promise<any>
 
     likePost(id: string, userid: string): Promise<any>
 
     commentPost(id: string, comment: string, userid: string): Promise<any>
     showComments(id: string): Promise<any>
     showLikes(id: string): Promise<any>
+
+    getAllPostsofUser(id:string):Promise<any>
 }

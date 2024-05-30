@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 import { Schema, model, Document, Types } from "mongoose"
 
-interface PostDoc extends Document {
+export interface PostDoc extends Document {
     user: Types.ObjectId
     image: string[]
     caption?: string

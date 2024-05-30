@@ -35,4 +35,8 @@ export class PostUseCase {
     async showLikes(id:string){
         return await this.postRepository.showLikes(id)
     }
+
+    async getAllPostsofUser(id:string){
+         return await this.postRepository.getAllPostsofUser(id)
+    }
 }
