@@ -1,3 +1,4 @@
+import mongoose from "mongoose"
 import { Schema, model, Document, Types } from "mongoose"
 
 interface PostDoc extends Document {
@@ -5,9 +6,7 @@ interface PostDoc extends Document {
     image: string[]
     caption?: string
     liked: boolean
-    likes: {
-        userid: Types.ObjectId
-    }
+    likes: mongoose.Types.ObjectId[]
     status: string
     comments: {
         user: Types.ObjectId
@@ -39,14 +38,7 @@ const postSchema = new Schema<PostDoc>({
         type: String,
         default: "Not Published",
     },
-    likes: [
-        {
-            userid: {
-                type: Schema.Types.ObjectId,
-                ref: "User",
-            },
-        },
-    ],
+    likes:[{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     comments: [
         {
             userid: {

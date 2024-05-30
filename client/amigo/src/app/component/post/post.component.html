@@ -16,7 +16,7 @@
   <div class="flex items-center justify-between mb-2">
     <div class="flex items-center space-x-4">
       <button (click)="likePost(post._id)" class="focus:outline-none">
-        <i class="fas fa-heart text-xl" [class.text-red-600]="postLiked" [class.text-gray-400]="!postLiked"></i>
+        <i class="fas fa-heart text-xl" [class.text-red-600]="post.hasLiked" [class.text-gray-400]="!post.hasLiked"></i>
       </button>
       <button (click)="showAddComment(post._id)" class="focus:outline-none">
         <i class="fas fa-comment text-xl text-gray-400"></i>

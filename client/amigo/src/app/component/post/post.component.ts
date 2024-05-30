@@ -12,6 +12,7 @@ export class PostComponent implements OnInit {
   showcomments: boolean = false;
   showLikes: boolean = false;
   postLiked: boolean = false;
+  userId!:string ;
   @Output() showAllCommentsEvent = new EventEmitter<string>();
   @Output() showAllLikesEvent = new EventEmitter<string>();
 
@@ -50,7 +51,11 @@ export class PostComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('Hello post');
-    this._http.get('http://localhost:5000/api/post/getAllPosts').subscribe(
+    const loggedInUserId = sessionStorage.getItem('loginedInUser');
+    if(loggedInUserId) {
+      this.userId = JSON.parse(loggedInUserId)._id;
+    }
+    this._http.get(`http://localhost:5000/api/post/getAllPosts/${this.userId}`).subscribe(
       (data) => {
         this.posts = data;
         console.log(data);
@@ -66,26 +71,21 @@ export class PostComponent implements OnInit {
   }
 
   likePost(postId: string) {
-    const loggedInUserId = sessionStorage.getItem('loggedInUser');
-    console.log(loggedInUserId);
-
-    if (!this.postLiked) {
+    console.log("uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu",this.userId)
       this._http
-        .patch(`http://localhost:5000/api/post/likePost/${postId}`, {
-          userId: loggedInUserId ? JSON.parse(loggedInUserId)._id : null,
+        .put(`http://localhost:5000/api/post/likePost/${postId}/${this.userId}`, {
+        
         })
         .subscribe(
           (data) => {
             console.log(data);
             this.postLiked = true;
+          
           },
           (error) => {
             console.log(error);
           }
         );
-    } else {
-      console.log("You've already liked this post.");
-    }
   }
 
   handleCommentsAdded(comments: any) {

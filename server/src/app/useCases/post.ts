@@ -19,8 +19,8 @@ export class PostUseCase {
     async deletePost(id:string){
        return await this.postRepository.deletePost(id)
     }
-    async getAllPosts(){
-        return await this.postRepository.getAllPosts()
+    async getAllPosts(id:string){
+        return await this.postRepository.getAllPosts(id)
     }
     async likePost(id:string,userid:string){
        return await this.postRepository.likePost(id,userid)

@@ -1,6 +1,7 @@
 import { PostRepository } from "../../../../app/repositories/postRepository";
 import PostModel from "../../../../frameworks/database/mongodb/models/postModel";
 import { User } from "../../../../entities/user";
+import mongoose from "mongoose"
 
 export class PostRepositoryMongoDB implements PostRepository {
     async createPost(
@@ -65,31 +66,64 @@ export class PostRepositoryMongoDB implements PostRepository {
             throw new Error("Error deleting post")
         }
     }
-
-    async getAllPosts(): Promise<any> {
+    // this is the post in the user side
+    async getAllPosts(userid: string): Promise<any> {
         try {
-            const post = await PostModel.find({ status: "Published" }).populate(
-                "user",
-                "username"
+            const loggedInUserId = userid
+
+            // Fetch all published posts with user details
+            const posts = await PostModel.find({ status: "Published" })
+                .populate("user", "username")
+                .lean()
+
+            // Check if the logged-in user has liked each post
+            const postsWithLikeStatus = await Promise.all(
+                posts.map(async (post) => {
+                    const hasLiked = await PostModel.exists({
+                        _id: post._id,
+                        likes: loggedInUserId,
+                    })
+
+                    // Add like status to post object
+                    return { ...post, hasLiked: !!hasLiked }
+                })
             )
-            return post
+
+            console.log(postsWithLikeStatus)
+            return postsWithLikeStatus
         } catch (error) {
             console.log(error)
+            throw new Error("Failed to fetch posts")
         }
     }
+
     async likePost(postId: string, userId: string): Promise<any> {
         try {
+            // Check if userId is defined... (existing code)
+
+            const objectId = new mongoose.Types.ObjectId(userId)
+
+            // Check if user already liked the post
+            const existingPost = await PostModel.findById(postId)
+            if (existingPost && existingPost.likes.includes(objectId)) {
+                console.log("User already liked this post")
+                return // Or send a message indicating the user already liked
+            }
+
+            // Update post with like
             const updatedPost = await PostModel.findByIdAndUpdate(
                 postId,
-                { $push: { likes: { userid: userId } } },
+                { $push: { likes: objectId } },
                 { new: true }
             )
+            console.log("updated postttt", updatedPost)
             return updatedPost
         } catch (error) {
             console.error("Error liking post:", error)
             throw error
         }
     }
+
     async commentPost(
         id: string,
         comment: string,

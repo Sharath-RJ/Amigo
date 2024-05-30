@@ -33,6 +33,7 @@ export class postConteoller {
 
     async getPosts(req: Request, res: Response): Promise<void> {
         try {
+          
             console.log("getposts controller")
             const posts = await this.postUseCase.getPosts()
             if (posts) {
@@ -77,7 +78,8 @@ export class postConteoller {
     }
     async getAllPosts(req: Request, res: Response): Promise<void> {
         try {
-            const posts = await this.postUseCase.getAllPosts()
+            const {id}=req.params
+            const posts = await this.postUseCase.getAllPosts(id)
             if (posts) {
                 res.status(200).json(posts)
             }
@@ -88,11 +90,11 @@ export class postConteoller {
 
     async likePost(req: Request, res: Response): Promise<void> {
         try {
-            const { id } = req.params
-            const { userId } = req.body
+            const { id, userid } = req.params
+        
             console.log(id)
-            console.log(userId)
-            const post = await this.postUseCase.likePost(id, userId)
+            console.log("uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu",userid)
+            const post = await this.postUseCase.likePost(id, userid)
 
             if (post) {
                 res.status(200).json(post)
