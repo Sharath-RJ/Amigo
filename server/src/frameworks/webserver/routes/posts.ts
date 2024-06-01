@@ -21,10 +21,7 @@ export default function PostsRouter(): Router {
     //     "/viewPost/:id",
     //     postController.getPostDetails.bind(postController)
     // )
-    // router.patch(
-    //     "/publish/:id",
-    //     postController.publishPost.bind(postController)
-    // )
+ 
     // router.delete("/delete/:id", postController.deletePost.bind(postController))
     // // router.get("/getAllPosts/:id", postController.getAllPosts.bind(postController))
 
