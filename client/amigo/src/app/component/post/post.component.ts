@@ -55,7 +55,7 @@ export class PostComponent implements OnInit {
     if(loggedInUserId) {
       this.userId = JSON.parse(loggedInUserId)._id;
     }
-    this._http.get(`http://localhost:5000/api/post/getAllPosts/${this.userId}`).subscribe(
+    this._http.get(`http://localhost:5000/api/post/getAllPosts`).subscribe(
       (data) => {
         this.posts = data;
         console.log(data);
