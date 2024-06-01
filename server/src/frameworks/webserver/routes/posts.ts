@@ -17,10 +17,7 @@ export default function PostsRouter(): Router {
         postController.addPost.bind(postController)
     )
     // // router.get("/getPosts", postController.getPosts.bind(postController))
-    // router.get(
-    //     "/viewPost/:id",
-    //     postController.getPostDetails.bind(postController)
-    // )
+ 
  
     // router.delete("/delete/:id", postController.deletePost.bind(postController))
     // // router.get("/getAllPosts/:id", postController.getAllPosts.bind(postController))

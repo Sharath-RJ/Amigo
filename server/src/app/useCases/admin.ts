@@ -15,4 +15,7 @@ export  class adminUseCase {
     async publishPost(id: string) {
         return await this.adminRepository.publishPost(id)
     }
+    async getPostDetails(id: string) {
+        return await this.adminRepository.getPostDetails(id)
+    }
 }

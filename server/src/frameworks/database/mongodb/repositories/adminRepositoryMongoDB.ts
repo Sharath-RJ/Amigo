@@ -47,4 +47,18 @@ export class adminRepositoryMongoDB implements adminRepository {
             return []
         }
     }
+
+    async getPostDetails(id: String): Promise<any> {
+        try {
+            const posts = await PostModel.findById(id).populate(
+                "user",
+                "username"
+            )
+            console.log("posts db")
+            return posts
+        } catch (error) {
+            console.error("Error getting posts:", error)
+            return []
+        }
+    }
 }

@@ -44,4 +44,16 @@ export class adminController {
             console.log(error)
         }
     }
+
+    async getPostDetails(req: Request, res: Response): Promise<void> {
+        try {
+            const { id } = req.params
+            const post = await this._adminusecase.getPostDetails(id)
+            if (post) {
+                res.status(200).json(post)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
 }

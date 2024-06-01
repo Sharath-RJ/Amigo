@@ -21,7 +21,14 @@ export default function adminRouter(){
         "/unblockUser/:id",
         adminControllerInstance.unblockUser.bind(adminControllerInstance)
     )
-    router.patch( "/publish/:id", adminControllerInstance.publishPost.bind(adminControllerInstance))
+    router.patch(
+        "/publish/:id",
+        adminControllerInstance.publishPost.bind(adminControllerInstance)
+    )
+    router.get(
+        "/viewPost/:id",
+        adminControllerInstance.getPostDetails.bind(adminControllerInstance)
+    )
 
     return router
 }
