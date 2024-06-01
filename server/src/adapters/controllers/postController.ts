@@ -28,4 +28,11 @@ export  class postConteoller {
             res.status(500).json({ error: "Internal server error" })
         }
     }
+
+   async getAllPosts(req:Request, res:Response){
+       const posts= await this.postUseCase.getAllPosts()
+       if(posts){
+        res.status(201).json(posts)
+       }
+    }
 }

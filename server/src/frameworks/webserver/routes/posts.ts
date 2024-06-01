@@ -16,11 +16,11 @@ export default function PostsRouter(): Router {
         upload.array("images"),
         postController.addPost.bind(postController)
     )
-  
- 
- 
+
+    router.get("/getAllPosts", 
+             postController.getAllPosts.bind(postController))
+
     // router.delete("/delete/:id", postController.deletePost.bind(postController))
-    // // router.get("/getAllPosts/:id", postController.getAllPosts.bind(postController))
 
     // router.patch(
     //     "/commentPost/:id",

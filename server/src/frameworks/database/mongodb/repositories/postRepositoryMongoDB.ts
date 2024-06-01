@@ -16,4 +16,15 @@ export class postRepositoryMongoDB implements postRepository {
             return false
         }
     }
+
+    async getAllPost() {
+        try {
+            return await PostModel.find({ status: "Published" }).populate(
+                "user",
+                "username"
+            )
+        } catch (error) {
+            console.log(error)
+        }
+    }
 }

@@ -9,4 +9,7 @@ export class PostUseCase {
         user: User    ): Promise<boolean> {
         return await this.postRepository.createPost(images, caption, user)
     }
+    async getAllPosts(){
+        return await this.postRepository.getAllPost()
+    }
 }
