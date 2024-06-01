@@ -4,4 +4,5 @@ export interface adminRepository {
     unblockUser(id: any): Promise<any>
     publishPost(id: string): Promise<any>
     getPostDetails(id: string): Promise<any>
+    getPosts(): Promise<any>
 }

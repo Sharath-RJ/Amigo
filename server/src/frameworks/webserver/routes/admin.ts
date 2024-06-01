@@ -30,5 +30,9 @@ export default function adminRouter(){
         adminControllerInstance.getPostDetails.bind(adminControllerInstance)
     )
 
+    router.get("/getPosts",
+                adminControllerInstance.getPosts.bind(adminControllerInstance)
+   )
+
     return router
 }

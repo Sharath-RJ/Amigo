@@ -16,7 +16,7 @@ export default function PostsRouter(): Router {
         upload.array("images"),
         postController.addPost.bind(postController)
     )
-    // // router.get("/getPosts", postController.getPosts.bind(postController))
+  
  
  
     // router.delete("/delete/:id", postController.deletePost.bind(postController))
