@@ -49,7 +49,7 @@ export class PostsDetailsComponent implements OnInit {
   ngOnInit(): void {
     this._route.params.subscribe((params) => {
       const id = params['id'];
-      this._http.get(`${environment.apiUrl}/post/viewPost/` + id).subscribe(
+      this._http.get(`${environment.apiUrl}/admin/viewPost/` + id).subscribe(
         (data) => {
           this.post = data;
         },
@@ -60,7 +60,7 @@ export class PostsDetailsComponent implements OnInit {
     });
   }
   publishPost(id: string) {
-    this._http.patch(`${environment.apiUrl}/post/publish/` + id, {}).subscribe(
+    this._http.patch(`${environment.apiUrl}/admin/publish/` + id, {}).subscribe(
       (data) => {
         this._snackBar.open('Deleted Successfully', '', {
           duration: 3000,

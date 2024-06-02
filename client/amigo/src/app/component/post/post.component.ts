@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, EventEmitter, OnInit, Output, output } from '@angular/core';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 
@@ -58,7 +58,7 @@ export class PostComponent implements OnInit {
     this._http.get(`http://localhost:5000/api/post/getAllPosts`).subscribe(
       (data) => {
         this.posts = data;
-        console.log(data);
+        console.log("post in the home ",data);
       },
       (error) => {
         console.log(error);
@@ -71,11 +71,12 @@ export class PostComponent implements OnInit {
   }
 
   likePost(postId: string) {
+    const headers= new HttpHeaders({
+      'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+    })
     console.log("uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu",this.userId)
       this._http
-        .put(`http://localhost:5000/api/post/likePost/${postId}/${this.userId}`, {
-        
-        })
+        .put(`http://localhost:5000/api/post/likePost`, { },{headers})
         .subscribe(
           (data) => {
             console.log(data);

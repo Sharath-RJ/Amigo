@@ -12,7 +12,7 @@ export class PostsListComponent implements OnInit {
   posts: any[] = [];
   ngOnInit(): void {
     console.log('hello');
-    this._http.get(`${environment.apiUrl}/post/getPosts`).subscribe(
+    this._http.get(`${environment.apiUrl}/admin/getPosts`).subscribe(
       (data) => {
         this.posts = data as any[];
         console.log(this.posts)

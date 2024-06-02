@@ -15,7 +15,7 @@ export class LoginComponentComponent implements OnInit {
   password!: String;
   login() {
     this.http
-      .post(`${environment.apiUrl}/user-auth/login`, {
+      .post<{user:any,token:any}>(`${environment.apiUrl}/user-auth/login`, {
         email: this.email,
         password: this.password,
       })
@@ -23,6 +23,7 @@ export class LoginComponentComponent implements OnInit {
         (data) => {
           if ('user' in data) {
             console.log(data.user);
+            sessionStorage.setItem('token', data.token);
             sessionStorage.setItem('loginedInUser', JSON.stringify(data.user));
             this.router.navigate(['/home']);
           } else {
