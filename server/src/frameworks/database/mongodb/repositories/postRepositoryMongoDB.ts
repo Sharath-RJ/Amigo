@@ -27,4 +27,31 @@ export class postRepositoryMongoDB implements postRepository {
             console.log(error)
         }
     }
+    async likePost(user:any, postid:string): Promise<any> {
+        try {
+                   const post = await PostModel.findOneAndUpdate(
+                       { _id: postid },
+                       { $push: { likes: user._id } }, 
+                       { new: true } 
+                   )
+
+            return post
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    async unlikePost(user:any, postid:string): Promise<any> {
+        try {
+                   const post = await PostModel.findOneAndUpdate(
+                       { _id: postid },
+                       { $pull: { likes: user._id } }, 
+                       { new: true } 
+                   )
+
+            return post
+        } catch (error) {
+            console.log(error)
+        }
+    }
+  
 }

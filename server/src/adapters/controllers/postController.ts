@@ -11,8 +11,6 @@ interface customRequest extends Request{
 export class PostController {
     constructor(private postUseCase: PostUseCase) {}
 
-
-
     async addPost(req: Request, res: Response): Promise<void> {
         try {
             const { caption, user } = req.body
@@ -48,9 +46,32 @@ export class PostController {
 
     async likePost(req: customRequest, res: Response) {
         try {
-            console.log("hellllllllllllooooooooooo")
-            console.log("mmmmmmmmmmmmmmmmmmmmmmm",req.user) // req.user should now be recognized
-            // Your like post logic here
+            const { postid } = req.params
+            const success = await this.postUseCase.likePost(req.user, postid)
+            if (success) {
+                res.status(201).json({
+                    message: "Post liked successfully",
+                })
+            } else {
+                res.status(400).json({ error: "Post like failed" })
+            }
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({ error: "Internal server error" })
+        }
+    }
+
+    async unlikePost(req: customRequest, res: Response) {
+        try {
+            const { postid } = req.params
+            const success = await this.postUseCase.unlikePost(req.user, postid)
+            if (success) {
+                res.status(201).json({
+                    message: "Post unliked successfully",
+                })
+            } else {
+                res.status(400).json({ error: "Post unlike failed" })
+            }
         } catch (error) {
             console.log(error)
             res.status(500).json({ error: "Internal server error" })
@@ -58,7 +79,4 @@ export class PostController {
     }
 }
 
-const postRepository = new postRepositoryMongoDB()
-const postUseCase = new PostUseCase(postRepository)
 
-export const postController = new PostController(postUseCase)

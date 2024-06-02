@@ -6,10 +6,17 @@ export class PostUseCase {
     async addPost(
         images: string[],
         caption: string,
-        user: User    ): Promise<boolean> {
+        user: User
+    ): Promise<boolean> {
         return await this.postRepository.createPost(images, caption, user)
     }
-    async getAllPosts(){
+    async getAllPosts() {
         return await this.postRepository.getAllPost()
+    }
+    async likePost(user: any, postid: string) {
+        return await this.postRepository.likePost(user, postid)
+    }
+    async unlikePost(user: any, postid: string) {
+        return await this.postRepository.unlikePost(user, postid)
     }
 }

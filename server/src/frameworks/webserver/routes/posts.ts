@@ -20,12 +20,17 @@ export default function PostsRouter(): Router {
 
     router.get("/getAllPosts", postController.getAllPosts.bind(postController))
 
+    
     router.put(
-        "/likePost",
+        "/likePost/:postid",
         authenticate,
         postController.likePost.bind(postController)
     )
-
+    router.put(
+        "/unlikePost/:postid",
+        authenticate,
+        postController.unlikePost.bind(postController)
+    )
     // router.delete("/delete/:id", postController.deletePost.bind(postController))
 
     // router.patch(

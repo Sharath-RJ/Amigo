@@ -12,7 +12,7 @@ export class PostComponent implements OnInit {
   showcomments: boolean = false;
   showLikes: boolean = false;
   postLiked: boolean = false;
-  userId!:string ;
+  userId!: string;
   @Output() showAllCommentsEvent = new EventEmitter<string>();
   @Output() showAllLikesEvent = new EventEmitter<string>();
 
@@ -27,10 +27,7 @@ export class PostComponent implements OnInit {
     pullDrag: true,
     dots: false,
     navSpeed: 700,
-    navText: [
-      '',
-      '',
-    ],
+    navText: ['', ''],
     responsive: {
       0: {
         items: 1,
@@ -48,17 +45,16 @@ export class PostComponent implements OnInit {
     nav: true,
   };
 
-
   ngOnInit(): void {
     console.log('Hello post');
     const loggedInUserId = sessionStorage.getItem('loginedInUser');
-    if(loggedInUserId) {
+    if (loggedInUserId) {
       this.userId = JSON.parse(loggedInUserId)._id;
     }
     this._http.get(`http://localhost:5000/api/post/getAllPosts`).subscribe(
       (data) => {
         this.posts = data;
-        console.log("post in the home ",data);
+        console.log('post in the home ', data);
       },
       (error) => {
         console.log(error);
@@ -71,22 +67,42 @@ export class PostComponent implements OnInit {
   }
 
   likePost(postId: string) {
-    const headers= new HttpHeaders({
-      'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-    })
-    console.log("uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu",this.userId)
-      this._http
-        .put(`http://localhost:5000/api/post/likePost`, { },{headers})
-        .subscribe(
-          (data) => {
-            console.log(data);
-            this.postLiked = true;
-          
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+    });
+    console.log('uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu', this.userId);
+    this._http
+      .put(`http://localhost:5000/api/post/likePost/${postId}`, {}, { headers })
+      .subscribe(
+        (data) => {
+          console.log(data);
+          this.postLiked = true;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }
+  unlikePost(postId: string) {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+    });
+    console.log('uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu', this.userId);
+    this._http
+      .put(
+        `http://localhost:5000/api/post/unlikePost/${postId}`,
+        {},
+        { headers }
+      )
+      .subscribe(
+        (data) => {
+          console.log(data);
+          this.postLiked = true;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
   }
 
   handleCommentsAdded(comments: any) {
