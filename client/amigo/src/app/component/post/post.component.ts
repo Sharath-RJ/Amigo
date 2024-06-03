@@ -11,7 +11,7 @@ export class PostComponent implements OnInit {
   activeCommentPostId: string | null = null;
   showcomments: boolean = false;
   showLikes: boolean = false;
-  postLiked: boolean = false;
+  postLiked: { [key: string]: boolean } = {};
   userId!: string;
   @Output() showAllCommentsEvent = new EventEmitter<string>();
   @Output() showAllLikesEvent = new EventEmitter<string>();
@@ -53,8 +53,11 @@ export class PostComponent implements OnInit {
     }
     this._http.get(`http://localhost:5000/api/post/getAllPosts`).subscribe(
       (data) => {
-        this.posts = data;
-        console.log('post in the home ', data);
+     this.posts = data;
+     // Initialize the postLiked object
+     this.posts.forEach((post:any) => {
+       this.postLiked[post._id] = post.likes.includes(this.userId);
+     });
       },
       (error) => {
         console.log(error);
@@ -70,13 +73,16 @@ export class PostComponent implements OnInit {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${sessionStorage.getItem('token')}`,
     });
-    console.log('uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu', this.userId);
+
     this._http
       .put(`http://localhost:5000/api/post/likePost/${postId}`, {}, { headers })
       .subscribe(
         (data) => {
-          console.log(data);
-          this.postLiked = true;
+         const post = this.posts.find((post:any) => post._id === postId);
+         if (post) {
+           post.likes.push(this.userId); // Update the likes array
+           this.postLiked[postId] = true; // Update the like status
+         }
         },
         (error) => {
           console.log(error);
@@ -87,7 +93,7 @@ export class PostComponent implements OnInit {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${sessionStorage.getItem('token')}`,
     });
-    console.log('uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu', this.userId);
+
     this._http
       .put(
         `http://localhost:5000/api/post/unlikePost/${postId}`,
@@ -96,8 +102,14 @@ export class PostComponent implements OnInit {
       )
       .subscribe(
         (data) => {
-          console.log(data);
-          this.postLiked = true;
+                   const post = this.posts.find((post:any) => post._id === postId);
+                   if (post) {
+                     post.likes = post.likes.filter(
+                       (userId:any) => userId !== this.userId
+                     ); // Update the likes array
+                     this.postLiked[postId] = false; // Update the like status
+                   }
+
         },
         (error) => {
           console.log(error);
