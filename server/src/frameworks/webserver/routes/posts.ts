@@ -38,10 +38,10 @@ export default function PostsRouter(): Router {
         authenticate,
         postController.commentPost.bind(postController)
     )
-    // router.get(
-    //     "/showComments/:id",
-    //     postController.showComments.bind(postController)
-    // )
+    router.get(
+        "/showComments/:id",
+        postController.showComments.bind(postController)
+    )
     // // router.get(
     // //     "/getAllPostsofUser/:id",
     // //     postController.getAllPostsofUser.bind(postController)

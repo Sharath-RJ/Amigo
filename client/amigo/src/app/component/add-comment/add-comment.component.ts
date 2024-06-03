@@ -13,10 +13,9 @@ export class AddCommentComponent {
   @Output() commentsAdded = new EventEmitter<any>();
   comment: string = '';
   constructor(private _http: HttpClient) {}
-  addCommand() {
-    console.log('add command');
-  }
+ 
   addingComment() {
+    console.log("adding comment")
     const loggedInUserId = sessionStorage.getItem('loginedInUser');
     const headers = new HttpHeaders({
       Authorization: `Bearer ${sessionStorage.getItem('token')}`,
@@ -32,10 +31,8 @@ export class AddCommentComponent {
       )
       .subscribe(
         (data) => {
-          // const commentsArray = Array.isArray(data) ? data : [data];
-
-          // this.commentsAdded.emit(commentsArray);
-          console.log(data)
+        this.comment = ' ';
+        this.commentsAdded.emit(data);
         },
         (error) => {
           console.log(error);

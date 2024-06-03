@@ -6,5 +6,6 @@ export interface postRepository {
     getAllPost(): Promise<any>
     likePost(user: any, postid: string): Promise<any>
     unlikePost(user: any, postid: string): Promise<any>
-    commentPost(postid:string, comment:string, userid:string):Promise<any>
+    commentPost(postid: string, comment: string, userid: string): Promise<any>
+    showComments(id:string):Promise<any>
 }

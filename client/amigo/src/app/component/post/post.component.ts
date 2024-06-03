@@ -117,9 +117,17 @@ export class PostComponent implements OnInit {
       );
   }
 
-  handleCommentsAdded(comments: any) {
-    this.posts = comments;
+  handleCommentsAdded(comment: any) {
+    this.activeCommentPostId=" ";
+
+    const postIndex = this.posts.findIndex((post:any) => post._id === comment._id);
+    if (postIndex !== -1) {
+      const updatedPosts = [...this.posts];  
+      updatedPosts[postIndex].comments.push(this.userId);
+      this.posts = updatedPosts;
+    }
   }
+  
 
   showAllComments(id: string) {
     this.showcomments = true;

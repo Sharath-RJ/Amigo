@@ -87,4 +87,16 @@ export class postRepositoryMongoDB implements postRepository {
             console.log(error)
         }
     }
+
+
+
+    async showComments(id:string): Promise<any> {
+        try {
+            const post = await PostModel.findById(id).select("comments").populate("comments.postedBy", "username")
+            return post
+        } catch (error) {
+            console.log(error)
+        }
+    }
 }
+

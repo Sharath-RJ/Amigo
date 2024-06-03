@@ -23,4 +23,8 @@ export class PostUseCase {
     async commentPost(postid:string, comment:string, userid:string){
         return await this.postRepository.commentPost(postid,comment,userid)
     }
+
+    async showComments(id:string){
+        return await this.postRepository.showComments(id)
+    }
 }

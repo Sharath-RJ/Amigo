@@ -18,8 +18,8 @@ export class ShowallCommentsComponent implements OnInit {
       .get<any>('http://localhost:5000/api/post/showComments/' + this.postId)
       .subscribe(
         (data) => {
-          console.log(data.comments)
-          this.comments = data.comments; // Assign the comments array to comments property
+          console.log(data)
+           this.comments=data.comments
         },
         (error) => {
           console.log(error);

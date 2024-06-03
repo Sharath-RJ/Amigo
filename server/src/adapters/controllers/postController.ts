@@ -68,6 +68,7 @@ export class PostController {
             if (success) {
                 res.status(201).json({
                     message: "Post unliked successfully",
+        
                 })
             } else {
                 res.status(400).json({ error: "Post unlike failed" })
@@ -82,13 +83,30 @@ export class PostController {
         const {id}= req.params
         const {comment}= req.body
         const success = await this.postUseCase.commentPost(id, comment, req.user._id)
+        console.log("commmetntttttttttttt   ",success)
         if(success){
-             res.status(201).json({
-                    message: "Comment added successfully",
-                })
+            
+             res.status(201).json(success)
         } else{
             res.status(400).json({ error: "Comment failed" })
         }   
+}
+
+
+async showComments(req:Request, res:Response):Promise<void>{
+    try {
+       const { id } = req.params
+       const comments = await this.postUseCase.showComments(id)
+       if (comments) {
+           res.status(201).json(comments)
+       } else {
+           res.status(400).json({ error: "Comment failed" })
+       }  
+    } catch (error) {
+       console.log(error) 
+    }
+   
+
 }
 
 }
