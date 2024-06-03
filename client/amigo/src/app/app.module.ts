@@ -7,7 +7,7 @@ import { LoginComponentComponent } from './component/login-component/login-compo
 import { RegisterComponentComponent } from './component/register-component/register-component.component';
 import { HomeComponentComponent } from './component/home-component/home-component.component';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import {  HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NavbarComponent } from './component/navbar/navbar.component';
@@ -43,7 +43,7 @@ import { SearchComponent } from './component/search/search.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { NgxPaginationModule } from 'ngx-pagination';
-
+import { AuthInterceptor } from './auth.interceptor';
 
 
 
@@ -93,7 +93,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     CarouselModule,
     NgxPaginationModule
   ],
-  providers: [provideAnimationsAsync()],
+  providers: [{provide:HTTP_INTERCEPTORS,useClass:AuthInterceptor, multi: true}],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -43,10 +43,10 @@ export default function PostsRouter(): Router {
         postController.showComments.bind(postController)
     )
     router.get("/showLikes/:id", postController.showLikes.bind(postController))
-    // // router.get(
-    // //     "/getAllPostsofUser/:id",
-    // //     postController.getAllPostsofUser.bind(postController)
-    // // )
+    // router.get(
+    //     "/getAllPostsofUser/:id",
+    //     postController.getAllPostsofUser.bind(postController)
+    // )
 
     return router
 }
