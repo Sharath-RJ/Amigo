@@ -64,5 +64,19 @@ export class userRepoMongoDB implements UserRepoInterface {
             console.error("Error unfollowing user:", error)
             throw error
         }
-    }   
+    } 
+    
+    async updateProfilePic(userId: string, profilePic: string): Promise<any> {
+        try {
+            const updatedUser = await UserModel.findByIdAndUpdate(  
+                userId,
+                { $set: { profilePic: profilePic } },
+                { new: true }
+            )
+            return updatedUser
+        } catch (error) {
+            console.error("Error updating profile pic:", error)
+        
+        }
+    }
 }

@@ -16,4 +16,7 @@ export class userUseCase {
     async unfollowUser(followId:string, userId:string){
         return await this._userRepoInterface.unfollowUser(followId, userId)
     }
+    async updateProfilePic(userId:string, profilePic:string){
+        return await this._userRepoInterface.updateProfilePic(userId, profilePic)
+    }
 }

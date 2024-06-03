@@ -18,6 +18,9 @@ export default function userRoute(): Router {
            
     router.put("/follow/:followId/:userId",userControllerInstance.followUser.bind(userControllerInstance))
     router.put("/unfollow/:followId/:userId", userControllerInstance.unfollowUser.bind(userControllerInstance))
+    router.put("/updateProfilePic/:userId",
+        userControllerInstance.updateProfilePic.bind(userControllerInstance)
+    )
 
     return router
 }

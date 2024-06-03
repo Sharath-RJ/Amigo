@@ -48,4 +48,17 @@ export class userConteoller {
  
      
         }
+
+        async updateProfilePic(req:Request,res:Response):Promise<void>{
+            try {
+                const {userId} = req.params 
+                const {profilePic} = req.body
+                const user = await this._userUseCase.updateProfilePic(userId, profilePic)
+                if(user){
+                    res.status(200).json(user)
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
     }

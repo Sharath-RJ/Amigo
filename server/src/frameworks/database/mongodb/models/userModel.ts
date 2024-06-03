@@ -18,6 +18,7 @@ const UserSchema = new Schema({
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     isBlocked: { type: Boolean, default: false },
+    profilePic: { type: String },
 })
 
 export const UserModel = mongoose.model<UserDocument>("User", UserSchema)
