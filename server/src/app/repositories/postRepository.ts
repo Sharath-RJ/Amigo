@@ -1,3 +1,4 @@
+import { StepInstance } from "twilio/lib/rest/studio/v1/flow/engagement/step";
 import { User } from "../../entities/user";
 
 export interface postRepository {
@@ -5,4 +6,5 @@ export interface postRepository {
     getAllPost(): Promise<any>
     likePost(user: any, postid: string): Promise<any>
     unlikePost(user: any, postid: string): Promise<any>
+    commentPost(postid:string, comment:string, userid:string):Promise<any>
 }

@@ -33,10 +33,11 @@ export default function PostsRouter(): Router {
     )
     // router.delete("/delete/:id", postController.deletePost.bind(postController))
 
-    // router.patch(
-    //     "/commentPost/:id",
-    //     postController.commentPost.bind(postController)
-    // )
+    router.put(
+        "/commentPost/:id",
+        authenticate,
+        postController.commentPost.bind(postController)
+    )
     // router.get(
     //     "/showComments/:id",
     //     postController.showComments.bind(postController)

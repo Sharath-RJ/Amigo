@@ -77,6 +77,18 @@ export class PostController {
             res.status(500).json({ error: "Internal server error" })
         }
     }
+
+    async commentPost(req:customRequest, res:Response){
+        const {id}= req.params
+        const {comment}= req.body
+        const success = await this.postUseCase.commentPost(id, comment, req.user._id)
+        if(success){
+             res.status(201).json({
+                    message: "Comment added successfully",
+                })
+        } else{
+            res.status(400).json({ error: "Comment failed" })
+        }   
 }
 
-
+}

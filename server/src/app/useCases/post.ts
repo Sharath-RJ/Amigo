@@ -19,4 +19,8 @@ export class PostUseCase {
     async unlikePost(user: any, postid: string) {
         return await this.postRepository.unlikePost(user, postid)
     }
+
+    async commentPost(postid:string, comment:string, userid:string){
+        return await this.postRepository.commentPost(postid,comment,userid)
+    }
 }

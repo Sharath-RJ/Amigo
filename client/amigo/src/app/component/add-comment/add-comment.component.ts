@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { environment } from '../../../../environment';
 
@@ -18,17 +18,24 @@ export class AddCommentComponent {
   }
   addingComment() {
     const loggedInUserId = sessionStorage.getItem('loginedInUser');
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+    });
    
     this._http
-      .patch(`${environment.apiUrl}/post/commentPost/` + this.postId, {
-        userId: loggedInUserId ? JSON.parse(loggedInUserId)._id : null,
-        comment: this.comment,
-      })
+      .put(
+        `${environment.apiUrl}/post/commentPost/` + this.postId,
+        {
+          comment: this.comment,
+        },
+        { headers }
+      )
       .subscribe(
         (data) => {
-          const commentsArray = Array.isArray(data) ? data : [data];
+          // const commentsArray = Array.isArray(data) ? data : [data];
 
-          this.commentsAdded.emit(commentsArray);
+          // this.commentsAdded.emit(commentsArray);
+          console.log(data)
         },
         (error) => {
           console.log(error);
