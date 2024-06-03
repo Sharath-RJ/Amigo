@@ -109,4 +109,19 @@ async showComments(req:Request, res:Response):Promise<void>{
 
 }
 
+async showLikes(req:Request, res:Response):Promise<void>{
+    try {
+       const { id } = req.params
+       const likes = await this.postUseCase.showLikes(id)
+       if (likes) {
+           res.status(201).json(likes)
+       } else {
+           res.status(400).json({ error: "Like failed" })
+       }  
+    } catch (error) {
+       console.log(error) 
+    }
+
+}
+
 }

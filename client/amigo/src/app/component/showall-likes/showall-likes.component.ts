@@ -18,8 +18,8 @@ export class ShowallLikesComponent {
       .get<any>('http://localhost:5000/api/post/showLikes/' + this.postId)
       .subscribe(
         (data) => {
-          console.log(data.likes);
-          this.likes = data.likes; 
+          console.log(data);
+         this.likes = data.likes; 
         },
         (error) => {
           console.log(error);

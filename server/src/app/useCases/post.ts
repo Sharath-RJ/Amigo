@@ -27,4 +27,7 @@ export class PostUseCase {
     async showComments(id:string){
         return await this.postRepository.showComments(id)
     }
+    async showLikes(id:string){
+      return await this.postRepository.showLikes(id)
+    }
 }

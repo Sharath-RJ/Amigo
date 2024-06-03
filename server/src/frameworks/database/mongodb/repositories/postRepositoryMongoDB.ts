@@ -98,5 +98,13 @@ export class postRepositoryMongoDB implements postRepository {
             console.log(error)
         }
     }
+    async showLikes(id:string): Promise<any> {
+        try {
+             return await PostModel.findById(id).select("likes").populate("likes", "username")  
+        } catch (error) {
+          console.log(error)  
+        }
+     
+}
 }
 
