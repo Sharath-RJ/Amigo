@@ -13,11 +13,11 @@
                         <p class="text-xl font-semibold">{{ posts.length }}</p>
                         <p class="text-gray-400">Posts</p>
                     </div>
-                    <div class="mr-6">
+                    <div class="mr-6" (click)="openFollowersModal()">
                         <p class="text-xl font-semibold">{{ followers.length }}</p>
                         <p class="text-gray-400">Followers</p>
                     </div>
-                    <div>
+                    <div  class="mr-6" (click)="openFollowingModal()">
                         <p class="text-xl font-semibold">{{ following.length }}</p>
                         <p class="text-gray-400">Following</p>
                     </div>

@@ -50,6 +50,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule, MatIconAnchor } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
+import { FollowersComponent } from './component/modal/followers/followers.component';
+import { FollowingComponent } from './component/modal/following/following.component';
 
 
 
@@ -87,6 +89,8 @@ import { MatIconModule } from '@angular/material/icon';
     IconSidebarMenuComponent,
     SearchComponent,
     EditPostModalComponent,
+    FollowersComponent,
+    FollowingComponent,
   ],
   imports: [
     BrowserModule,

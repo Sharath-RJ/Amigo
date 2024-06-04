@@ -4,6 +4,7 @@
   import { OwlOptions } from 'ngx-owl-carousel-o';
   import { MatDialog } from '@angular/material/dialog';
   import { EditPostModalComponent } from '../edit-post-modal/edit-post-modal.component';
+import { FollowersComponent } from '../modal/followers/followers.component';
 
   @Component({
     selector: 'app-profile',
@@ -24,8 +25,24 @@
     onProfilePicClick() {
       this.fileInput.nativeElement.click();
     }
+    openFollowersModal() {
+      this.dialog.open(FollowersComponent, {
+        width: '500px',
+        data: {
+          followers: this.followers,
+        },
+      });
+    }
 
-  
+    openFollowingModal(){
+      console.log(this.following)
+      this.dialog.open(FollowersComponent, {
+        width: '500px',
+        data: {
+          followers: this.following,
+        },
+      });
+    }
 
     onFileSelected(event: Event) {
       const target = event.target as HTMLInputElement;
