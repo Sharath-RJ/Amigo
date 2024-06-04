@@ -52,6 +52,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { FollowersComponent } from './component/modal/followers/followers.component';
 import { FollowingComponent } from './component/modal/following/following.component';
+import { LiveStreamComponent } from './component/live-stream/live-stream.component';
 
 
 
@@ -91,6 +92,7 @@ import { FollowingComponent } from './component/modal/following/following.compon
     EditPostModalComponent,
     FollowersComponent,
     FollowingComponent,
+    LiveStreamComponent,
   ],
   imports: [
     BrowserModule,

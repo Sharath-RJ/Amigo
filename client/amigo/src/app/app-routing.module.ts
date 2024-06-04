@@ -13,6 +13,7 @@ import { UserListComponent } from './component/user-list/user-list.component';
 import { VideocallComponent } from './component/videocall/videocall.component';
 import { NotificationComponent } from './component/notification/notification.component';
 import { ProfileComponent } from './component/profile/profile.component';
+import { LiveStreamComponent } from './component/live-stream/live-stream.component';
 
 
 const routes: Routes = [
@@ -29,8 +30,9 @@ const routes: Routes = [
   { path: 'network', component: UserListComponent },
   { path: 'chat/:receiverId', component: ChatComponent },
   { path: 'videocall/:roomId', component: VideocallComponent },
-  { path: 'notifications',component:NotificationComponent },
-  {path:'profile',component:ProfileComponent}
+  { path: 'notifications', component: NotificationComponent },
+  { path: 'profile', component: ProfileComponent },
+  { path: 'liveStream', component:LiveStreamComponent },
 ];
 
 @NgModule({
