@@ -30,4 +30,16 @@ export class PostUseCase {
     async showLikes(id:string){
       return await this.postRepository.showLikes(id)
     }
+    async getAllPostsofUser(id:string){
+      return await this.postRepository.getAllPostsofUser(id)  
+    } 
+    
+    async deletePostImage(postid:string, image:string){
+        return await this.postRepository.deletePostImage(postid, image)
+    }
+
+    async deletePost(postid:string){
+        return await this.postRepository.deletePost(postid)
+    }
 }
+

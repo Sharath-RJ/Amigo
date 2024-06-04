@@ -27,28 +27,28 @@
 
         <!-- User Posts Section -->
         <div class="mt-10 w-full">
-            <h3 class="text-xl font-semibold mb-4">Posts</h3>
+            <h3 *ngIf="item.image" class="text-xl font-semibold mb-4">Posts</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div *ngFor="let item of posts" class="bg-gray-800 rounded-lg shadow-lg p-4 flex flex-col relative">
                     <p class="text-gray-400 mt-2">{{ item.caption }}</p>
                     <div class="absolute top-4 right-4 flex space-x-2">
                         <button class="text-gray-400 hover:text-gray-200">
-                            <i class="fas fa-edit"></i>
+                            <i class="fas fa-edit" (click)="openEditModal(item)"></i>
                         </button>
                         <button class="text-gray-400 hover:text-gray-200">
-                            <i class="fas fa-trash"></i>
+                            <i class="fas fa-trash" (click)="deletePost(item)"></i>
                         </button>
                     </div>
-                    <div class="flex justify-center items-center p-4 relative">
-                        <div class="w-full h-72 rounded-lg overflow-hidden border-4 border-gray-700">
-                            <owl-carousel-o [options]="customOptions">
-                                <ng-template carouselSlide *ngFor="let image of item.image">
-                                    <img [src]="'http://localhost:5000/uploads/' + image" alt="Post Image"
-                                        class="w-full h-full object-cover">
-                                </ng-template>
-                            </owl-carousel-o>
-                        </div>
-                    </div>
+          
+
+                <div class="image-container bg-gray-600 rounded-lg overflow-hidden mb-4">
+                    <owl-carousel-o [options]="customOptions">
+                        <ng-template carouselSlide *ngFor="let image of item.image">
+                            <img [src]="'http://localhost:5000/uploads/' + image" alt="Post Image"
+                                class=" w-80 h-80 ">
+                        </ng-template>
+                    </owl-carousel-o>
+                </div>
                 </div>
 
                 <!-- No Posts Message -->

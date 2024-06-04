@@ -43,10 +43,20 @@ export default function PostsRouter(): Router {
         postController.showComments.bind(postController)
     )
     router.get("/showLikes/:id", postController.showLikes.bind(postController))
-    // router.get(
-    //     "/getAllPostsofUser/:id",
-    //     postController.getAllPostsofUser.bind(postController)
-    // )
+    router.get(
+        "/getAllPostsofUser/:id", authenticate,
+        postController.getAllPostsofUser.bind(postController)
+    )
+    router.delete(
+        "/deletePostImage/:postid/:image",
+        authenticate,
+        postController.deletePostImage.bind(postController)
+    )
+    router.delete(
+        "/deletePost/:postid",
+        authenticate,
+        postController.deletePost.bind(postController)
+    )
 
     return router
 }

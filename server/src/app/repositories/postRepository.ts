@@ -9,4 +9,7 @@ export interface postRepository {
     commentPost(postid: string, comment: string, userid: string): Promise<any>
     showComments(id: string): Promise<any>
     showLikes(id: string): Promise<any>
+    getAllPostsofUser(id: string): Promise<any>
+    deletePostImage(postid: string, image: string): Promise<any>
+    deletePost(postid:string):Promise<any>
 }

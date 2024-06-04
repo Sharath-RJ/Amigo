@@ -106,5 +106,35 @@ export class postRepositoryMongoDB implements postRepository {
         }
      
 }
+
+async getAllPostsofUser(id:string): Promise<any> {
+    try {
+        return await PostModel.find({ user: id })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async deletePostImage(postid:string, imagestr:string):Promise<any>{
+    try {
+        return await PostModel.findByIdAndUpdate(postid,
+            {$pull:{image:imagestr}},
+            {new:true}
+
+        )
+        
+
+    } catch (error) {
+       console.log(error) 
+    }
+}
+
+async deletePost(postid:string):Promise<any>{
+    try {
+        return await PostModel.findByIdAndDelete(postid)
+    } catch (error) {
+        console.log(error)
+    }
+}
 }
 

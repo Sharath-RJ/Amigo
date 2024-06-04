@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { LoginComponentComponent } from './component/login-component/login-component.component';
 import { RegisterComponentComponent } from './component/register-component/register-component.component';
 import { HomeComponentComponent } from './component/home-component/home-component.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {  HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -44,6 +44,12 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AuthInterceptor } from './auth.interceptor';
+import { EditPostModalComponent } from './component/edit-post-modal/edit-post-modal.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule, MatIconAnchor } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 
 
 
@@ -80,6 +86,7 @@ import { AuthInterceptor } from './auth.interceptor';
     NotificationComponent,
     IconSidebarMenuComponent,
     SearchComponent,
+    EditPostModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -91,9 +98,19 @@ import { AuthInterceptor } from './auth.interceptor';
     FilterPipeModule,
     SlickCarouselModule,
     CarouselModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    ReactiveFormsModule,
   ],
-  providers: [{provide:HTTP_INTERCEPTORS,useClass:AuthInterceptor, multi: true}],
+
+  providers: [
+    provideAnimationsAsync(),
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

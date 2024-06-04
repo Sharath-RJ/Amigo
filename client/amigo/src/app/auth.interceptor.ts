@@ -3,6 +3,6 @@ import { HttpHandler, HttpInterceptor, HttpInterceptorFn, HttpRequest } from '@a
 export class AuthInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next:HttpHandler) {
     console.log("Auth interceptor called")
-    return  next.handle(req.clone({headers: req.headers.set('Authorization', 'Bearer ' + localStorage.getItem('token'))}));
+    return  next.handle(req.clone({headers: req.headers.set('Authorization', 'Bearer ' + sessionStorage.getItem('token'))}));
   }
 }
