@@ -25,6 +25,8 @@
       this.fileInput.nativeElement.click();
     }
 
+  
+
     onFileSelected(event: Event) {
       const target = event.target as HTMLInputElement;
       if (target && target.files && target.files.length > 0) {
@@ -129,16 +131,21 @@
       });
     }
 
-    deletePost(post:any) {
-      if(confirm('Are u sure to delete this post')){
-        this._http.delete(`${environment.apiUrl}/post/deletePost/${post._id}`).subscribe((data)=>{
-          console.log(data)
-           this.posts = this.posts.filter(
-             (existingPost) => existingPost._id !== post._id
-           );
-        },(error)=>{
-          console.log(error)
-        }) 
+    deletePost(post: any) {
+      if (confirm('Are u sure to delete this post')) {
+        this._http
+          .delete(`${environment.apiUrl}/post/deletePost/${post._id}`)
+          .subscribe(
+            (data) => {
+              console.log(data);
+              this.posts = this.posts.filter(
+                (existingPost) => existingPost._id !== post._id
+              );
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
       }
     }
   }

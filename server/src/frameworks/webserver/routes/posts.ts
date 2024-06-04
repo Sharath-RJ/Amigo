@@ -19,6 +19,7 @@ export default function PostsRouter(): Router {
     )
 
     router.get("/getAllPosts", postController.getAllPosts.bind(postController))
+    
 
     
     router.put(
@@ -56,6 +57,12 @@ export default function PostsRouter(): Router {
         "/deletePost/:postid",
         authenticate,
         postController.deletePost.bind(postController)
+    )
+
+    router.put(
+        "/updatePost/:postid",
+        authenticate,
+        postController.updatePost.bind(postController)
     )
 
     return router

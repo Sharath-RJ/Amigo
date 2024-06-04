@@ -4,6 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environment';
+import { ContentObserver } from '@angular/cdk/observers';
 
 @Component({
   selector: 'app-edit-post-modal',
@@ -68,7 +69,18 @@ export class EditPostModalComponent implements OnInit {
   }
 
   onSave() {
-    this.dialogRef.close(this.editForm.value);
+    alert(this.editForm.value.caption);
+    this._http.put(
+      `${environment.apiUrl}/post/updatePost/${this.data._id}`,
+      {caption:this.editForm.value.caption}
+    ).subscribe((data)=>{
+       this.dialogRef.close();
+      window.location.reload();
+
+    },(err)=>{
+      console.log(err)
+    })
+  
   }
 
   onCancel() {

@@ -136,5 +136,14 @@ async deletePost(postid:string):Promise<any>{
         console.log(error)
     }
 }
+
+async updatePost(postid: string, caption: string): Promise<any> {
+    try {
+        console.log(postid,caption)
+        return await PostModel.findByIdAndUpdate(postid, {$set:{caption:caption}  }, { new: true })
+    } catch (error) {
+        console.log(error)
+    }
+}
 }
 

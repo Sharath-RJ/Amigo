@@ -11,5 +11,6 @@ export interface postRepository {
     showLikes(id: string): Promise<any>
     getAllPostsofUser(id: string): Promise<any>
     deletePostImage(postid: string, image: string): Promise<any>
-    deletePost(postid:string):Promise<any>
+    deletePost(postid: string): Promise<any>
+    updatePost(postid: string, caption: string): Promise<any>
 }

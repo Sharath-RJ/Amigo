@@ -20,26 +20,30 @@ export class PostUseCase {
         return await this.postRepository.unlikePost(user, postid)
     }
 
-    async commentPost(postid:string, comment:string, userid:string){
-        return await this.postRepository.commentPost(postid,comment,userid)
+    async commentPost(postid: string, comment: string, userid: string) {
+        return await this.postRepository.commentPost(postid, comment, userid)
     }
 
-    async showComments(id:string){
+    async showComments(id: string) {
         return await this.postRepository.showComments(id)
     }
-    async showLikes(id:string){
-      return await this.postRepository.showLikes(id)
+    async showLikes(id: string) {
+        return await this.postRepository.showLikes(id)
     }
-    async getAllPostsofUser(id:string){
-      return await this.postRepository.getAllPostsofUser(id)  
-    } 
-    
-    async deletePostImage(postid:string, image:string){
+    async getAllPostsofUser(id: string) {
+        return await this.postRepository.getAllPostsofUser(id)
+    }
+
+    async deletePostImage(postid: string, image: string) {
         return await this.postRepository.deletePostImage(postid, image)
     }
 
-    async deletePost(postid:string){
+    async deletePost(postid: string) {
         return await this.postRepository.deletePost(postid)
+    }
+
+    async updatePost(postid: string, caption: string) {
+        return await this.postRepository.updatePost(postid, caption)
     }
 }
 

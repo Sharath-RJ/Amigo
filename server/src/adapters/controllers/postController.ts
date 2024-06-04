@@ -168,4 +168,19 @@ export class PostController {
             console.log(error)
         }
     }
+
+    async updatePost(req:customRequest, res:Response):Promise<any>{
+        try {
+            console.log("hello")
+            const {postid}= req.params
+            const {caption}= req.body
+            const success = await this.postUseCase.updatePost(postid,caption)
+            console.log(success)
+            if(success){
+                res.status(201).json(success) 
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
 }
