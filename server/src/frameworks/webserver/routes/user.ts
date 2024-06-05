@@ -2,6 +2,7 @@ import express, { Router } from "express"
 import { userConteoller } from "../../../adapters/controllers/userController"
 import { userRepoMongoDB } from "../../database/mongodb/repositories/userRepoMongoDB"
 import { userUseCase } from "../../../app/useCases/user"
+import authenticate from "../middlewares/authMiddleware"
 
 
 export default function userRoute(): Router {
@@ -21,6 +22,7 @@ export default function userRoute(): Router {
     router.put("/updateProfilePic/:userId",
         userControllerInstance.updateProfilePic.bind(userControllerInstance)
     )
+    router.put("/goLive", authenticate, userControllerInstance.goLive.bind(userControllerInstance))
 
     return router
 }

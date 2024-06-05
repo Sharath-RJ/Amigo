@@ -79,4 +79,20 @@ export class userRepoMongoDB implements UserRepoInterface {
         
         }
     }
+
+    async goLive(link:String, id:string): Promise<any> {
+        try {
+            console.log(link, id)
+            return await UserModel.findByIdAndUpdate(
+                id,
+                { $set: { liveLink: link, isLive: true } },
+                { new: true }
+            )
+
+        
+        } catch (error) {
+            console.error("Error updating profile pic:", error)
+
+        }
+    }
 }

@@ -19,6 +19,8 @@ const UserSchema = new Schema({
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     isBlocked: { type: Boolean, default: false },
     profilePic: { type: String },
+    isLive:{type:Boolean,default:false},
+    liveLink:{type:String},
 })
 
 export const UserModel = mongoose.model<UserDocument>("User", UserSchema)

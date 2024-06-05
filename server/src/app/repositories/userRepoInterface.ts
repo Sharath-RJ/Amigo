@@ -7,4 +7,5 @@ export interface UserRepoInterface {
     followUser(followId: string, userId: string): Promise<any>
     unfollowUser(followId: string, userId: string): Promise<any>
     updateProfilePic(userId: string, profilePic: string): Promise<any>
+    goLive(link: String, id:string): Promise<any>
 }

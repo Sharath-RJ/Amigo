@@ -1,11 +1,13 @@
 import { Request, Response } from "express"
 import { User } from "../../entities/user"
 import { userUseCase } from "../../app/useCases/user"
-
+interface customRequest extends Request {
+    user?: any
+}
 export class userConteoller {
     static getAllUsers: any
 
-
+   
     constructor(private _userUseCase: userUseCase) {}
     async getAllUsers(req:Request,res:Response):Promise<void>{
        try {
@@ -54,6 +56,23 @@ export class userConteoller {
                 const {userId} = req.params 
                 const {profilePic} = req.body
                 const user = await this._userUseCase.updateProfilePic(userId, profilePic)
+                if(user){
+                    res.status(200).json(user)
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+
+        async goLive(req:customRequest,res:Response):Promise<void>{
+            try {
+                const { livelink } = req.body
+
+                const user = await this._userUseCase.goLive(
+                    livelink,
+                    req.user._id
+                )
                 if(user){
                     res.status(200).json(user)
                 }

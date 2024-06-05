@@ -1,5 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
+import { environment } from '../../../../environment';
+
 
 // get token
 function generateToken(tokenServerUrl: string, userID: string) {
@@ -39,11 +42,12 @@ export function getUrlParams(
 })
 export class LiveStreamComponent {
   @ViewChild('root') root!: ElementRef;
-
+  sharedLinks: any[] = [];
+  constructor(private _http:HttpClient) {}
   ngAfterViewInit() {
     const roomID = getUrlParams().get('roomID') || randomID(5);
     const userID = randomID(5);
-    const userName = randomID(5);
+    const userName = 'Sharath J';
     let role_str = getUrlParams(window.location.href).get('role') || 'Host';
     const role =
       role_str === 'Host'
@@ -52,9 +56,8 @@ export class LiveStreamComponent {
         ? ZegoUIKitPrebuilt.Cohost
         : ZegoUIKitPrebuilt.Audience;
 
-    let sharedLinks:any[]=[];
     if (role === ZegoUIKitPrebuilt.Host || role === ZegoUIKitPrebuilt.Cohost) {
-      sharedLinks.push({
+      this.sharedLinks.push({
         name: 'Join as co-host',
         url:
           window.location.origin +
@@ -64,7 +67,7 @@ export class LiveStreamComponent {
           '&role=Cohost',
       });
     }
-    sharedLinks.push({
+   this.sharedLinks.push({
       name: 'Join as audience',
       url:
         window.location.origin +
@@ -99,8 +102,45 @@ export class LiveStreamComponent {
             role,
           },
         },
-        sharedLinks,
+        sharedLinks: this.sharedLinks,
+      });
+      const observer = new MutationObserver((mutations) => {
+        for (const mutation of mutations) {
+          if (mutation.type === 'childList') {
+            this.addGoLiveButtonListener();
+          }
+        }
+      });
+
+      observer.observe(this.root.nativeElement, {
+        childList: true,
+        subtree: true,
       });
     });
+  }
+
+  addGoLiveButtonListener() {
+    const goLiveButton =
+      this.root.nativeElement.querySelector('#ZegoLiveButton'); // Adjust the selector based on the actual button
+    if (goLiveButton) {
+      goLiveButton.addEventListener('click', this.handleGoLive.bind(this));
+    }
+  }
+
+  handleGoLive() {
+    const audienceLink =this.sharedLinks.find(
+      (link: any) => link.name === 'Join as audience'
+    )?.url;
+    if (audienceLink) {
+      console.log(audienceLink);
+      this._http.put(`${environment.apiUrl}/user/goLive`, {
+        livelink: audienceLink,
+      }).subscribe((res)=>{
+        console.log(res)
+      },(err)=>{
+        console.log(err)
+      });
+    }
+    console.log('go live button clicked');
   }
 }
