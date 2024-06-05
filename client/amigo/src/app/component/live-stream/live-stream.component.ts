@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
 import { environment } from '../../../../environment';
 
@@ -40,14 +40,19 @@ export function getUrlParams(
   templateUrl: './live-stream.component.html',
   styleUrl: './live-stream.component.css',
 })
-export class LiveStreamComponent {
+export class LiveStreamComponent implements OnInit {
   @ViewChild('root') root!: ElementRef;
   sharedLinks: any[] = [];
-  constructor(private _http:HttpClient) {}
+  user!: string;
+  constructor(private _http: HttpClient) {}
+  ngOnInit(): void {
+    const user = sessionStorage.getItem('loginedInUser');
+    if (user) this.user = JSON.parse(user).username;
+  }
   ngAfterViewInit() {
     const roomID = getUrlParams().get('roomID') || randomID(5);
     const userID = randomID(5);
-    const userName = 'Sharath J';
+    const userName = this.user;
     let role_str = getUrlParams(window.location.href).get('role') || 'Host';
     const role =
       role_str === 'Host'
@@ -67,7 +72,7 @@ export class LiveStreamComponent {
           '&role=Cohost',
       });
     }
-   this.sharedLinks.push({
+    this.sharedLinks.push({
       name: 'Join as audience',
       url:
         window.location.origin +
@@ -125,22 +130,48 @@ export class LiveStreamComponent {
     if (goLiveButton) {
       goLiveButton.addEventListener('click', this.handleGoLive.bind(this));
     }
+    const stopLiveButton = this.root.nativeElement.querySelector(
+      '.TTgLs8cpg66Z6CXgHGVA'
+    ); // Adjust the selector based on the actual button
+    if (stopLiveButton) {
+      stopLiveButton.addEventListener('click', this.handleStopLive.bind(this));
+    }
   }
 
   handleGoLive() {
-    const audienceLink =this.sharedLinks.find(
+    const audienceLink = this.sharedLinks.find(
       (link: any) => link.name === 'Join as audience'
     )?.url;
     if (audienceLink) {
       console.log(audienceLink);
-      this._http.put(`${environment.apiUrl}/user/goLive`, {
-        livelink: audienceLink,
-      }).subscribe((res)=>{
-        console.log(res)
-      },(err)=>{
-        console.log(err)
-      });
+      this._http
+        .put(`${environment.apiUrl}/user/goLive`, {
+          livelink: audienceLink,
+        })
+        .subscribe(
+          (res) => {
+            console.log(res);
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
     }
     console.log('go live button clicked');
+  }
+  handleStopLive(){
+    
+      this._http
+        .put(`${environment.apiUrl}/user/stopLive`, {
+          livelink: null,})
+        .subscribe(
+          (res) => {
+            console.log(res);
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
+    console.log('stop live button clicked');
   }
 }

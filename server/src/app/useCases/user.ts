@@ -23,7 +23,15 @@ export class userUseCase {
         )
     }
 
-    async goLive(link: String, id:string) {
+    async goLive(link: String, id: string) {
         return await this._userRepoInterface.goLive(link, id)
+    }
+
+    async getLiveUsers() {
+        return await this._userRepoInterface.getLiveUsers()
+    }
+
+    async stopLive(livelink: String, id: string) {
+        return await this._userRepoInterface.stopLive(livelink, id)
     }
 }

@@ -23,6 +23,11 @@ export default function userRoute(): Router {
         userControllerInstance.updateProfilePic.bind(userControllerInstance)
     )
     router.put("/goLive", authenticate, userControllerInstance.goLive.bind(userControllerInstance))
+    router.get(
+        "/getLiveUsers",
+        userControllerInstance.getLiveUsers.bind(userControllerInstance)
+    )
+    router.put("/stopLive", authenticate, userControllerInstance.stopLive.bind(userControllerInstance))
 
     return router
 }
