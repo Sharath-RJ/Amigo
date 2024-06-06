@@ -7,7 +7,7 @@ export class adminController {
     async getAllUsers(req: Request, res: Response): Promise<any> {
         try {
             const users = await this._adminusecase.getAllUsers()
-            if (users) res.json(users)
+            if (users)  res.status(200).json(users)
         } catch (error) {
             console.log(error)
         }
@@ -17,7 +17,7 @@ export class adminController {
         try {
             const { id } = req.params
             const user = await this._adminusecase.blockUser(id)
-            if (user) res.json(user)
+            if (user)  res.status(200).json(user)
         } catch (error) {
             console.log(error)
         }
@@ -27,7 +27,7 @@ export class adminController {
         try {
             const { id } = req.params
             const user = await this._adminusecase.unblockUser(id)
-            if (user) res.json(user)
+            if (user) res.status(200).json(user)
         } catch (error) {
             console.log(error)
         }
