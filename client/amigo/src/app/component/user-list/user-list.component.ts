@@ -23,6 +23,7 @@ export class UserListComponent implements OnInit {
   userid!: string;
   searchText!: string;
   userFilter: any = { username: '' };
+  p:number=1
 
   constructor(private http: HttpClient) {}
 
