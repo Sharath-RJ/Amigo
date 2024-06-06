@@ -10,6 +10,7 @@ import { environment } from '../../../../../environment';
 export class PostsListComponent implements OnInit {
   constructor(private _http: HttpClient) {}
   posts: any[] = [];
+  p: number = 1;
   ngOnInit(): void {
     console.log('hello');
     this._http.get(`${environment.apiUrl}/admin/getPosts`).subscribe(

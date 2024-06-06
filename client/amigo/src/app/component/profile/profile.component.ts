@@ -19,6 +19,8 @@ import { FollowersComponent } from '../modal/followers/followers.component';
     followers: any;
     posts: Post[] = [];
     profilePic: string = '';
+    p:number=1;
+    totalUsers:any
 
     constructor(private _http: HttpClient, public dialog: MatDialog) {}
 
