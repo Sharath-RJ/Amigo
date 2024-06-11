@@ -14,6 +14,9 @@ import { VideocallComponent } from './component/videocall/videocall.component';
 import { NotificationComponent } from './component/notification/notification.component';
 import { ProfileComponent } from './component/profile/profile.component';
 import { LiveStreamComponent } from './component/live-stream/live-stream.component';
+import { TestInterfaceComponent } from './component/mock-test/test-interface/test-interface.component';
+import { QuestonsComponent } from './component/mock-test/questons/questons.component';
+import { TestResultComponent } from './component/mock-test/test-result/test-result.component';
 
 
 const routes: Routes = [
@@ -32,7 +35,10 @@ const routes: Routes = [
   { path: 'videocall/:roomId', component: VideocallComponent },
   { path: 'notifications', component: NotificationComponent },
   { path: 'profile', component: ProfileComponent },
-  { path: 'liveStream', component:LiveStreamComponent },
+  { path: 'liveStream', component: LiveStreamComponent },
+  { path: 'testInterface', component: TestInterfaceComponent },
+  { path: 'startTest', component: QuestonsComponent },
+  { path: 'finishTest', component: TestResultComponent },
 ];
 
 @NgModule({

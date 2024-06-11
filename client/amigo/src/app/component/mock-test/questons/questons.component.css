@@ -1,0 +1,28 @@
+ .highlight-border {
+        animation: highlight 1s ease-in-out infinite alternate;
+    }
+
+    @keyframes highlight {
+        from {
+            border-color: #4CAF50; /* Green */
+            box-shadow: 0 0 10px #4CAF50; /* Green */
+        }
+        to {
+            border-color: #00BFFF; /* Deep Sky Blue */
+            box-shadow: 0 0 20px #00BFFF; /* Deep Sky Blue */
+        }
+    }
+
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

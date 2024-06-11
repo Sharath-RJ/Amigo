@@ -53,6 +53,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { FollowersComponent } from './component/modal/followers/followers.component';
 import { FollowingComponent } from './component/modal/following/following.component';
 import { LiveStreamComponent } from './component/live-stream/live-stream.component';
+import { TestInterfaceComponent } from './component/mock-test/test-interface/test-interface.component';
+import { TestResultComponent } from './component/mock-test/test-result/test-result.component';
+import { QuestonsComponent } from './component/mock-test/questons/questons.component';
 
 
 
@@ -93,6 +96,9 @@ import { LiveStreamComponent } from './component/live-stream/live-stream.compone
     FollowersComponent,
     FollowingComponent,
     LiveStreamComponent,
+    TestInterfaceComponent,
+    TestResultComponent,
+    QuestonsComponent,
   ],
   imports: [
     BrowserModule,
