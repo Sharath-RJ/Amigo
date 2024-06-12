@@ -22,7 +22,7 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrls: ['./chat.component.css'],
 })
 export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
-  content: string = '';
+  content!:any;
   receiverId: string | null = null;
   senderId: string | null = null;
   messages: any = [];
@@ -68,18 +68,17 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     const StereoAudioRecorder = recordrtc.StereoAudioRecorder;
     this.record = new StereoAudioRecorder(stream, options);
     console.log('Recorder initialized:', this.record);
-    console.log(this.record)
+    console.log(this.record);
     this.record.record();
     console.log('Recording started');
   }
 
   stopRecording() {
-   
-      console.log('Stopping recording...');
-      this.resording = false;
-      this.record.stop(this.processingRecord.bind(this));
+    console.log('Stopping recording...');
+    this.resording = false;
+    this.record.stop(this.processingRecord.bind(this));
 
-      console.log('Recording stopped');
+    console.log('Recording stopped');
   }
 
   processingRecord(blob: Blob) {
@@ -246,5 +245,18 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
       .catch((err: any) => {
         console.warn(err);
       });
+  }
+
+  checkGrammar(){
+
+    this._http.post(`${environment.apiUrl}/chat/checkGrammar`, {content:this.content}).subscribe(
+      (data) => {
+        console.log('Correct message', data);
+        this.content=data
+      },
+      (error) => {
+        console.error('Error sending message', error);
+      }
+    )
   }
 }
