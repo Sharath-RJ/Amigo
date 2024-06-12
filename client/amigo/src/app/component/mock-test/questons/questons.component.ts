@@ -13,6 +13,10 @@ export class QuestonsComponent implements OnInit {
   score: number = 0;
   userAnswers: any = {};
   loading: boolean = true;
+  resultloaing: boolean = true;
+  feedback!: string;
+  proficiency_level!: string;
+  star_rating!: number;
 
   constructor(private _http: HttpClient) {}
 
@@ -36,6 +40,30 @@ export class QuestonsComponent implements OnInit {
       this.score++;
     }
     this.currentQuestionIndex++;
+    console.log(this.userAnswers);
+
+    if (this.currentQuestionIndex == this.questions.length) {
+      this._http
+        .post(`${environment.apiUrl}/mock/submitAnswers`, {
+          Questions: this.questions,
+          Answers: this.userAnswers,
+          score: this.score,
+        })
+        .subscribe(
+          (res: any) => {
+            console.log('res', res);
+            this.resultloaing = false;
+            this.proficiency_level = res.proficiency_level;
+            this.feedback = res.feedback;
+           this.star_rating = res.star_rating;
+           
+          },
+          (err) => {
+            this.resultloaing = false;
+            console.log('error', err);
+          }
+        );
+    }
   }
 
   restartQuiz() {
