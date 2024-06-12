@@ -8,12 +8,14 @@ export class chatUseCase {
     async sendMessage(
         sender: string,
         receiver: string,
-        content: string
+        content: string,
+        audioUrl: string
     ): Promise<IMessage> {
         return await this._messageRepository.saveMessage(
             sender,
             receiver,
-            content
+            content,
+            audioUrl
         )
     }
 

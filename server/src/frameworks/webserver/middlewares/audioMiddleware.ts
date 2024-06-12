@@ -6,11 +6,11 @@ const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: {
         folder: "audio",
-        format: async (req: any, file: any) => "wav", // Supports promises as well
+        format: async (req: any, file: any) => "wav", 
         public_id: (req: any, file: any) =>
             `${Date.now()}-${file.originalname}`,
         resource_type: "raw",
-    } as any, // Explicitly cast to any to bypass type checking
+    } as any, 
 })
 
 const uploadAudio = multer({ storage: storage })

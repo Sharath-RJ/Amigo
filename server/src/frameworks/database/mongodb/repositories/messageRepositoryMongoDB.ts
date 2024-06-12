@@ -6,12 +6,14 @@ export class messageRepositoryMongoDB implements messageRepository {
     async saveMessage(
         sender: string,
         receiver: string,
-        content: string
+        content: string,
+        audioUrl?: string
     ): Promise<IMessage> {
         const message: IMessage = new MessageModel({
             sender,
             receiver,
             content,
+            audioUrl,
             timestamp: new Date(),
             status: "sent",
         })

@@ -91,6 +91,20 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
         .subscribe((response: any) => {
           console.log(response)
           this.url = response.fileUrl;
+           this._http
+             .post(`${environment.apiUrl}/chat/send`, {
+               sender: this.senderId,
+               receiver: this.receiverId,
+               audioUrl: this.url,
+             })
+             .subscribe(
+               (data) => {
+                 console.log('Message sent successfully', data);
+               },
+               (error) => {
+                 console.error('Error sending message', error);
+               }
+             );
         });
       console.log('File uploaded, URL:', this.url);
     } catch (error) {

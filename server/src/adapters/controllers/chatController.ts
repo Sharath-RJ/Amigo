@@ -9,12 +9,13 @@ export class chatController {
     ) {}
 
     async sendMessage(req: Request, res: Response): Promise<void> {
-        const { sender, receiver, content } = req.body
+        const { sender, receiver, content , audioUrl} = req.body
         try {
             const message = await this._chatUseCase.sendMessage(
                 sender,
                 receiver,
-                content
+                content,
+                audioUrl
             )
             this.io.to(receiver).emit("newMessage", message) // Emit message to receiver
             res.json(message)

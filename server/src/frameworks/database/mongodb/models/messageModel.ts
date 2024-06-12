@@ -11,7 +11,8 @@ export interface IMessage extends Document {
 const MessageSchema: Schema = new Schema({
     sender: { type: String, required: true },
     receiver: { type: String, required: true },
-    content: { type: String, required: true },
+    content: { type: String },
+    audioUrl: { type: String },
     timestamp: { type: Date, default: Date.now },
     status: {
         type: String,
