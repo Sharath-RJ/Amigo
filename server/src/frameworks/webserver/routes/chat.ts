@@ -4,6 +4,7 @@ import { messageRepositoryMongoDB } from "../../database/mongodb/repositories/me
 import { chatUseCase } from "../../../app/useCases/chat"
 import { io } from "../../../app" // Adjust the path accordingly
 import { GoogleGenerativeAI } from "@google/generative-ai"
+import uploadAudio from "../middlewares/audioMiddleware"
 
 export default function ChatRouter(): Router {
     const router = express.Router()
@@ -44,5 +45,21 @@ export default function ChatRouter(): Router {
            res.json(text)
 
     })
+
+
+      router.post("/Audioupload", uploadAudio.single("audio"), (req, res) => {
+          console.log("inside audio url logic")
+          const file = req.file
+          if (!file) {
+              return res.status(400).send("No file uploaded.")
+          }
+          // Generate the file URL
+          const fileUrl = `http://${req.headers.host}/uploads/${file.filename}`
+          res.json({ fileUrl: fileUrl })
+      })
+
+
+
+
     return router
 }

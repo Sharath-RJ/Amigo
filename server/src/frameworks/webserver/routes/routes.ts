@@ -6,6 +6,7 @@ import userRoute from "./user"
 import adminRouter from "./admin"
 import PostsRouter from "./posts"
 import mockRouter from "./mock"
+import uploadAudio from "../middlewares/audioMiddleware"
 
 
 const routes = (app: Application) => {
@@ -16,6 +17,9 @@ const routes = (app: Application) => {
     app.use("/api/user", userRoute())
     app.use("/api/admin", adminRouter())
     app.use("/api/mock", mockRouter())
+
+
+  
     
 }
 

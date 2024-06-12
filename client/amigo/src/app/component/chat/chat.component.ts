@@ -82,9 +82,20 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   processingRecord(blob: Blob) {
-    this.url = URL.createObjectURL(blob);
     console.log('Blob processed:', blob);
-    console.log('URL created:', this.url);
+    const formData = new FormData();
+    formData.append('audio', blob, 'recording.wav');
+    try {
+      this._http
+        .post(`${environment.apiUrl}/chat/Audioupload`,formData)
+        .subscribe((response: any) => {
+          console.log(response)
+          this.url = response.fileUrl;
+        });
+      console.log('File uploaded, URL:', this.url);
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    }
   }
 
   errorCallback(error: any) {
