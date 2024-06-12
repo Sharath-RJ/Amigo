@@ -1,14 +1,16 @@
 import multer from "multer"
-import path from "path"
+import { CloudinaryStorage } from "multer-storage-cloudinary"
+import cloudinary from "../../../entities/cloudinaryConfig"
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "src/frameworks/webserver/middlewares/audio/")
-    },
-    filename: (req, file, cb) => {
-        const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9)
-        cb(null, uniqueSuffix + path.extname(file.originalname))
-    },
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: "audio",
+        format: async (req: any, file: any) => "wav", // Supports promises as well
+        public_id: (req: any, file: any) =>
+            `${Date.now()}-${file.originalname}`,
+        resource_type: "raw",
+    } as any, // Explicitly cast to any to bypass type checking
 })
 
 const uploadAudio = multer({ storage: storage })

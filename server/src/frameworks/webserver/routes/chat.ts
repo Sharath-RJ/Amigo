@@ -47,16 +47,16 @@ export default function ChatRouter(): Router {
     })
 
 
-      router.post("/Audioupload", uploadAudio.single("audio"), (req, res) => {
-          console.log("inside audio url logic")
-          const file = req.file
-          if (!file) {
-              return res.status(400).send("No file uploaded.")
-          }
-          // Generate the file URL
-          const fileUrl = `http://${req.headers.host}/uploads/${file.filename}`
-          res.json({ fileUrl: fileUrl })
-      })
+     router.post("/Audioupload", uploadAudio.single("audio"), (req, res) => {
+         console.log("Inside audio URL logic")
+         const file = req.file
+         if (!file) {
+             return res.status(400).send("No file uploaded.")
+         }
+         // Cloudinary URL
+         const fileUrl = file.path
+         res.json({ fileUrl: fileUrl })
+     })
 
 
 
