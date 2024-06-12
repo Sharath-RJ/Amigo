@@ -13,15 +13,15 @@ import { SocketService } from '../../services/socketio.service';
 import { environment } from '../../../../environment';
 import { ZIM } from 'zego-zim-web';
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
+import * as recordrtc from 'recordrtc';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css'],
 })
-export class ChatComponent
-  implements OnInit, OnDestroy, AfterViewChecked, AfterViewInit
-{
+export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
   content: string = '';
   receiverId: string | null = null;
   senderId: string | null = null;
@@ -29,6 +29,9 @@ export class ChatComponent
   roomId!: string;
   chattedUsers: any = [];
   zp: any;
+  resording: boolean = false;
+  record: any;
+  url!: string;
 
   @ViewChild('chatContainer') private chatContainer!: ElementRef;
 
@@ -36,8 +39,58 @@ export class ChatComponent
     private _router: Router,
     private route: ActivatedRoute,
     private _http: HttpClient,
-    private socketService: SocketService
+    private socketService: SocketService,
+    private domsanitize: DomSanitizer
   ) {}
+
+  sanitize(url: string) {
+    return this.domsanitize.bypassSecurityTrustUrl(url);
+  }
+
+  startRecording() {
+    console.log('Starting recording...');
+    this.resording = true;
+    let mediaConstraints = {
+      video: false,
+      audio: true,
+    };
+    navigator.mediaDevices
+      .getUserMedia(mediaConstraints)
+      .then(this.successCallback.bind(this))
+      .catch(this.errorCallback.bind(this));
+  }
+
+  successCallback(stream: MediaStream) {
+    console.log('Media stream obtained:', stream);
+    const options: recordrtc.Options = {
+      mimeType: 'audio/wav' as const, // Explicitly cast to the correct type
+    };
+    const StereoAudioRecorder = recordrtc.StereoAudioRecorder;
+    this.record = new StereoAudioRecorder(stream, options);
+    console.log('Recorder initialized:', this.record);
+    console.log(this.record)
+    this.record.record();
+    console.log('Recording started');
+  }
+
+  stopRecording() {
+   
+      console.log('Stopping recording...');
+      this.resording = false;
+      this.record.stop(this.processingRecord.bind(this));
+
+      console.log('Recording stopped');
+  }
+
+  processingRecord(blob: Blob) {
+    this.url = URL.createObjectURL(blob);
+    console.log('Blob processed:', blob);
+    console.log('URL created:', this.url);
+  }
+
+  errorCallback(error: any) {
+    console.log('Error:', error);
+  }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
@@ -89,10 +142,10 @@ export class ChatComponent
         this.messages.push(message);
         this.scrollToBottom();
       });
-      console.log("sender Id", this.senderId);
-      console.log("receiver id", this.receiverId)
+      console.log('sender Id', this.senderId);
+      console.log('receiver id', this.receiverId);
       const userID = this.senderId || '';
-      console.log("userID",userID)
+      console.log('userID', userID);
       const userName = 'Sender' + userID;
       const appID = 796494173;
       const serverSecret = '12bf1885a7a04712777878d75dc4fe86';
@@ -113,14 +166,18 @@ export class ChatComponent
     this.socketService.disconnect();
   }
 
-  ngAfterViewChecked(): void {
-    this.scrollToBottom();
+  ngAfterViewChecked() {
+    //   this.scrollToBottom();
   }
 
   scrollToBottom(): void {
     try {
-      this.chatContainer.nativeElement.scrollTop =
-        this.chatContainer.nativeElement.scrollHeight;
+      setTimeout(() => {
+        if (this.chatContainer && this.chatContainer.nativeElement) {
+          this.chatContainer.nativeElement.scrollTop =
+            this.chatContainer.nativeElement.scrollHeight;
+        }
+      }, 0);
     } catch (err) {
       console.error('Scroll to bottom error', err);
     }
@@ -166,16 +223,12 @@ export class ChatComponent
     return result;
   }
 
-  ngAfterViewInit(): void {
-    // You can remove this method if not needed
-  }
-
   connectToVideoCall(): void {
     if (!this.zp) {
       console.error('ZegoUIKitPrebuilt is not initialized');
       return;
     }
-    console.log("vc-> receriver id", this.receiverId)
+    console.log('vc-> receriver id', this.receiverId);
     const targetUser = {
       userID: this.receiverId,
       userName: 'Receiver',

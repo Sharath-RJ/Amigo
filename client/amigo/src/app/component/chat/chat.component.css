@@ -1,26 +1,26 @@
-/* Custom scrollbar styles */
+/* 
 .chat-container::-webkit-scrollbar {
   width: 1px;
 }
 
 .chat-container::-webkit-scrollbar-track {
-  background: #2d3748; /* Track color */
-  border-radius: 10px; /* More rounded */
+  background: #2d3748;
+  border-radius: 10px; 
 }
 
 .chat-container::-webkit-scrollbar-thumb {
-  background-color: #4a5568; /* Handle color */
-  border-radius: 10px; /* More rounded for oval shape */
-  border: 1px solid #2d3748; /* Space around handle */
+  background-color: #4a5568; 
+  border-radius: 10px; 
+  border: 1px solid #2d3748; 
 }
 
 .chat-container::-webkit-scrollbar-thumb:hover {
-  background-color: #718096; /* Handle color on hover */
-}
+  background-color: #718096; 
+} 
 
-/* For Firefox */
+
 .chat-container {
   scrollbar-width: thin;
   scrollbar-color: #4a5568 #2d3748;
 }
-
+ */
