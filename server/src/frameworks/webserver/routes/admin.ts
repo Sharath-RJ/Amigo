@@ -34,5 +34,7 @@ export default function adminRouter(){
                 adminControllerInstance.getPosts.bind(adminControllerInstance)
    )
 
+   router.patch("/updateUser/:id", adminControllerInstance.updateUser.bind(adminControllerInstance))
+
     return router
 }

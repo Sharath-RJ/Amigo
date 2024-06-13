@@ -8,13 +8,14 @@
                     <th class="px-4 py-2">Username</th>
                     <th class="px-4 py-2">Email</th>
                     <th class="px-4 py-2">Block/UNblock</th>
+                    <th class="px-4 py-2">Action</th>
                 </tr>
             </thead>
             <tbody>
                 <ng-container *ngFor="let user of userList | paginate:{itemsPerPage:5, currentPage:p}">
                     <tr class="bg-gray-600 border-b-4 border-gray-700 hover:bg-gray-700 transition-colors">
                         <td class="px-4 py-2">
-                            <img [src]="user.profilePicture" alt="{{ user.username }}'s profile picture"
+                            <img [src]="user.profilePic" alt="{{ user.username }}'s profile picture"
                                 class="w-10 h-10 rounded-full">
                         </td>
                         <td class="px-4 py-2">{{ user.username }}</td>
@@ -26,6 +27,11 @@
                         <button *ngIf="!user.isBlocked" (click)="blockUser(user._id)"
                             class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">Block</button>
 
+                        </td>
+                        <td>
+                            <button (click)="openEditDialog(user)" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-200">
+                                Edit
+                            </button>
                         </td>
                     </tr>
                 </ng-container>

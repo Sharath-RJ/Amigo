@@ -5,4 +5,5 @@ export interface adminRepository {
     publishPost(id: string): Promise<any>
     getPostDetails(id: string): Promise<any>
     getPosts(): Promise<any>
+    updateUser(id: string, updatedUser: any): Promise<any>
 }

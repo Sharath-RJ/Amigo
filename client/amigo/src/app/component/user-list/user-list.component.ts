@@ -7,7 +7,7 @@ export interface User {
   _id: number;
   name: string;
   email: string;
-  profilePicture: string;
+  profilePic: string;
   username: string;
   isFollowing:any;
   isBlocked:boolean

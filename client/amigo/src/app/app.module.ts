@@ -56,6 +56,7 @@ import { LiveStreamComponent } from './component/live-stream/live-stream.compone
 import { TestInterfaceComponent } from './component/mock-test/test-interface/test-interface.component';
 import { TestResultComponent } from './component/mock-test/test-result/test-result.component';
 import { QuestonsComponent } from './component/mock-test/questons/questons.component';
+import { UserEditModalComponent } from './component/modal/user-edit-modal/user-edit-modal.component';
 
 
 
@@ -99,6 +100,7 @@ import { QuestonsComponent } from './component/mock-test/questons/questons.compo
     TestInterfaceComponent,
     TestResultComponent,
     QuestonsComponent,
+    UserEditModalComponent,
   ],
   imports: [
     BrowserModule,

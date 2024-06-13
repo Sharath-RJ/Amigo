@@ -18,7 +18,11 @@ export  class adminUseCase {
     async getPostDetails(id: string) {
         return await this.adminRepository.getPostDetails(id)
     }
-    async getPosts(){
+    async getPosts() {
         return await this.adminRepository.getPosts()
+    }
+
+    async updateUser(id: string, updatedUser: any) {
+        return await this.adminRepository.updateUser(id, updatedUser)
     }
 }

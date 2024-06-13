@@ -68,4 +68,17 @@ export class adminController {
             console.log(error)
         }
     }
+
+    async updateUser(req: Request, res: Response): Promise<void> {
+        try {
+            const { id } = req.params
+            const { updatedUser }= req.body
+            console.log(updatedUser)
+            console.log(req.body)
+            const user = await this._adminusecase.updateUser(id, req.body)
+            if (user) { res.status(200).json(user) }
+        } catch (error) {
+            console.log(error)
+        }
+    }
 }

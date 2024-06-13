@@ -72,4 +72,17 @@ export class adminRepositoryMongoDB implements adminRepository {
             return []
         }
     }
+
+    async updateUser(id: string, updatedUser: any): Promise<any> {
+        try {
+            return  await UserModel.findByIdAndUpdate(
+                id,
+                { $set: updatedUser },
+                { new: true }
+            )
+    
+        } catch (error) {
+            console.log(error)
+        }
+    }
 }

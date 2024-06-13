@@ -62,7 +62,7 @@ export class PostsDetailsComponent implements OnInit {
   publishPost(id: string) {
     this._http.patch(`${environment.apiUrl}/admin/publish/` + id, {}).subscribe(
       (data) => {
-        this._snackBar.open('Deleted Successfully', '', {
+        this._snackBar.open('Published Successfully', '', {
           duration: 3000,
           horizontalPosition: 'center',
           verticalPosition: 'top',
