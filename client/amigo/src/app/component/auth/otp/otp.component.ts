@@ -42,7 +42,7 @@ export class OtpComponent {
       })
       .subscribe(
         (data) => {
-          // this._router.navigate(['/success']);
+           this._router.navigate(['/']);
           console.log(data);
           console.log('Successfully Verified');
         },

@@ -22,7 +22,8 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrls: ['./chat.component.css'],
 })
 export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
-  content!:any;
+  content!: any;
+  username!:string
   receiverId: string | null = null;
   senderId: string | null = null;
   messages: any = [];
@@ -32,6 +33,12 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
   resording: boolean = false;
   record: any;
   url!: string;
+  isplaying: boolean = false;
+  messageProgress: number[] = [];
+  messageDurations: number[] = [];
+  currentAudio: HTMLAudioElement | null = null;
+  currentIndex: number | null = null;
+  voiceSending: boolean = false;
 
   @ViewChild('chatContainer') private chatContainer!: ElementRef;
 
@@ -42,6 +49,50 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     private socketService: SocketService,
     private domsanitize: DomSanitizer
   ) {}
+
+  playAudio(message: any, index: number) {
+    if (this.currentAudio) {
+      this.currentAudio.pause();
+      this.currentAudio.currentTime = 0;
+      this.isplaying = false;
+      this.currentAudio = null;
+      if (this.currentIndex === index) {
+        return; // Toggle play/pause functionality
+      }
+    }
+
+    this.currentAudio = new Audio(message.audioUrl);
+    this.currentIndex = index;
+    this.isplaying = true;
+    this.currentAudio.load();
+    this.currentAudio.play();
+
+    this.currentAudio.addEventListener('loadedmetadata', () => {
+      this.messageDurations[index] = this.currentAudio!.duration * 1000; // Convert to milliseconds for Angular date pipe
+    });
+
+    this.currentAudio.addEventListener('timeupdate', () => {
+      this.messageProgress[index] =
+        (this.currentAudio!.currentTime / this.currentAudio!.duration) * 100;
+      this.messageDurations[index] = this.currentAudio!.currentTime;
+    });
+
+    this.currentAudio.addEventListener('ended', () => {
+      this.messageProgress[index] = 0;
+    });
+  }
+
+  formatTime(seconds: number): string {
+    if (isNaN(seconds)) {
+      return '00:00';
+    }
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    return `${this.pad(minutes)}:${this.pad(remainingSeconds)}`;
+  }
+  pad(value: number): string {
+    return value < 10 ? '0' + value : value.toString();
+  }
 
   sanitize(url: string) {
     return this.domsanitize.bypassSecurityTrustUrl(url);
@@ -82,29 +133,36 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   processingRecord(blob: Blob) {
+    this.voiceSending = true;
     console.log('Blob processed:', blob);
     const formData = new FormData();
     formData.append('audio', blob, 'recording.wav');
     try {
       this._http
-        .post(`${environment.apiUrl}/chat/Audioupload`,formData)
+        .post(`${environment.apiUrl}/chat/Audioupload`, formData)
         .subscribe((response: any) => {
-          console.log(response)
+          console.log(response);
           this.url = response.fileUrl;
-           this._http
-             .post(`${environment.apiUrl}/chat/send`, {
-               sender: this.senderId,
-               receiver: this.receiverId,
-               audioUrl: this.url,
-             })
-             .subscribe(
-               (data) => {
-                 console.log('Message sent successfully', data);
-               },
-               (error) => {
-                 console.error('Error sending message', error);
-               }
-             );
+          this.socketService.sendMessage({
+            sender: this.senderId,
+            receiver: this.receiverId,
+            audioUrl: this.url,
+          });
+          this._http
+            .post(`${environment.apiUrl}/chat/send`, {
+              sender: this.senderId,
+              receiver: this.receiverId,
+              audioUrl: this.url,
+            })
+            .subscribe(
+              (data) => {
+                this.voiceSending = false;
+                console.log('Message sent successfully', data);
+              },
+              (error) => {
+                console.error('Error sending message', error);
+              }
+            );
         });
       console.log('File uploaded, URL:', this.url);
     } catch (error) {
@@ -130,6 +188,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     if (loggedInUser) {
       try {
         this.senderId = JSON.parse(loggedInUser)._id;
+        this.username = JSON.parse(loggedInUser).username;
       } catch (e) {
         console.error('Error parsing loggedInUser from sessionStorage', e);
       }
@@ -272,16 +331,19 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
       });
   }
 
-  checkGrammar(){
-
-    this._http.post(`${environment.apiUrl}/chat/checkGrammar`, {content:this.content}).subscribe(
-      (data) => {
-        console.log('Correct message', data);
-        this.content=data
-      },
-      (error) => {
-        console.error('Error sending message', error);
-      }
-    )
+  checkGrammar() {
+    this._http
+      .post(`${environment.apiUrl}/chat/checkGrammar`, {
+        content: this.content,
+      })
+      .subscribe(
+        (data) => {
+          console.log('Correct message', data);
+          this.content = data;
+        },
+        (error) => {
+          console.error('Error sending message', error);
+        }
+      );
   }
 }

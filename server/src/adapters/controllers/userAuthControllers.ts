@@ -2,19 +2,20 @@
 import { Request, Response } from "express"
 import { AuthUseCase } from "../../app/useCases/auth/userAuth"
 import { AuthResponse } from "../../types/authResponse"
+import { TempOtp } from "../../frameworks/database/mongodb/models/tempOtpModel"
 
 export class AuthController {
     constructor(private authUseCase: AuthUseCase) {}
 
-      private temporaryStore: {
-                [key: string]: {
-                    otp: string
-                    username: string
-                    email: string
-                    password: string
-                    phoneNumber: string
-                }
-            } = {}
+    private temporaryStore: {
+        [key: string]: {
+            otp: string
+            username: string
+            email: string
+            password: string
+            phoneNumber: string
+        }
+    } = {}
 
     async register(req: Request, res: Response): Promise<void> {
         try {
@@ -71,12 +72,23 @@ export class AuthController {
 
     async generateOtp(req: Request, res: Response): Promise<void> {
         try {
-          
             const { username, email, password, phoneNumber } = req.body
             console.log("inside conteoller", req.body)
-            const otp = this.authUseCase.generateOtp(phoneNumber)
-            this.temporaryStore[phoneNumber] = { otp, ...req.body }
-            console.log(this.temporaryStore)
+            const otp = await this.authUseCase.generateOtp(phoneNumber)
+            await TempOtp.findOneAndUpdate(
+                { phoneNumber },
+                {
+                    otp,
+                    phoneNumber,
+                    createdAt: new Date(),
+                    username,
+                    email,
+                    password,
+                },
+                { upsert: true, new: true }
+            )
+
+            console.log("OTP stored in MongoDB")
             res.status(200).json({ message: "OTP generated successfully" })
         } catch (error) {
             console.log(error)
@@ -85,24 +97,49 @@ export class AuthController {
 
     async verifyOtp(req: Request, res: Response): Promise<void> {
         try {
-            console.log("inside very-otp controller", req.body)
+            console.log("inside verifyOtp controller", req.body)
             const { phoneNumber, otp } = req.body
-            const storedData = this.temporaryStore[phoneNumber]
-            const storedOtp = await storedData.otp
-             console.log("stored data otp", storedOtp)
-              console.log("Otp from user", otp)
-            if (storedData && storedOtp === otp) {
-                // OTP is correct, register the user
-                const success = await this.authUseCase.register(
-                    storedData.username,
-                    storedData.email,
-                    storedData.password,
-                    storedData.phoneNumber
+
+            // Fetch the stored data from MongoDB
+            const storedData = await TempOtp.findOne({ phoneNumber })
+            console.log("stored data inside the verify function", storedData)
+
+            if (!storedData) {
+                console.log(
+                    "No stored data found for phone number:",
+                    phoneNumber
                 )
+                 res
+                    .status(400)
+                    .json({ error: "Invalid phone number or OTP" })
+            }
+
+            const storedOtp = storedData?.otp
+            console.log("stored data otp", storedOtp)
+            console.log("Otp from user:", otp)
+
+            if (storedOtp === otp) {
+                
+                if (!storedData?.username || !storedData?.email || !storedData?.password || !storedData?.phoneNumber) {
+                     res
+                        .status(400)
+                        .json({ error: "Invalid stored user data" })
+                }
+
+                // OTP is correct, register the user
+                if (storedData?.username!==undefined){
+                    const success = await this.authUseCase.register(
+                        storedData?.username,
+                        storedData?.email,
+                        storedData?.password,
+                        storedData?.phoneNumber
+                    )
+                
+                   
 
                 if (success) {
-                    // Remove temporary data after successful registration
-                    delete this.temporaryStore[phoneNumber]
+                    // Remove the OTP entry after successful registration
+                    await TempOtp.deleteOne({ phoneNumber })
 
                     res.status(200).json({
                         message:
@@ -111,11 +148,14 @@ export class AuthController {
                 } else {
                     res.status(400).json({ error: "Registration failed" })
                 }
+
+            }
             } else {
+                console.log("Invalid OTP")
                 res.status(400).json({ error: "Invalid OTP" })
             }
         } catch (error) {
-            console.log("OTP verification error:", error)
+            console.error("OTP verification error:", error)
             res.status(500).json({ error: "Internal server error" })
         }
     }

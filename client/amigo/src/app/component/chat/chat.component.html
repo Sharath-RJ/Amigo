@@ -30,7 +30,7 @@
         <!-- Middle Container (30%) -->
         <div class="w-3/12 md:w-3/10 bg-gray-800 p-4 flex flex-col">
             <div class="w-full flex items-center pl-[10px] bg-gray-700 h-[70px] rounded-lg">
-                <h3 class="font-bold">Profile Name</h3>
+                <h3 class="font-bold">{{username}}</h3>
             </div>
             <div class="overflow-y-auto mt-4">
                 <ul *ngFor="let user of chattedUsers" class="list-none p-4 bg-gray-800 shadow-md rounded-lg space-y-[5px]">
@@ -63,14 +63,34 @@
 
     <!-- Chat Messages -->
     <div #chatContainer class="chat-container flex-grow p-4 overflow-y-auto h-[70vh] bg-gray-800 rounded-lg mt-4">
-        <ng-container *ngFor="let message of messages">
-            <div class="max-w-xs mb-4 p-3 rounded-lg" [ngClass]="{
+        <ng-container *ngFor="let message of messages; let i = index">
+            <div *ngIf="message.content" class="max-w-xs mb-4 p-3 rounded-lg" [ngClass]="{
             'bg-blue-600 text-white rounded-lg rounded-tr-none ml-auto': message.sender === senderId,
             'bg-gray-700 text-white rounded-lg rounded-tl-none self-start': message.sender !== senderId
           }">
                 <p>{{ message.content }}</p>
             </div>
+
+            <!--Containter for audio player-->
+    <div *ngIf="message.audioUrl" class="flex mt-10 mb-10 items-center space-x-2 w-[300px] h-[50px] p-1 rounded shadow-sm"
+        [ngClass]="{
+          'bg-blue-600 text-white rounded-lg rounded-tr-none ml-auto': message.sender === senderId,
+          'bg-gray-700 text-white rounded-lg rounded-tl-none self-start': message.sender !== senderId
+        }">
+        <button (click)="playAudio(message, i)" class="w-5 h-5 text-gray-600">
+            <i [ngClass]="currentIndex === i && isplaying ? 'fas fa-pause' : 'fas fa-play'"></i>
+        </button>
+        <div class="flex-1 bg-gray-200 rounded-full overflow-hidden h-1 relative">
+            <div [style.width.%]="messageProgress[i]" class="absolute top-0 left-0 h-full bg-gray-800"></div>
+        </div>
+        <span class="text-xs text-gray-600">{{ formatTime(messageDurations[i]) }}</span>
+    </div>
+
+            
         </ng-container>
+
+      
+
     </div>
 
             <!-- Message Input -->
@@ -81,13 +101,20 @@
                         placeholder="Type your message...">
                     <button type="submit" class="ml-4 px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700">Send</button>
                     <!--button for grammar check-->
-                    <button (click)="checkGrammar()" type="button"
+                     <button (click)="checkGrammar()" type="button"
                         class="ml-4 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-blue-600 hover:to-purple-600 text-white font-bold py-2 px-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">Grammar
-                        Doctor</button>
+                        Doctor</button> 
                     <i *ngIf="resording" (click)="stopRecording()"
-                        class="fas fa-microphone text-xl text-red-400 hover:text-white cursor-pointer ml-4"></i>
+                        class="fas fa-microphone text-xl text-red-400  cursor-pointer ml-4"></i>
                     <i *ngIf="!resording" (click)="startRecording()"
-                        class="fas fa-microphone text-xl text-gray-400 hover:text-white cursor-pointer ml-4"></i>
+                        class="fas fa-microphone text-xl text-gray-400  cursor-pointer ml-4"></i>
+                        <div class="bodyLoader" *ngIf="voiceSending">
+                           <div class="VoiceSendloader">
+                             <span class="dot"></span>
+                             <span class="dot"></span>
+                             <span class="dot"></span>
+                            </div>
+                        </div>
                 </form>
             </div>
 
