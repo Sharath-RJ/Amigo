@@ -9,8 +9,13 @@ import { environment } from '../../../../environment';
 })
 export class StoriesComponent implements OnInit {
   liveUses: any;
+  picture: string = '';
   constructor(private _http: HttpClient) {}
   ngOnInit(): void {
+    const ProfilePic = sessionStorage.getItem('loginedInUser');
+    console.log('ProfilePic', ProfilePic);
+    if (ProfilePic) this.picture = JSON.parse(ProfilePic).profilePic;
+
     this._http.get(`${environment.apiUrl}/user/getLiveUsers`).subscribe(
       (data) => {
         this.liveUses = data;
@@ -21,7 +26,7 @@ export class StoriesComponent implements OnInit {
     );
   }
 
-  joinLive(link:string){
-     window.location.href = link;
+  joinLive(link: string) {
+    window.location.href = link;
   }
 }

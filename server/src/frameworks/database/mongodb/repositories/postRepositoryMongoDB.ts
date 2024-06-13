@@ -21,10 +21,10 @@ export class postRepositoryMongoDB implements postRepository {
 
     async getAllPost() {
         try {
-            return await PostModel.find({ status: "Published" }).populate(
-                "user",
-                "username"
-            )
+           return await PostModel.find({ status: "Published" }).populate({
+               path: "user",
+               select: "username profilePic",
+           })
         } catch (error) {
             console.log(error)
         }
@@ -56,22 +56,6 @@ export class postRepositoryMongoDB implements postRepository {
         }
     }
 
-//     async commentPost(
-//         postid: string,
-//         text: string,
-//         userid: string
-//     ): Promise<any> {
-//         try {
-//              console.log(postid)
-//              console.log(text)
-//              console.log(userid)
-//         } catch (error) {
-//             console.error("Error commenting on post:", error)
-//             throw error // Throwing the error for better error handling
-//         }
-//     }
-// }
-
  async commentPost(postid: string, text: string, userid:string ): Promise<any> {
         try {
         
@@ -92,7 +76,7 @@ export class postRepositoryMongoDB implements postRepository {
 
     async showComments(id:string): Promise<any> {
         try {
-            const post = await PostModel.findById(id).select("comments").populate("comments.postedBy", "username")
+            const post = await PostModel.findById(id).select("comments").populate({path:"comments.postedBy",select:"username profilePic"})
             return post
         } catch (error) {
             console.log(error)
@@ -100,7 +84,10 @@ export class postRepositoryMongoDB implements postRepository {
     }
     async showLikes(id:string): Promise<any> {
         try {
-             return await PostModel.findById(id).select("likes").populate("likes", "username")  
+             return await PostModel.findById(id).select("likes").populate({
+                 path: "likes", 
+                 select: "username profilePic", 
+             })  
         } catch (error) {
           console.log(error)  
         }

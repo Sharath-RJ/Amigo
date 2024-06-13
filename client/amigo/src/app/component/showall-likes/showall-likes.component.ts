@@ -9,7 +9,7 @@ import { Component, Input } from '@angular/core';
 export class ShowallLikesComponent {
   @Input() postId: string | undefined;
 
-  likes: any[] = []; 
+  likes: any[] = [];
 
   constructor(private _http: HttpClient) {}
 
@@ -18,12 +18,20 @@ export class ShowallLikesComponent {
       .get<any>('http://localhost:5000/api/post/showLikes/' + this.postId)
       .subscribe(
         (data) => {
-          console.log(data);
-         this.likes = data.likes; 
+          
+          this.likes = data.likes;
+          console.log(this.likes);
         },
         (error) => {
           console.log(error);
         }
       );
   }
+}
+
+interface Like {
+  user: {
+    profilePic: string;
+    username: string;
+  };
 }

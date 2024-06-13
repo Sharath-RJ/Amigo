@@ -7,7 +7,7 @@
             <ul>
                 <li *ngFor="let like of likes" class="py-2">
                     <div class="flex items-center">
-                        <img src="user-avatar.jpg" alt="User Avatar" class="h-8 w-8 rounded-full mr-2">
+                        <img [src]="like.profilePic" alt="User Avatar" class="h-8 w-8 rounded-full mr-2">
                         <span class="font-semibold text-gray-200">{{like.username}}</span>
                         <span class="text-gray-400 ml-2">liked your post</span>
                     </div>

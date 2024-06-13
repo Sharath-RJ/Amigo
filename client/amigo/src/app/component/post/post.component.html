@@ -1,6 +1,6 @@
 <div *ngFor="let post of posts" class="bg-gray-800 border border-gray-700 rounded-lg shadow-md p-4 mb-4 text-white">
   <div class="flex items-center mb-4">
-    <img [src]="post.avatar" alt="User Avatar" class="h-10 w-10 rounded-full mr-2">
+    <img [src]="post.user.profilePic" alt="User Avatar" class="h-10 w-10 rounded-full mr-2">
     <span class="font-semibold text-gray-200">{{ post.user.username }}</span>
   </div>
   <!-- image container -->

@@ -14,9 +14,11 @@ export class HomeComponentComponent {
   ngOnInit() {
     const loggedInUser = sessionStorage.getItem('loginedInUser');
     if (loggedInUser) this.name = JSON.parse(loggedInUser).username
+    
     console.log(loggedInUser)
     const ProfilePic = sessionStorage.getItem('loginedInUser');
-    if (ProfilePic) this.picture = JSON.parse(ProfilePic).picture;
+    console.log("ProfilePic",ProfilePic)
+    if (ProfilePic) this.picture = JSON.parse(ProfilePic).profilePic;
   }
 
   signOut() {

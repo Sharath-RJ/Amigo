@@ -55,6 +55,7 @@ export class PostComponent implements OnInit {
       (data) => {
      this.posts = data;
      // Initialize the postLiked object
+     console.log(this.posts)
      this.posts.forEach((post:any) => {
        this.postLiked[post._id] = post.likes.includes(this.userId);
      });
@@ -131,10 +132,12 @@ export class PostComponent implements OnInit {
 
   showAllComments(id: string) {
     this.showcomments = true;
+    this.showLikes=false
     this.showAllCommentsEvent.emit(id);
   }
   showAllLikes(id: string) {
     this.showLikes = true;
+    this.showcomments=false
     this.showAllLikesEvent.emit(id);
   }
 }
