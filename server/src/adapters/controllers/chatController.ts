@@ -9,7 +9,7 @@ export class chatController {
     ) {}
 
     async sendMessage(req: Request, res: Response): Promise<void> {
-        const { sender, receiver, content , audioUrl} = req.body
+        const { sender, receiver, content, audioUrl } = req.body
         try {
             const message = await this._chatUseCase.sendMessage(
                 sender,
@@ -49,6 +49,18 @@ export class chatController {
                 message: "An error occurred while fetching chat users",
                 error,
             })
+        }
+    }
+
+    async currentUserDetails(req: Request, res: Response) {
+        try {
+            const currentUser = req.params.id
+            console.log("Receiver id",currentUser)    
+            const currentUserDetails= await this._chatUseCase.currentUserDetails(currentUser)
+            console.log("Current user details",currentUserDetails)
+            if(currentUserDetails) res.status(200).json(currentUserDetails)
+        } catch (error) {
+            console.log(error)
         }
     }
 }

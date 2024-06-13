@@ -15,6 +15,7 @@ import { ZIM } from 'zego-zim-web';
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
 import * as recordrtc from 'recordrtc';
 import { DomSanitizer } from '@angular/platform-browser';
+import { _getShadowRoot } from '@angular/cdk/platform';
 
 @Component({
   selector: 'app-chat',
@@ -23,7 +24,9 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
   content!: any;
-  username!:string
+  username!: string;
+  userProfilePic!: string;
+  userFilter: any = { username: '' };
   receiverId: string | null = null;
   senderId: string | null = null;
   messages: any = [];
@@ -39,6 +42,8 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
   currentAudio: HTMLAudioElement | null = null;
   currentIndex: number | null = null;
   voiceSending: boolean = false;
+  currentUserDetails: any = {};
+  selectedUserId!: string | null;
 
   @ViewChild('chatContainer') private chatContainer!: ElementRef;
 
@@ -175,20 +180,38 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   ngOnInit(): void {
+    console.log('ngoninit called');
     this.route.paramMap.subscribe((params) => {
       const receiverIdParam = params.get('receiverId');
       this.receiverId = receiverIdParam !== null ? receiverIdParam : null;
-
+      this.selectedUserId = this.receiverId;
       if (!this.receiverId) {
         console.warn('Receiver ID not found in route parameters');
       }
+      console.log('Receiver ID inside ng oninit', this.receiverId);
+      this.loadChatData();
     });
+
+    //getting the current chated user details
+
+    this._http
+      .get(`${environment.apiUrl}/chat/currentUserDetails/${this.receiverId}`)
+      .subscribe(
+        (data) => {
+          console.log(data);
+          this.currentUserDetails = data;
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
 
     const loggedInUser = sessionStorage.getItem('loginedInUser');
     if (loggedInUser) {
       try {
         this.senderId = JSON.parse(loggedInUser)._id;
         this.username = JSON.parse(loggedInUser).username;
+        this.userProfilePic = JSON.parse(loggedInUser).profilePic;
       } catch (e) {
         console.error('Error parsing loggedInUser from sessionStorage', e);
       }
@@ -245,6 +268,44 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
   }
 
+  loadChatData(): void {
+    if (!this.senderId) {
+      console.error('Sender ID is undefined');
+      return;
+    }
+
+    if (!this.receiverId) {
+      console.error('Receiver ID is undefined');
+      return;
+    }
+
+    this._http
+      .get(`${environment.apiUrl}/chat/currentUserDetails/${this.receiverId}`)
+      .subscribe(
+        (data) => {
+          console.log(data);
+          this.currentUserDetails = data;
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
+
+    this._http
+      .get(
+        `${environment.apiUrl}/chat/getAllMessages/${this.senderId}/${this.receiverId}`
+      )
+      .subscribe(
+        (data) => {
+          this.messages = data;
+          this.scrollToBottom(); // Scroll to bottom after loading messages
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
+  }
+
   ngOnDestroy(): void {
     this.socketService.disconnect();
   }
@@ -287,6 +348,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     this._http.post(`${environment.apiUrl}/chat/send`, message).subscribe(
       (data) => {
+        this.content = '';
         console.log('Message sent successfully', data);
       },
       (error) => {

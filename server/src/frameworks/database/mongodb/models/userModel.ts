@@ -18,9 +18,12 @@ const UserSchema = new Schema({
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     isBlocked: { type: Boolean, default: false },
-    profilePic: { type: String },
-    isLive:{type:Boolean,default:false},
-    liveLink:{type:String},
+    profilePic: {
+        type: String,
+        default: "https://tse4.mm.bing.net/th?id=OIP.Ii15573m21uyos5SZQTdrAHaHa&pid=Api&P=0&h=180",
+    },
+    isLive: { type: Boolean, default: false },
+    liveLink: { type: String },
 })
 
 export const UserModel = mongoose.model<UserDocument>("User", UserSchema)

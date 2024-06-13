@@ -58,6 +58,8 @@ export default function ChatRouter(): Router {
          res.json({ fileUrl: fileUrl })
      })
 
+     router.get("/currentUserDetails/:id",chatControllerInstance.currentUserDetails.bind(chatControllerInstance))
+
 
 
 

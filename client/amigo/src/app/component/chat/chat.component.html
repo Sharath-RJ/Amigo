@@ -29,18 +29,38 @@
 
         <!-- Middle Container (30%) -->
         <div class="w-3/12 md:w-3/10 bg-gray-800 p-4 flex flex-col">
+           
             <div class="w-full flex items-center pl-[10px] bg-gray-700 h-[70px] rounded-lg">
-                <h3 class="font-bold">{{username}}</h3>
+                <img [src]="userProfilePic" class="rounded-full mr-4 ml-2" width="40px" height="40px" alt="">
+                <h2 class="font-bold">{{username}}</h2>
             </div>
+            <!--Search container-->
+            <div class="mt-6">
+                <div class="relative w-64">
+                    <input type="text" placeholder="Search..."   [(ngModel)]="userFilter.username"
+                        class="w-full py-2 pl-10 pr-4 bg-gray-800 border-bottom border-gray-700 text-white placeholder-gray-400 transition duration-200">
+                    <i class="fas fa-search absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400"></i>
+                </div>
+            </div>
+
             <div class="overflow-y-auto mt-4">
-                <ul *ngFor="let user of chattedUsers" class="list-none p-4 bg-gray-800 shadow-md rounded-lg space-y-[5px]">
-                    <li
-                        class="p-2 hover:bg-gray-700 cursor-pointer flex items-center transition duration-200 ease-in-out rounded-lg">
-                        <img src="https://via.placeholder.com/30" alt="User Pic" class="rounded-full mr-3">
+                <ul *ngFor="let user of chattedUsers | filterBy: userFilter" class="list-none p-2 bg-gray-800 shadow-md rounded-lg space-y-[1px]">
+                    <li [routerLink]="['/chat', user._id]" (click)="selectedUserId = user._id" 
+                        [ngClass]="{'bg-gray-700': selectedUserId === user._id, 'hover:bg-gray-700': selectedUserId !== user._id}"
+                        class="p-2 cursor-pointer flex items-center transition duration-200 ease-in-out rounded-lg">
+                        <img [src]="user.profilePic" alt="User Pic" width="30px" height="30px" class="rounded-full mr-3">
                         <span class="font-medium">{{user.username}}</span>
                     </li>
-                  
+                    <!--No user found-->
+                   
                 </ul>
+                <div *ngIf="(chattedUsers | filterBy: userFilter).length === 0" class="flex justify-center items-center mt-6">
+                    <div>
+                        <h3>No User Found</h3>
+                    </div>
+                </div>
+               
+              
             </div>
         </div>
 
@@ -48,16 +68,16 @@
         <div class="w-8/12 md:w-19/30 bg-gray-900 p-4 flex flex-col">
             <div class="flex items-center justify-between p-4 border-b border-gray-700">
                 <div class="flex items-center">
-                    <img src="https://via.placeholder.com/40" alt="Chat User Pic" class="rounded-full mr-3">
+                    <img [src]="currentUserDetails.profilePic" width="50px" height="50px" alt="Chat User Pic" class="rounded-full mr-3">
                     <div>
-                        <h2 class="text-xl font-bold">Chat User</h2>
-                        <p class="text-sm text-gray-400">Online</p>
+                        <h2 class="text-xl font-bold">{{currentUserDetails.username}}</h2>
+                        <!-- <p class="text-sm text-gray-400">Online</p> -->
                     </div>
                 </div>
                 <div class="flex space-x-4">
                     <i (click)="connectToVideoCall()" class="fas fa-video text-xl text-gray-400 hover:text-white cursor-pointer"></i>
-                    <i class="fas fa-phone text-xl text-gray-400 hover:text-white cursor-pointer"></i>
-                    <i class="fas fa-paperclip text-xl text-gray-400 hover:text-white cursor-pointer"></i>
+                    <!-- <i class="fas fa-phone text-xl text-gray-400 hover:text-white cursor-pointer"></i>
+                    <i class="fas fa-paperclip text-xl text-gray-400 hover:text-white cursor-pointer"></i> -->
                 </div>
             </div>
 

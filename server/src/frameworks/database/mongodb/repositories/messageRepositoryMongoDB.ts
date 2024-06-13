@@ -55,4 +55,16 @@ export class messageRepositoryMongoDB implements messageRepository {
         }).exec()
         return users
     }
+
+   async currentUserDetails(currentUser: string): Promise<any> {
+    try {
+        console.log("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy",currentUser)
+       const user = await UserModel.findById(currentUser)
+       return user 
+    } catch (error) {
+        console.log(error)
+    }
+      
+    
+   }
 }

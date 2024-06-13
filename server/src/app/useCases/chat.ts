@@ -26,4 +26,9 @@ export class chatUseCase {
     async getChatUsers(currentUser: string): Promise<string[]> {
         return this._messageRepository.getChatUsers(currentUser)
     }
+
+    async currentUserDetails(currentUser: string): Promise<any> {
+        console.log("Current user", currentUser)
+        return this._messageRepository.currentUserDetails(currentUser)
+    }
 }
