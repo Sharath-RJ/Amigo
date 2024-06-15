@@ -52,7 +52,7 @@
         </div>
 
         <!-- Right Container (62%) -->
-        <div class="w-8/12 md:w-19/30 bg-gray-900 p-4 flex flex-col">
+        <div *ngIf="selectedUserId  else defaultChat" class="w-8/12 md:w-19/30 bg-gray-900 p-4 flex flex-col">
             <div class="flex items-center justify-between p-4 border-b border-gray-700">
                 <div class="flex items-center">
                     <img [src]="currentUserDetails.profilePic" width="50px" height="50px" alt="Chat User Pic" class="rounded-full mr-3">
@@ -125,8 +125,28 @@
                 </form>
             </div>
 
+           
+
+
         </div>
     </div>
+
+<ng-template #defaultChat>
+    <div class="w-8/12 md:w-9/12 bg-gray-900 p-4 flex flex-col items-center justify-center h-full">
+        <div class="text-center">
+            <div class="text-6xl text-gray-400">
+                <i class="fas fa-comment"></i>
+            </div>
+            <div class="text-3xl font-bold mb-4">
+                Start a new chat
+            </div>
+            <div class="text-lg text-gray-500 mb-8">
+                You have no active chats. Start chatting with someone.
+            </div>
+           
+        </div>
+    </div>
+</ng-template>
 
     
 </body>
