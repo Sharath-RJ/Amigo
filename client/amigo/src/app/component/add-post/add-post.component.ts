@@ -14,6 +14,7 @@ export class AddPostComponent {
   selectedFiles: File[] | null = null;
   loggedInUser: any;
   imageUrl: string | undefined;
+  previewUrls: string[] = [];
 
   constructor(
     private _http: HttpClient,
@@ -27,8 +28,18 @@ export class AddPostComponent {
   }
 
   onFilesSelected(event: any) {
-    this.selectedFiles = event.target.files;
-    console.log('Files selected:', this.selectedFiles); // Debugging line
+    this.selectedFiles = Array.from(event.target.files);
+    this.previewUrls = [];
+
+    if (this.selectedFiles) {
+      this.selectedFiles.forEach((file) => {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.previewUrls.push(e.target.result);
+        };
+        reader.readAsDataURL(file);
+      });
+    }
   }
 
   onSubmit() {
