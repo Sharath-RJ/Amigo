@@ -114,4 +114,12 @@ export class userRepoMongoDB implements UserRepoInterface {
             throw error
         }
     }
+
+    async getLoggedInUserDetails(id: string) {
+        try {
+            return await UserModel.findById(id).populate('following followers')
+        } catch (error) {
+            console.log(error)
+        }
+    }
 }

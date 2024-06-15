@@ -9,5 +9,6 @@ export interface UserRepoInterface {
     updateProfilePic(userId: string, profilePic: string): Promise<any>
     goLive(link: String, id: string): Promise<any>
     getLiveUsers(): Promise<any>
-    stopLive(link:String, id: string): Promise<any>
+    stopLive(link: String, id: string): Promise<any>
+    getLoggedInUserDetails(id: string): Promise<any>
 }

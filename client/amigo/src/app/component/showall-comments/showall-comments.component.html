@@ -6,7 +6,7 @@
         <div class="p-4">
             <ul>
                 <li *ngFor="let comment of comments" class="py-2 border-b border-gray-600">
-                    <!-- Added border-bottom to separate comments -->
+                
                     <div class="flex items-center">
                         <img [src]=" comment.postedBy.profilePic " alt="User Avatar" class="h-8 w-8 rounded-full mr-2">
                         <span class="font-semibold text-gray-200">{{ comment.postedBy.username }}</span>
@@ -15,7 +15,7 @@
                 </li>
             </ul>
             <div *ngIf="comments.length === 0" class="text-gray-400 text-center mt-4">No comments yet.</div>
-            <!-- Adjusted text color -->
+        
         </div>
     </div>
 </div>

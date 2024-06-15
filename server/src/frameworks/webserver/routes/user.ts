@@ -29,5 +29,7 @@ export default function userRoute(): Router {
     )
     router.put("/stopLive", authenticate, userControllerInstance.stopLive.bind(userControllerInstance))
 
+    router.get("/getLoggedInUserDetails", authenticate, userControllerInstance.getLoggedInUserDetails.bind(userControllerInstance))
+
     return router
 }

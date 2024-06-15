@@ -10,7 +10,7 @@ export class FollowersComponent {
   constructor(
     public dialogRef: MatDialogRef<FollowersComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { followers: any[] }
-  ) {}
+  ) { console.log(this.data); }
 
   onNoClick(): void {
     this.dialogRef.close();

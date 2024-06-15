@@ -34,4 +34,8 @@ export class userUseCase {
     async stopLive(livelink: String, id: string) {
         return await this._userRepoInterface.stopLive(livelink, id)
     }
+
+    async getLoggedInUserDetails(id: string) {
+        return await this._userRepoInterface.getLoggedInUserDetails(id)
+    }
 }

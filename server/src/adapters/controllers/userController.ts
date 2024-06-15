@@ -100,4 +100,17 @@ export class userConteoller {
             console.log(error)
         }
     }
+
+    async getLoggedInUserDetails(req:customRequest, res: Response): Promise<void> {
+        try {
+            const userDetails = await this._userUseCase.getLoggedInUserDetails(req.user._id) 
+            console.log("ooooooooooooooooooooooooo",userDetails)
+            if(userDetails) {
+                res.status(200).json(userDetails)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+       
+    }
 }

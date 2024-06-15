@@ -112,11 +112,23 @@ import { FollowersComponent } from '../modal/followers/followers.component';
         const user = JSON.parse(loggedInUser);
         this.userid = user._id;
         this.username = user.username;
-        this.followers = user.followers;
-        this.following = user.following;
+        // this.followers = user.followers;
+        // this.following = user.following;
         this.profilePic = user.profilePic;
         console.log(this.followers, this.following, this.userid, this.username);
       }
+
+      //Getting the details  of logged in user
+      this._http
+        .get(
+          `${environment.apiUrl}/user/getLoggedInUserDetails`
+        )
+        .subscribe((data:any) => {
+          console.log("user profile detailsddddddddddddddddddddddddddddddddddddddddd",data);
+          this.followers = data.followers;
+          this.following = data.following;
+        
+        });
 
       // Getting all the posts by this user
       this._http
