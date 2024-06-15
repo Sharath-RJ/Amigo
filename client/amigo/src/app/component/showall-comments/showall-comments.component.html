@@ -5,16 +5,16 @@
         </div>
         <div class="p-4">
             <ul>
-                <li *ngFor="let comment of comments" class="py-2 border-b border-gray-600">
+                <li *ngFor="let comm of comment" class="py-2 border-b border-gray-600">
                 
                     <div class="flex items-center">
-                        <img [src]=" comment.postedBy.profilePic " alt="User Avatar" class="h-8 w-8 rounded-full mr-2">
-                        <span class="font-semibold text-gray-200">{{ comment.postedBy.username }}</span>
-                        <span class="text-gray-400 ml-2">{{ comment.text }}</span>
+                        <img [src]=" comm.postedBy.profilePic " alt="User Avatar" class="h-8 w-8 rounded-full mr-2">
+                        <span class="font-semibold text-gray-200">{{ comm.postedBy.username }}</span>
+                        <span class="text-gray-400 ml-2">{{ comm.text }}</span>
                     </div>
                 </li>
             </ul>
-            <div *ngIf="comments.length === 0" class="text-gray-400 text-center mt-4">No comments yet.</div>
+            <div *ngIf="comment.length === 0" class="text-gray-400 text-center mt-4">No comments yet.</div>
         
         </div>
     </div>

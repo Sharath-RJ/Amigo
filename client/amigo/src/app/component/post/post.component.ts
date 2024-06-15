@@ -124,16 +124,15 @@ export class PostComponent implements OnInit {
   }
 
   handleCommentsAdded(comment: any) {
-    this.activeCommentPostId = ' ';
-
-    const postIndex = this.posts.findIndex(
-      (post: any) => post._id === comment._id
-    );
-    if (postIndex !== -1) {
-      const updatedPosts = [...this.posts];
-      updatedPosts[postIndex].comments.push(this.userId);
-      this.posts = updatedPosts;
-    }
+   // this.activeCommentPostId = ' ';
+     const postIndex = this.posts.findIndex(
+       (post: any) => post._id === comment._id
+     );
+     if (postIndex !== -1) {
+       this.posts[postIndex].comments.push(comment.comments[comment.comments.length - 1]);
+       this.posts = [...this.posts]; // Trigger change detection
+     }
+     console.log("hhhhhhhhhhhhhhhhhhhhhhhaaaaaaaaaaaa", this.posts)
   }
 
   showAllComments(postId: string) {

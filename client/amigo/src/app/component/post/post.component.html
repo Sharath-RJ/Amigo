@@ -54,7 +54,7 @@
     </div>
 
     <div *ngIf="activeCommentPostId === post._id">
-      <app-showall-comments [postId]="post._id"></app-showall-comments>
+      <app-showall-comments [postId]="post._id" [comments]="post.comments"></app-showall-comments>
     </div>
 
     <div *ngIf="activeLikePostId === post._id">
