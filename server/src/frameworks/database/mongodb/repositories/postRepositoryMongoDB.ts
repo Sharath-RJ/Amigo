@@ -21,10 +21,10 @@ export class postRepositoryMongoDB implements postRepository {
 
     async getAllPost() {
         try {
-           return await PostModel.find({ status: "Published" }).populate({
+           return await PostModel.find().populate({
                path: "user",
                select: "username profilePic",
-           })
+           }).sort({ createdAt: -1 })
         } catch (error) {
             console.log(error)
         }

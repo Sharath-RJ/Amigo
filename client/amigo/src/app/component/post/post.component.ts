@@ -9,6 +9,7 @@ import { OwlOptions } from 'ngx-owl-carousel-o';
 })
 export class PostComponent implements OnInit {
   activeCommentPostId: string | null = null;
+  activeLikePostId: string | null = null;
   showcomments: boolean = false;
   showLikes: boolean = false;
   postLiked: { [key: string]: boolean } = {};
@@ -53,12 +54,12 @@ export class PostComponent implements OnInit {
     }
     this._http.get(`http://localhost:5000/api/post/getAllPosts`).subscribe(
       (data) => {
-     this.posts = data;
-     // Initialize the postLiked object
-     console.log(this.posts)
-     this.posts.forEach((post:any) => {
-       this.postLiked[post._id] = post.likes.includes(this.userId);
-     });
+        this.posts = data;
+        // Initialize the postLiked object
+        console.log(this.posts);
+        this.posts.forEach((post: any) => {
+          this.postLiked[post._id] = post.likes.includes(this.userId);
+        });
       },
       (error) => {
         console.log(error);
@@ -67,7 +68,12 @@ export class PostComponent implements OnInit {
   }
 
   showAddComment(postId: string) {
-    this.activeCommentPostId = postId;
+    if (this.activeCommentPostId === postId) {
+      this.activeCommentPostId = null; // Toggle off if clicked again
+    } else {
+      this.activeCommentPostId = postId;
+      this.activeLikePostId = null; // Deactivate likes when comments are activated
+    }
   }
 
   likePost(postId: string) {
@@ -79,11 +85,11 @@ export class PostComponent implements OnInit {
       .put(`http://localhost:5000/api/post/likePost/${postId}`, {}, { headers })
       .subscribe(
         (data) => {
-         const post = this.posts.find((post:any) => post._id === postId);
-         if (post) {
-           post.likes.push(this.userId); // Update the likes array
-           this.postLiked[postId] = true; // Update the like status
-         }
+          const post = this.posts.find((post: any) => post._id === postId);
+          if (post) {
+            post.likes.push(this.userId); // Update the likes array
+            this.postLiked[postId] = true; // Update the like status
+          }
         },
         (error) => {
           console.log(error);
@@ -103,14 +109,13 @@ export class PostComponent implements OnInit {
       )
       .subscribe(
         (data) => {
-                   const post = this.posts.find((post:any) => post._id === postId);
-                   if (post) {
-                     post.likes = post.likes.filter(
-                       (userId:any) => userId !== this.userId
-                     ); // Update the likes array
-                     this.postLiked[postId] = false; // Update the like status
-                   }
-
+          const post = this.posts.find((post: any) => post._id === postId);
+          if (post) {
+            post.likes = post.likes.filter(
+              (userId: any) => userId !== this.userId
+            ); // Update the likes array
+            this.postLiked[postId] = false; // Update the like status
+          }
         },
         (error) => {
           console.log(error);
@@ -119,26 +124,36 @@ export class PostComponent implements OnInit {
   }
 
   handleCommentsAdded(comment: any) {
-    this.activeCommentPostId=" ";
+    this.activeCommentPostId = ' ';
 
-    const postIndex = this.posts.findIndex((post:any) => post._id === comment._id);
+    const postIndex = this.posts.findIndex(
+      (post: any) => post._id === comment._id
+    );
     if (postIndex !== -1) {
-      const updatedPosts = [...this.posts];  
+      const updatedPosts = [...this.posts];
       updatedPosts[postIndex].comments.push(this.userId);
       this.posts = updatedPosts;
     }
   }
-  
 
-  showAllComments(id: string) {
-    this.showcomments = true;
-    this.showLikes=false
-    this.showAllCommentsEvent.emit(id);
+  showAllComments(postId: string) {
+    if (this.activeCommentPostId === postId) {
+      this.activeCommentPostId = null; // Toggle off if clicked again
+    } else {
+      this.activeCommentPostId = postId;
+      this.activeLikePostId = null; // Deactivate likes when comments are activated
+    }
+    this.showAllCommentsEvent.emit(postId);
   }
-  showAllLikes(id: string) {
-    this.showLikes = true;
-    this.showcomments=false
-    this.showAllLikesEvent.emit(id);
+
+  showAllLikes(postId: string) {
+    if (this.activeLikePostId === postId) {
+      this.activeLikePostId = null; // Toggle off if clicked again
+    } else {
+      this.activeLikePostId = postId;
+      this.activeCommentPostId = null; // Deactivate comments when likes are activated
+    }
+    this.showAllLikesEvent.emit(postId);
   }
 }
 

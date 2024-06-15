@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { environment } from '../../../../environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PostService } from '../../services/post.service';
+import { Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-post',
@@ -19,7 +20,8 @@ export class AddPostComponent {
   constructor(
     private _http: HttpClient,
     private _snackBar: MatSnackBar,
-    private postService: PostService
+    private postService: PostService,
+    private _router: Router
   ) {
     const loggedInUserString = sessionStorage.getItem('loginedInUser');
     this.loggedInUser = loggedInUserString
@@ -63,6 +65,7 @@ export class AddPostComponent {
                 verticalPosition: 'top',
               }
             );
+            this._router.navigate(['/home']);
           },
           (error) => {
             console.log(error);
