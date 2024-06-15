@@ -2,11 +2,13 @@ import express, { Router } from "express"
 import openai from "openai"
 import { GoogleGenerativeAI } from "@google/generative-ai"
 import test from "node:test"
+import authenticate from "../middlewares/authMiddleware"
+import { isBlocked } from "../middlewares/checkBlockMiddleware"
 
 export default function mockRouter(): Router {
     const router = express.Router()
 
-    router.get("/getQuestions", async (req, res) => {
+    router.get("/getQuestions", authenticate, isBlocked, async (req, res) => {
         const genAi = new GoogleGenerativeAI(
             "AIzaSyBefG5HOkZDaNK5VoiArhqjPoQqDhbf2JQ"
         )
@@ -43,12 +45,12 @@ export default function mockRouter(): Router {
         res.json(JSON.parse(text))
     })
 
-    router.post("/submitAnswers", async (req, res) => {
-      console.log("generating feedback")
+    router.post("/submitAnswers", authenticate, isBlocked, async (req, res) => {
+        console.log("generating feedback")
         const { Questions, Answers, score } = req.body
-        console.log(Questions);
-        console.log(Answers);
-        console.log("Score",score);
+        console.log(Questions)
+        console.log(Answers)
+        console.log("Score", score)
         const genAi = new GoogleGenerativeAI(
             "AIzaSyBefG5HOkZDaNK5VoiArhqjPoQqDhbf2JQ"
         )
@@ -86,9 +88,8 @@ Please provide the evaluation in the following  format:note that it should be a 
         const response = await result.response
         const text = response.text()
         console.log(text)
-        const evaluation = JSON.parse(text) 
+        const evaluation = JSON.parse(text)
         res.json(evaluation)
-
     })
     return router
 }

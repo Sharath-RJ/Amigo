@@ -8,6 +8,10 @@ export interface UserDocument extends Document {
     phoneNumber: String
     followers: mongoose.Types.ObjectId[]
     following: mongoose.Types.ObjectId[]
+    isBlocked: boolean
+    profilePic: string
+    isLive: boolean
+    liveLink: string
 }
 
 const UserSchema = new Schema({

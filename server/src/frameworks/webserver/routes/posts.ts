@@ -4,6 +4,7 @@ import { PostUseCase } from "../../../app/useCases/post"
 import { postRepositoryMongoDB } from "../../../frameworks/database/mongodb/repositories/postRepositoryMongoDB"
 import upload from "../../../frameworks/webserver/middlewares/multerMiddleware"
 import authenticate from "../middlewares/authMiddleware"
+import { isBlocked } from "../middlewares/checkBlockMiddleware"
 
 export default function PostsRouter(): Router {
     const router = express.Router()
@@ -15,6 +16,8 @@ export default function PostsRouter(): Router {
     router.post(
         "/addPost",
         upload.array("images"),
+        authenticate,
+        isBlocked,
         postController.addPost.bind(postController)
     )
 
@@ -25,11 +28,13 @@ export default function PostsRouter(): Router {
     router.put(
         "/likePost/:postid",
         authenticate,
+        isBlocked,
         postController.likePost.bind(postController)
     )
     router.put(
         "/unlikePost/:postid",
         authenticate,
+        isBlocked,
         postController.unlikePost.bind(postController)
     )
     // router.delete("/delete/:id", postController.deletePost.bind(postController))
@@ -37,31 +42,36 @@ export default function PostsRouter(): Router {
     router.put(
         "/commentPost/:id",
         authenticate,
+        isBlocked,
         postController.commentPost.bind(postController)
     )
     router.get(
         "/showComments/:id",
+        authenticate,
+        isBlocked,
         postController.showComments.bind(postController)
     )
-    router.get("/showLikes/:id", postController.showLikes.bind(postController))
+    router.get("/showLikes/:id",authenticate,isBlocked, postController.showLikes.bind(postController))
     router.get(
-        "/getAllPostsofUser/:id", authenticate,
+        "/getAllPostsofUser/:id", authenticate,isBlocked,
         postController.getAllPostsofUser.bind(postController)
     )
     router.delete(
         "/deletePostImage/:postid/:image",
         authenticate,
+        isBlocked,
         postController.deletePostImage.bind(postController)
     )
     router.delete(
         "/deletePost/:postid",
-        authenticate,
+       authenticate,isBlocked,
         postController.deletePost.bind(postController)
     )
 
     router.put(
         "/updatePost/:postid",
         authenticate,
+        isBlocked,
         postController.updatePost.bind(postController)
     )
 

@@ -5,6 +5,8 @@ import { chatUseCase } from "../../../app/useCases/chat"
 import { io } from "../../../app" // Adjust the path accordingly
 import { GoogleGenerativeAI } from "@google/generative-ai"
 import uploadAudio from "../middlewares/audioMiddleware"
+import authenticate from "../middlewares/authMiddleware"
+import { isBlocked } from "../middlewares/checkBlockMiddleware"
 
 export default function ChatRouter(): Router {
     const router = express.Router()
@@ -17,48 +19,64 @@ export default function ChatRouter(): Router {
 
     router.post(
         "/send",
+        authenticate,
+        isBlocked,
         chatControllerInstance.sendMessage.bind(chatControllerInstance)
     )
     router.get(
         "/getAllMessages/:senderId/:receiverId",
+        authenticate,
+        isBlocked,
         chatControllerInstance.getChatHistory.bind(chatControllerInstance)
     )
     router.get(
         "/getChatUsers/:id",
+        authenticate,
+        isBlocked,
         chatControllerInstance.getChatUsers.bind(chatControllerInstance)
     )
-    router.post("/checkGrammar",async (req, res)=>{
-      const { content } = req.body
-      console.log("checking grammer")
+    router.post("/checkGrammar", authenticate, isBlocked, async (req, res) => {
+        const { content } = req.body
+        console.log("checking grammer")
 
-       const genAi = new GoogleGenerativeAI(
-           "AIzaSyBefG5HOkZDaNK5VoiArhqjPoQqDhbf2JQ"
-       )
-       const model = genAi.getGenerativeModel({ model: "gemini-pro" })
-       const prompt = `You are a perfect English teacher. Your task is to correct the grammar and spelling mistakes in the following sentence:${content}. 
+        const genAi = new GoogleGenerativeAI(
+            "AIzaSyBefG5HOkZDaNK5VoiArhqjPoQqDhbf2JQ"
+        )
+        const model = genAi.getGenerativeModel({ model: "gemini-pro" })
+        const prompt = `You are a perfect English teacher. Your task is to correct the grammar and spelling mistakes in the following sentence:${content}. 
        The sentence is meant to be sent to a friend via a chat app. Please provide the corrected version of the sentence.`
 
-           const result = await model.generateContent(prompt)
-           const response = await result.response
-           const text = response.text()
-           console.log(text)
-           res.json(text)
-
+        const result = await model.generateContent(prompt)
+        const response = await result.response
+        const text = response.text()
+        console.log(text)
+        res.json(text)
     })
 
 
-     router.post("/Audioupload", uploadAudio.single("audio"), (req, res) => {
-         console.log("Inside audio URL logic")
-         const file = req.file
-         if (!file) {
-             return res.status(400).send("No file uploaded.")
+     router.post(
+         "/Audioupload",
+         authenticate,
+         isBlocked,
+         uploadAudio.single("audio"),
+         (req, res) => {
+             console.log("Inside audio URL logic")
+             const file = req.file
+             if (!file) {
+                 return res.status(400).send("No file uploaded.")
+             }
+             // Cloudinary URL
+             const fileUrl = file.path
+             res.json({ fileUrl: fileUrl })
          }
-         // Cloudinary URL
-         const fileUrl = file.path
-         res.json({ fileUrl: fileUrl })
-     })
+     )
 
-     router.get("/currentUserDetails/:id",chatControllerInstance.currentUserDetails.bind(chatControllerInstance))
+     router.get(
+         "/currentUserDetails/:id",
+         authenticate,
+         isBlocked,
+         chatControllerInstance.currentUserDetails.bind(chatControllerInstance)
+     )
 
 
 
