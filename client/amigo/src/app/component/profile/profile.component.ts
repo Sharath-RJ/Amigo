@@ -5,6 +5,7 @@
   import { MatDialog } from '@angular/material/dialog';
   import { EditPostModalComponent } from '../edit-post-modal/edit-post-modal.component';
 import { FollowersComponent } from '../modal/followers/followers.component';
+import { ConfirmDialogComponent } from '../modal/confirm-dialog/confirm-dialog.component';
 
   @Component({
     selector: 'app-profile',
@@ -163,21 +164,34 @@ import { FollowersComponent } from '../modal/followers/followers.component';
     }
 
     deletePost(post: any) {
-      if (confirm('Are u sure to delete this post')) {
-        this._http
-          .delete(`${environment.apiUrl}/post/deletePost/${post._id}`)
-          .subscribe(
-            (data) => {
-              console.log(data);
-              this.posts = this.posts.filter(
-                (existingPost) => existingPost._id !== post._id
-              );
-            },
-            (error) => {
-              console.log(error);
-            }
-          );
-      }
+       const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+         width: '250px',
+         data: {
+           title: 'Confirm Action',
+           message: 'Are you sure you want to delete this post?',
+         },
+       })
+
+         dialogRef.afterClosed().subscribe((result) => {
+           if (result) {
+              this._http
+                .delete(`${environment.apiUrl}/post/deletePost/${post._id}`)
+                .subscribe(
+                  (data) => {
+                    console.log(data);
+                    this.posts = this.posts.filter(
+                      (existingPost) => existingPost._id !== post._id
+                    );
+                  },
+                  (error) => {
+                    console.log(error);
+                  }
+                );
+           } else {
+             console.log('User cancelled action');
+           }
+         });
+     
     }
   }
 

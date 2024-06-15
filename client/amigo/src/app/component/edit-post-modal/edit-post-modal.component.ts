@@ -1,10 +1,11 @@
 // edit-post-modal.component.ts
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environment';
 import { ContentObserver } from '@angular/cdk/observers';
+import { ConfirmDialogComponent } from '../modal/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-edit-post-modal',
@@ -18,7 +19,9 @@ export class EditPostModalComponent implements OnInit {
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<EditPostModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private _http:HttpClient
+    private _http: HttpClient,
+    public dialog: MatDialog
+
   ) {
     this.editForm = this.fb.group({
       caption: [data.caption],
@@ -37,30 +40,41 @@ export class EditPostModalComponent implements OnInit {
     // Assuming the ID is the part before the first hyphen (-)
     // const parts = fileName.split('-');
     // return parts[0];
-    return fileName
+    return fileName;
   }
 
   deleteImage(imageId: string) {
-    console.log(imageId);
-   if (confirm('Are you sure you want to delete this image?' + imageId)) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '250px',
+      data: {
+        title: 'Confirm Action',
+        message: 'Are you sure you want to delete this image?',
+      },
+    });
+        dialogRef.afterClosed().subscribe((result) => {
+          if (result) {
+            
+      this._http
+        .delete(
+          `${environment.apiUrl}/post/deletePostImage/${this.data._id}/${imageId}`
+        )
+        .subscribe(
+          (res) => {
+            console.log(res);
+            this.data.image = this.data.image.filter(
+              (image: any) => image !== imageId
+            );
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+          } else {
+            console.log('User cancelled action');
+          }
+        });
 
-
-    this._http
-      .delete(
-        `${environment.apiUrl}/post/deletePostImage/${this.data._id}/${imageId}`
-      )
-      .subscribe(
-        (res) => {
-          console.log(res);
-          this.data.image = this.data.image.filter(
-            (image:any) => image !== imageId
-          );
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-      }
+    
   }
 
   onFileSelected(event: any) {
@@ -70,17 +84,19 @@ export class EditPostModalComponent implements OnInit {
 
   onSave() {
     alert(this.editForm.value.caption);
-    this._http.put(
-      `${environment.apiUrl}/post/updatePost/${this.data._id}`,
-      {caption:this.editForm.value.caption}
-    ).subscribe((data)=>{
-       this.dialogRef.close();
-      window.location.reload();
-
-    },(err)=>{
-      console.log(err)
-    })
-  
+    this._http
+      .put(`${environment.apiUrl}/post/updatePost/${this.data._id}`, {
+        caption: this.editForm.value.caption,
+      })
+      .subscribe(
+        (data) => {
+          this.dialogRef.close();
+          window.location.reload();
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
   }
 
   onCancel() {

@@ -57,6 +57,7 @@ import { TestInterfaceComponent } from './component/mock-test/test-interface/tes
 import { TestResultComponent } from './component/mock-test/test-result/test-result.component';
 import { QuestonsComponent } from './component/mock-test/questons/questons.component';
 import { UserEditModalComponent } from './component/modal/user-edit-modal/user-edit-modal.component';
+import { ConfirmDialogComponent } from './component/modal/confirm-dialog/confirm-dialog.component';
 
 
 
@@ -101,6 +102,7 @@ import { UserEditModalComponent } from './component/modal/user-edit-modal/user-e
     TestResultComponent,
     QuestonsComponent,
     UserEditModalComponent,
+    ConfirmDialogComponent,
   ],
   imports: [
     BrowserModule,
